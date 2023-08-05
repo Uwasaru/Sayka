@@ -17,5 +17,6 @@ func main() {
 	r.InitFavoriteRouter(db)
 	r.InitCommentRouter(db)
 	r.InitTagRouter(db)
+	r.InitSessionRouter(db)
 	r.Serve()
 }
