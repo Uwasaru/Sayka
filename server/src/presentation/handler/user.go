@@ -32,10 +32,10 @@ func (uh *UserHandler) GetByID(c *gin.Context) {
 	c.JSON(http.StatusOK, user)
 }
 
-// GetByGithubIdはUserIDを指定してユーザーを取得します
+// GetByGithubIdはgithubIdを指定してユーザーを取得します
 func (uh *UserHandler) GetByGithubId(c *gin.Context) {
-	userID := c.Param("userID")
-	user, err := uh.uu.GetByGithubId(userID)
+	githubId := c.Param("githubId")
+	user, err := uh.uu.GetByGithubId(githubId)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -74,6 +74,11 @@ func (uh *UserHandler) UpdateUser(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
+	user_json.ID = user.ID
+	user_json.CreatedAt = user.CreatedAt
+	user_json.TokenExpire = user.TokenExpire
+	user_json.AccessToken = utils.EncodeToken(user_json.AccessToken)
+	user = json.UserJsonToEntity(user_json)
 	if err := uh.uu.UpdateUser(user); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return

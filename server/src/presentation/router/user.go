@@ -15,7 +15,7 @@ func (r *Router) InitUserRouter(db *sql.DB) {
 
 	g := r.Engine.Group("/user")
 	g.GET("/:id", uh.GetByID)
-	g.GET("/user/:userID", uh.GetByGithubId)
+	g.GET("/github_id/:githubId", uh.GetByGithubId)
 	g.POST("/", uh.CreateUser)
 	g.POST("/login", uh.LoginUser)
 	g.PUT("/:id", uh.UpdateUser)

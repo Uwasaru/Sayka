@@ -30,10 +30,10 @@ func (ur *UserRepository) GetByID(id string) (*entity.User, error) {
 	return user, nil
 }
 
-// GetByGithubIdはEUserIdを指定してユーザーを取得します
-func (ur *UserRepository) GetByGithubId(userId string) (*entity.User, error) {
+// GetByGithubIdはEGithubIDを指定してユーザーを取得します
+func (ur *UserRepository) GetByGithubId(GithubID string) (*entity.User, error) {
 	user := &entity.User{}
-	err := ur.db.QueryRow("SELECT * FROM users WHERE user_id = ?", userId).Scan(&user.ID, &user.GithubID, &user.GithubIcon, &user.AccessToken, &user.RefleshToken, &user.TokenExpire, &user.CreatedAt)
+	err := ur.db.QueryRow("SELECT * FROM users WHERE github_id = ?", GithubID).Scan(&user.ID, &user.GithubID, &user.GithubIcon, &user.AccessToken, &user.RefleshToken, &user.TokenExpire, &user.CreatedAt)
 	if err != nil {
 		return nil, err
 	}
