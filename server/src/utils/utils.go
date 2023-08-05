@@ -3,17 +3,25 @@ package utils
 import (
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/oklog/ulid"
+	"github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"
+	"crypto/sha256"
 	"math/rand"
 	"os"
 	"strconv"
 	"time"
+	"encoding/hex"
 )
 
 func Ulid() string {
 	t := time.Now()
 	entropy := ulid.Monotonic(rand.New(rand.NewSource(t.UnixNano())), 0)
 	return ulid.MustNew(ulid.Timestamp(t), entropy).String()
+}
+
+func Uuid() string {
+	uuidObj, _ := uuid.NewRandom()
+  return uuidObj.String()
 }
 
 func RandomString(n int) string {
@@ -56,4 +64,15 @@ func GenerateVerificationToken() string {
 
 func GetCurrentTimeStamps() time.Time {
 	return time.Now().UTC()
+}
+
+func GetExpireTimeStamps() time.Time {
+	return time.Now().AddDate(0, 1, 0).UTC()
+}
+
+func EncodeToken(token string) string {
+	hasher := sha256.New()
+	hasher.Write([]byte(token))
+	encryptedBytes := hasher.Sum(nil)
+	return hex.EncodeToString(encryptedBytes)
 }

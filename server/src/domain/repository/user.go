@@ -8,8 +8,8 @@ import (
 type UserRepository interface {
 	// GetByIDはIDを指定してユーザーを取得します
 	GetByID(id string) (*entity.User, error)
-	// GetByEmailはEmailを指定してユーザーを取得します
-	GetByEmail(email string) (*entity.User, error)
+	// GetByGithubIdはEUserIdを指定してユーザーを取得します
+	GetByGithubId(userId string) (*entity.User, error)
 	// Createはユーザーを作成します
 	CreateUser(user *entity.User) error
 	// UpdateUserはユーザーを更新します

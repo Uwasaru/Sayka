@@ -15,8 +15,8 @@ type UserUsecase struct {
 type IUserUsecase interface {
 	// GetByIDはIDを指定してユーザーを取得します
 	GetByID(id string) (*entity.User, error)
-	// GetByEmailはEmailを指定してユーザーを取得します
-	GetByEmail(email string) (*entity.User, error)
+	// GetByGithubIdはEUserIdを指定してユーザーを取得します
+	GetByGithubId(userID string) (*entity.User, error)
 	// CreateUserはユーザーを作成します
 	CreateUser(user *entity.User) error
 	// UpdateUserはユーザーを更新します
@@ -37,9 +37,9 @@ func (uu *UserUsecase) GetByID(id string) (*entity.User, error) {
 	return uu.userRepository.GetByID(id)
 }
 
-// GetByEmailはEmailを指定してユーザーを取得します
-func (uu *UserUsecase) GetByEmail(email string) (*entity.User, error) {
-	return uu.userRepository.GetByEmail(email)
+// GetByGithubIdはEUserIdを指定してユーザーを取得します
+func (uu *UserUsecase) GetByGithubId(userID string) (*entity.User, error) {
+	return uu.userRepository.GetByGithubId(userID)
 }
 
 // CreateUserはユーザーを作成します

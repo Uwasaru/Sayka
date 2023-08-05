@@ -7,20 +7,22 @@ import (
 
 type UserJson struct {
 	ID        string    `json:"id"`
-	Name      string    `json:"name"`
-	Email     string    `json:"email"`
-	Password  string    `json:"password"`
-	GithubUrl string    `json:"github_url"`
+	GithubID	string    `json:"github_id"`
+	GithubIcon	string    `json:"github_icon"`
+	AccessToken	string    `json:"access_token"`
+	RefleshToken	string    `json:"reflesh_token"`
+	TokenExpire time.Time `json:"token_expire"`
 	CreatedAt time.Time `json:"created_at"`
 }
 
 func UserJsonToEntity(userJson *UserJson) *entity.User {
 	return &entity.User{
 		ID:        userJson.ID,
-		Name:      userJson.Name,
-		Email:     userJson.Email,
-		Password:  userJson.Password,
-		GithubUrl: userJson.GithubUrl,
+		GithubID:	userJson.GithubID,
+		GithubIcon:	userJson.GithubIcon,
+		AccessToken:	userJson.AccessToken,
+		RefleshToken:	userJson.RefleshToken,
+		TokenExpire: userJson.TokenExpire,
 		CreatedAt: userJson.CreatedAt,
 	}
 }
@@ -28,10 +30,11 @@ func UserJsonToEntity(userJson *UserJson) *entity.User {
 func UserEntityToJson(user *entity.User) *UserJson {
 	return &UserJson{
 		ID:        user.ID,
-		Name:      user.Name,
-		Email:     user.Email,
-		Password:  user.Password,
-		GithubUrl: user.GithubUrl,
+		GithubID:	user.GithubID,
+		GithubIcon:	user.GithubIcon,
+		AccessToken:	user.AccessToken,
+		RefleshToken:	user.RefleshToken,
+		TokenExpire: user.TokenExpire,
 		CreatedAt: user.CreatedAt,
 	}
 }

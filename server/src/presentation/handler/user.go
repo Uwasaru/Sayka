@@ -32,10 +32,10 @@ func (uh *UserHandler) GetByID(c *gin.Context) {
 	c.JSON(http.StatusOK, user)
 }
 
-// GetByEmailはEmailを指定してユーザーを取得します
-func (uh *UserHandler) GetByEmail(c *gin.Context) {
-	email := c.Param("email")
-	user, err := uh.uu.GetByEmail(email)
+// GetByGithubIdはUserIDを指定してユーザーを取得します
+func (uh *UserHandler) GetByGithubId(c *gin.Context) {
+	userID := c.Param("userID")
+	user, err := uh.uu.GetByGithubId(userID)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -51,8 +51,8 @@ func (uh *UserHandler) CreateUser(c *gin.Context) {
 		return
 	}
 	user_json.ID = utils.Ulid()
-	user_json.Password, _ = utils.HashPassword(user_json.Password)
-	user_json.CreatedAt = utils.GetCurrentTimeStamps()
+	user_json.AccessToken = utils.EncodeToken(user_json.AccessToken)
+	user_json.TokenExpire = utils.GetExpireTimeStamps()
 	user := json.UserJsonToEntity(user_json)
 	if err := uh.uu.CreateUser(user); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -73,18 +73,6 @@ func (uh *UserHandler) UpdateUser(c *gin.Context) {
 	if err := c.BindJSON(user_json); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
-	}
-	if user_json.Password != "" {
-		user.Password, _ = utils.HashPassword(user_json.Password)
-	}
-	if user_json.Name != "" {
-		user.Name = user_json.Name
-	}
-	if user_json.Email != "" {
-		user.Email = user_json.Email
-	}
-	if user_json.GithubUrl != "" {
-		user.GithubUrl = user_json.GithubUrl
 	}
 	if err := uh.uu.UpdateUser(user); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -110,14 +98,9 @@ func (uh *UserHandler) LoginUser(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	user, err := uh.uu.GetByEmail(user_json.Email)
+	user, err := uh.uu.GetByGithubId(user_json.GithubID)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-	err = utils.ComparePassword(user.Password, user_json.Password)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "password is wrong"})
 		return
 	}
 	c.JSON(http.StatusOK, user)

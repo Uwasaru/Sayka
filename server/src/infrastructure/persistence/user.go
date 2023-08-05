@@ -23,17 +23,17 @@ func NewUserRepository(db *sql.DB) *UserRepository {
 // GetByIDはIDを指定してユーザーを取得します
 func (ur *UserRepository) GetByID(id string) (*entity.User, error) {
 	user := &entity.User{}
-	err := ur.db.QueryRow("SELECT * FROM users WHERE id = ?", id).Scan(&user.ID, &user.Name, &user.Email, &user.Password, &user.GithubUrl, &user.CreatedAt)
+	err := ur.db.QueryRow("SELECT * FROM users WHERE id = ?", id).Scan(&user.ID, &user.GithubID, &user.GithubIcon, &user.AccessToken, &user.RefleshToken, &user.TokenExpire, &user.CreatedAt)
 	if err != nil {
 		return nil, err
 	}
 	return user, nil
 }
 
-// GetByEmailはEmailを指定してユーザーを取得します
-func (ur *UserRepository) GetByEmail(email string) (*entity.User, error) {
+// GetByGithubIdはEUserIdを指定してユーザーを取得します
+func (ur *UserRepository) GetByGithubId(userId string) (*entity.User, error) {
 	user := &entity.User{}
-	err := ur.db.QueryRow("SELECT * FROM users WHERE email = ?", email).Scan(&user.ID, &user.Name, &user.Email, &user.Password, &user.GithubUrl, &user.CreatedAt)
+	err := ur.db.QueryRow("SELECT * FROM users WHERE user_id = ?", userId).Scan(&user.ID, &user.GithubID, &user.GithubIcon, &user.AccessToken, &user.RefleshToken, &user.TokenExpire, &user.CreatedAt)
 	if err != nil {
 		return nil, err
 	}
@@ -42,7 +42,7 @@ func (ur *UserRepository) GetByEmail(email string) (*entity.User, error) {
 
 // CreateUserはユーザーを作成します
 func (ur *UserRepository) CreateUser(user *entity.User) error {
-	_, err := ur.db.Exec("INSERT INTO users (id, name, email, password, github_url, created_at) VALUES (?, ?, ?, ?, ?, ?)", user.ID, user.Name, user.Email, user.Password, user.GithubUrl, user.CreatedAt)
+	_, err := ur.db.Exec("INSERT INTO users (id, github_id, github_icon, access_token, reflesh_token, token_expire) VALUES (?, ?, ?, ?, ?, ?)", user.ID, user.GithubID, user.GithubIcon, user.AccessToken, user.RefleshToken, user.TokenExpire)
 	if err != nil {
 		return err
 	}
@@ -51,7 +51,7 @@ func (ur *UserRepository) CreateUser(user *entity.User) error {
 
 // UpdateUserはユーザーを更新します
 func (ur *UserRepository) UpdateUser(user *entity.User) error {
-	_, err := ur.db.Exec("UPDATE users SET name = ?, email = ?, password = ?, github_url = ? WHERE id = ?", user.Name, user.Email, user.Password, user.GithubUrl, user.ID)
+	_, err := ur.db.Exec("UPDATE users SET github_id = ?, github_icon = ?, access_token = ?, reflesh_token = ?, token_expire = ? WHERE id = ?", user.GithubID, user.GithubIcon, user.AccessToken, user.RefleshToken, user.TokenExpire, user.ID)
 	if err != nil {
 		return err
 	}
