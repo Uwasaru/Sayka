@@ -1,0 +1,12 @@
+version: "3"
+
+services:
+  server:
+    container_name: sayka-server
+    restart: always
+    tty: true
+
+  database:
+    container_name: sayka-database
+    restart: always
+    tty: true
