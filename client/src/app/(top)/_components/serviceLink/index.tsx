@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export const ServiceLink = () => {
   return (
@@ -15,11 +16,11 @@ export const ServiceLink = () => {
         />
         GitHubでログイン
       </a>
-      <a
-        href="/home/timeline"
+      <Link
+        href="/timeline"
         className="flex items-center rounded-md bg-blue-700 px-4 py-3 font-bold text-white hover:opacity-90">
         ログインせずに利用する
-      </a>
+      </Link>
     </div>
   );
 };

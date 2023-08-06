@@ -2,7 +2,7 @@
   "extends": ["next/core-web-vitals", "plugin:tailwindcss/recommended"],
   "rules": {
     "import/order": [
-      "error",
+      "warn",
       {
         "groups": ["builtin", "external", "parent", "sibling", "index", "object", "type"],
         "pathGroups": [
