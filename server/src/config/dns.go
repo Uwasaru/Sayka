@@ -22,11 +22,11 @@ func DSN() (string, error) {
 	}
 
 	if os.Getenv("ENVIRONMENT") == "dev" {
-		dbUser := os.Getenv("DB_USER")
-		dbPassword := os.Getenv("DB_PASSWORD")
-		dbHost := os.Getenv("DB_HOST")
-		dbPort := os.Getenv("DB_PORT")
-		dbDatabase := os.Getenv("DB_DATABASE")
+		dbUser := os.Getenv("MYSQL_USERNAME")
+		dbPassword := os.Getenv("MYSQL_PASSWORD")
+		dbHost := os.Getenv("MYSQL_HOST")
+		dbPort := os.Getenv("MYSQL_PORT")
+		dbDatabase := os.Getenv("MYSQL_DATABASE")
 
 		if dbUser == "" || dbPassword == "" || dbHost == "" || dbPort == "" || dbDatabase == "" {
 			return "", fmt.Errorf("ERROR : required environment variable not found")
