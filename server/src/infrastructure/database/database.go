@@ -6,11 +6,16 @@ import (
 	"log"
 
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/jmoiron/sqlx"
 
 	"github.com/Uwasaru/Sayka/config"
 )
 
-func NewDB() (*sql.DB, error) {
+type Conn struct {
+	DB *sqlx.DB
+}
+
+func NewConn() (*Conn, error) {
 	dbDSN, err := config.DSN()
 	if err != nil {
 		return nil, err
