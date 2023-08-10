@@ -1,22 +1,22 @@
 package persistence
 
 import (
-	"database/sql"
 	"github.com/Uwasaru/Sayka/domain/entity"
 	"github.com/Uwasaru/Sayka/domain/repository"
+	"github.com/Uwasaru/Sayka/infrastructure/database"
 )
 
 var _ repository.PostRepository = &PostRepository{}
 
 // PostRepositoryは投稿に関する永続化を担当します
 type PostRepository struct {
-	db *sql.DB
+	conn *database.Conn
 }
 
 // NewPostRepositoryは新しいPostRepositoryを初期化し構造体のポインタを返します
-func NewPostRepository(db *sql.DB) *PostRepository {
+func NewPostRepository(conn *database.Conn) *PostRepository {
 	return &PostRepository{
-		db: db,
+		conn: conn,
 	}
 }
 

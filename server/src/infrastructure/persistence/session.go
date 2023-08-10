@@ -1,22 +1,22 @@
 package persistence
 
 import (
-	"database/sql"
 	"github.com/Uwasaru/Sayka/domain/entity"
 	"github.com/Uwasaru/Sayka/domain/repository"
+	"github.com/Uwasaru/Sayka/infrastructure/database"
 )
 
 var _ repository.SessionRepository = &SessionRepository{}
 
 // SessionRepositoryはセッションに関する永続化を担当します
 type SessionRepository struct {
-	db *sql.DB
+	conn *database.Conn
 }
 
 // NewSessionRepositoryは新しいSessionRepositoryを初期化し構造体のポインタを返します
-func NewSessionRepository(db *sql.DB) *SessionRepository {
+func NewSessionRepository(conn *database.Conn) *SessionRepository {
 	return &SessionRepository{
-		db: db,
+		conn: conn,
 	}
 }
 

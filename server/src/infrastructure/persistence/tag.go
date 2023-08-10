@@ -1,22 +1,22 @@
 package persistence
 
 import (
-	"database/sql"
 	"github.com/Uwasaru/Sayka/domain/entity"
 	"github.com/Uwasaru/Sayka/domain/repository"
+	"github.com/Uwasaru/Sayka/infrastructure/database"
 )
 
 var _ repository.TagRepository = &TagRepository{}
 
 // TagRepositoryはTagRepositoryの実装です
 type TagRepository struct {
-	db *sql.DB
+	conn *database.Conn
 }
 
 // NewTagRepositoryは新しいTagRepositoryを初期化し構造体のポインタを返します
-func NewTagRepository(db *sql.DB) *TagRepository {
+func NewTagRepository(conn *database.Conn) *TagRepository {
 	return &TagRepository{
-		db: db,
+		conn: conn,
 	}
 }
 

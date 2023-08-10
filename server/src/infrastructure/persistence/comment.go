@@ -1,20 +1,20 @@
 package persistence
 
 import (
-	"database/sql"
 	"github.com/Uwasaru/Sayka/domain/entity"
 	"github.com/Uwasaru/Sayka/domain/repository"
+	"github.com/Uwasaru/Sayka/infrastructure/database"
 )
 
 var _ repository.CommentRepository = &CommentRepository{}
 
 type CommentRepository struct {
-	db *sql.DB
+	conn *database.Conn
 }
 
-func NewCommentRepository(db *sql.DB) *CommentRepository {
+func NewCommentRepository(conn *database.Conn) *CommentRepository {
 	return &CommentRepository{
-		db: db,
+		conn: conn,
 	}
 }
 

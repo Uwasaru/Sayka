@@ -1,15 +1,14 @@
 package router
 
 import (
-	"database/sql"
-
+	"github.com/Uwasaru/Sayka/infrastructure/database"
 	"github.com/Uwasaru/Sayka/infrastructure/persistence"
 	"github.com/Uwasaru/Sayka/presentation/handler"
 	"github.com/Uwasaru/Sayka/usecase"
 )
 
-func (r *Router) InitSessionRouter(db *sql.DB) {
-	sr := persistence.NewSessionRepository(db)
+func (r *Router) InitSessionRouter(conn *database.Conn) {
+	sr := persistence.NewSessionRepository(conn)
 	su := usecase.NewSessionUsecase(sr)
 	sh := handler.NewSessionHandler(su)
 

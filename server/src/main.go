@@ -6,17 +6,17 @@ import (
 )
 
 func main() {
-	db, err := database.NewDB()
+	conn, err := database.NewConn()
 	if err != nil {
 		panic(err)
 	}
-	defer db.Close()
+
 	r := router.NewRouter()
-	r.InitUserRouter(db)
-	r.InitPostRouter(db)
-	r.InitFavoriteRouter(db)
-	r.InitCommentRouter(db)
-	r.InitTagRouter(db)
-	r.InitSessionRouter(db)
+	r.InitUserRouter(conn)
+	r.InitPostRouter(conn)
+	r.InitFavoriteRouter(conn)
+	r.InitCommentRouter(conn)
+	r.InitTagRouter(conn)
+	r.InitSessionRouter(conn)
 	r.Serve()
 }

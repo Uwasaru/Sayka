@@ -1,15 +1,14 @@
 package router
 
 import (
-	"database/sql"
-
+	"github.com/Uwasaru/Sayka/infrastructure/database"
 	"github.com/Uwasaru/Sayka/infrastructure/persistence"
 	"github.com/Uwasaru/Sayka/presentation/handler"
 	"github.com/Uwasaru/Sayka/usecase"
 )
 
-func (r *Router) InitFavoriteRouter(db *sql.DB) {
-	fr := persistence.NewFavoriteRepository(db)
+func (r Router) InitFavoriteRouter(conn *database.Conn) {
+	fr := persistence.NewFavoriteRepository(conn)
 	fu := usecase.NewFavoriteUsecase(fr)
 	fh := handler.NewFavoriteHandler(fu)
 
