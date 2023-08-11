@@ -19,10 +19,6 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <link
-        rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
-      />
       <body style={{ fontFamily: `${murecho}` }}>
         <Providers>{children}</Providers>
       </body>
