@@ -46,7 +46,7 @@ export const InputBlock: FC<TProps> = ({
         </span>
         {subText && <div className="text-xs text-gray-400">{subText}</div>}
       </label>
-      <div className="text-xs text-red-600 my-2">
+      <div className="my-2 text-xs text-red-600">
         <ErrorMessage
           errors={errors}
           name={name}
@@ -55,7 +55,7 @@ export const InputBlock: FC<TProps> = ({
       </div>
       {feature === "textarea" ? (
         <textarea
-          className={`${colorStyle} ${"border rounded px-3 py-2 text-sm mr-4 w-full"}`}
+          className={`${colorStyle} ${"mr-4 w-full rounded border px-3 py-2 text-sm"}`}
           id={name}
           {...register(name, options)}
           placeholder={placeholder}
@@ -63,7 +63,7 @@ export const InputBlock: FC<TProps> = ({
         />
       ) : (
         <input
-          className={`${colorStyle} ${"border rounded px-3 py-2 text-sm mr-4 w-full"}`}
+          className={`${colorStyle} ${"mr-4 w-full rounded border px-3 py-2 text-sm"}`}
           id={name}
           type={type}
           {...register(name, options)}

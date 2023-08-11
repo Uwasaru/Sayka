@@ -4,11 +4,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { FC } from "react";
-
-import { SaykaMockData } from "./SaykaList";
-
 import { GrClose } from "react-icons/gr";
 import { VscSend } from "react-icons/vsc";
+
+import { SaykaMockData } from "./SaykaList";
 
 type TProps = {
   id: number;
@@ -80,7 +79,7 @@ export const CommentModal: FC<TProps> = ({ id }) => {
             <GrClose
               size={33}
               onClick={handleClose}
-              className="hover:bg-teal-400 rounded-full p-2"
+              className="rounded-full p-2 hover:bg-teal-400"
             />
           </div>
           <div className="space-y-5">
@@ -108,11 +107,11 @@ export const CommentModal: FC<TProps> = ({ id }) => {
         </div>
         <div className="border-2 border-teal-400" />
         {/* comment */}
-        <div className="flex flex-col flex-grow overflow-y-scroll">
+        <div className="flex grow flex-col overflow-y-scroll">
           {comments.map((comment) => (
             <div
               key={comment.id}
-              className="flex flex-col px-8 py-4 border-t-gray-300 gap-2 border-t-2">
+              className="flex flex-col gap-2 border-t-2 border-t-gray-300 px-8 py-4">
               <div className="flex items-center space-x-3">
                 <Image
                   src={comment.user.icon}
@@ -136,9 +135,9 @@ export const CommentModal: FC<TProps> = ({ id }) => {
             </div>
           ))}
         </div>
-        <div className="flex px-5 items-center gap-5">
+        <div className="flex items-center gap-5 px-5">
           <textarea
-            className="w-full px-5 py-2 border mb-3 rounded-full"
+            className="mb-3 w-full rounded-full border px-5 py-2"
             placeholder="Write your comment here..."></textarea>
           <button className="rounded-lg">
             <VscSend size={30} fill="#2DD4BF" />
