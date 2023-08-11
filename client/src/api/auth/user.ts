@@ -1,4 +1,5 @@
 import { getEnv } from "@/utils/env";
+
 import { apiClient } from "../core";
 
 import { AuthUserResponse } from "./types";

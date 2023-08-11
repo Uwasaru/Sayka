@@ -1,11 +1,16 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { getEnv } from "@/utils/env";
+
+const { serverURL, clientURL } = getEnv();
 export const ServiceLink = () => {
+  const authUrl = `${serverURL}/auth/login?redirect_url=${clientURL}/timeline`;
+  console.log("authUrl", authUrl);
   return (
     <div className="space-y-10">
       <a
-        href="/"
+        href={authUrl}
         className="flex items-center rounded-md bg-white px-4 py-3 font-bold text-stone-900 hover:opacity-90">
         <Image
           src="/github-logo.svg"
