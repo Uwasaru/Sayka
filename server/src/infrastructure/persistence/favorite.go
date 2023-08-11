@@ -1,23 +1,23 @@
 package persistence
 
 import (
-	"database/sql"
 	"github.com/Uwasaru/Sayka/domain/entity"
 	"github.com/Uwasaru/Sayka/domain/repository"
+	"github.com/Uwasaru/Sayka/infrastructure/database"
 )
 
 var _ repository.FavoriteRepository = &FavoriteRepository{}
 
 // FavoriteRepositoryはFavoriteRepositoryの実装です
 type FavoriteRepository struct {
-	db *sql.DB
+	conn *database.Conn
 }
 
 // NewFavoriteRepositoryは新しいFavoriteRepositoryを初期化し構造体のポインタを返します
 
-func NewFavoriteRepository(db *sql.DB) *FavoriteRepository {
+func NewFavoriteRepository(conn *database.Conn) *FavoriteRepository {
 	return &FavoriteRepository{
-		db: db,
+		conn: conn,
 	}
 }
 

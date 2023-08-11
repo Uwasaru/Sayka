@@ -1,15 +1,14 @@
 package router
 
 import (
-	"database/sql"
-
+	"github.com/Uwasaru/Sayka/infrastructure/database"
 	"github.com/Uwasaru/Sayka/infrastructure/persistence"
 	"github.com/Uwasaru/Sayka/presentation/handler"
 	"github.com/Uwasaru/Sayka/usecase"
 )
 
-func (r *Router) InitCommentRouter(db *sql.DB) {
-	cr := persistence.NewCommentRepository(db)
+func (r Router) InitCommentRouter(conn *database.Conn) {
+	cr := persistence.NewCommentRepository(conn)
 	cu := usecase.NewCommentUsecase(cr)
 	ch := handler.NewCommentHandler(cu)
 

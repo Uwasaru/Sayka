@@ -1,15 +1,14 @@
 package router
 
 import (
-	"database/sql"
-
+	"github.com/Uwasaru/Sayka/infrastructure/database"
 	"github.com/Uwasaru/Sayka/infrastructure/persistence"
 	"github.com/Uwasaru/Sayka/presentation/handler"
 	"github.com/Uwasaru/Sayka/usecase"
 )
 
-func (r *Router) InitPostRouter(db *sql.DB) {
-	pr := persistence.NewPostRepository(db)
+func (r Router) InitPostRouter(conn *database.Conn) {
+	pr := persistence.NewPostRepository(conn)
 	pu := usecase.NewPostUsecase(pr)
 	ph := handler.NewPostHandler(pu)
 
