@@ -5,108 +5,78 @@ import (
 
 	"github.com/Uwasaru/Sayka/presentation/json"
 	"github.com/Uwasaru/Sayka/usecase"
-	"github.com/Uwasaru/Sayka/utils"
 	"github.com/gin-gonic/gin"
 )
 
-// Handlerはハンドラーを表します
 type UserHandler struct {
-	uu usecase.IUserUsecase
+	uc usecase.IUserUsecase
 }
 
-// NewUserHandlerは新しいUserHandlerを初期化し構造体のポインタを返します
-func NewUserHandler(uu usecase.IUserUsecase) *UserHandler {
+func NewUserHandler(uc usecase.IUserUsecase) *UserHandler {
 	return &UserHandler{
-		uu: uu,
+		uc: uc,
 	}
 }
 
-// GetByIDはIDを指定してユーザーを取得します
-func (uh *UserHandler) GetByID(c *gin.Context) {
-	id := c.Param("id")
-	user, err := uh.uu.GetByID(id)
+func (u *UserHandler) CreateUser(ctx *gin.Context) {
+	var uj json.UserJson
+	if err := ctx.BindJSON(&uj); err != nil {
+		ctx.JSON(
+			http.StatusBadRequest,
+			gin.H{"error": err.Error()},
+		)
+		return
+	}
+
+	user, err := u.uc.CreateUser(ctx, json.UserJsonToEntity(&uj))
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		ctx.JSON(
+			http.StatusBadRequest,
+			gin.H{"error": err.Error()},
+		)
 		return
 	}
-	c.JSON(http.StatusOK, user)
+
+	userjson := json.UserEntityToJson(user)
+	ctx.JSON(
+		http.StatusOK,
+		gin.H{"data": userjson},
+	)
 }
 
-// GetByGithubIdはgithubIdを指定してユーザーを取得します
-func (uh *UserHandler) GetByGithubId(c *gin.Context) {
-	githubId := c.Param("githubId")
-	user, err := uh.uu.GetByGithubId(githubId)
+func (u *UserHandler) DeleteUser(ctx *gin.Context) {
+	id := ctx.Param("id")
+
+	err := u.uc.DeleteUser(ctx, id)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		ctx.JSON(
+			http.StatusBadRequest,
+			gin.H{"error": err.Error()},
+		)
 		return
 	}
-	c.JSON(http.StatusOK, user)
+
+	ctx.JSON(
+		http.StatusOK,
+		gin.H{"data": "success"},
+	)
 }
 
-// CreateUserはユーザーを作成します
-func (uh *UserHandler) CreateUser(c *gin.Context) {
-	user_json := &json.UserJson{}
-	if err := c.BindJSON(user_json); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-	user_json.ID = utils.Ulid()
-	user_json.AccessToken = utils.EncodeToken(user_json.AccessToken)
-	user_json.TokenExpire = utils.GetExpireTimeStamps()
-	user := json.UserJsonToEntity(user_json)
-	if err := uh.uu.CreateUser(user); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-	c.JSON(http.StatusOK, user)
-}
+func (u *UserHandler) GetUser(ctx *gin.Context) {
+	id := ctx.Param("id")
 
-// UpdateUserはユーザーを更新します
-func (uh *UserHandler) UpdateUser(c *gin.Context) {
-	id := c.Param("id")
-	user, err := uh.uu.GetByID(id)
+	user, err := u.uc.GetUser(ctx, id)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		ctx.JSON(
+			http.StatusBadRequest,
+			gin.H{"error": err.Error()},
+		)
 		return
 	}
-	user_json := &json.UserJson{}
-	if err := c.BindJSON(user_json); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-	user_json.ID = user.ID
-	user_json.CreatedAt = user.CreatedAt
-	user_json.TokenExpire = user.TokenExpire
-	user_json.AccessToken = utils.EncodeToken(user_json.AccessToken)
-	user = json.UserJsonToEntity(user_json)
-	if err := uh.uu.UpdateUser(user); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-	c.JSON(http.StatusOK, user)
-}
 
-// DeleteUserはユーザーを削除します
-func (uh *UserHandler) DeleteUser(c *gin.Context) {
-	id := c.Param("id")
-	if err := uh.uu.DeleteUser(id); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-	c.JSON(http.StatusOK, gin.H{})
-}
-
-// LoginUserはユーザーをログインします
-func (uh *UserHandler) LoginUser(c *gin.Context) {
-	user_json := &json.UserJson{}
-	if err := c.BindJSON(user_json); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-	user, err := uh.uu.GetByGithubId(user_json.GithubID)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-	c.JSON(http.StatusOK, user)
+	userjson := json.UserEntityToJson(user)
+	ctx.JSON(
+		http.StatusOK,
+		gin.H{"data": userjson},
+	)
 }

@@ -8,15 +8,19 @@ import (
 )
 
 func (r Router) InitUserRouter(conn *database.Conn) {
-	ur := persistence.NewUserRepository(conn)
-	uu := usecase.NewUserUsecase(ur)
-	uh := handler.NewUserHandler(uu)
+	// repoauth := persistence.NewAuthRepository(conn)
+	// repodiscord := github.NewClient(os.Getenv("DISCORD_CALLBACK_API"))
+	repouser := persistence.NewUserRepository(conn)
 
+	uc := usecase.NewUserUsecase(repouser)
+	// ac := usecase.NewAuthUsecase(repoauth, repodiscord, repouser)
+
+	// m := auth_middleware.NewAuth(ac)
+	h := handler.NewUserHandler(uc)
+
+	//認証middleware
 	g := r.Engine.Group("/user")
-	g.GET("/:id", uh.GetByID)
-	g.GET("/github_id/:githubId", uh.GetByGithubId)
-	g.POST("/", uh.CreateUser)
-	g.POST("/login", uh.LoginUser)
-	g.PUT("/:id", uh.UpdateUser)
-	g.DELETE("/:id", uh.DeleteUser)
+	g.POST("/", h.CreateUser)
+	g.GET("/:id", h.GetUser)
+	g.DELETE("/:id", h.DeleteUser)
 }
