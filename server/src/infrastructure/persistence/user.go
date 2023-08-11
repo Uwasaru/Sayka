@@ -1,68 +1,64 @@
 package persistence
 
 import (
+	"context"
+
 	"github.com/Uwasaru/Sayka/domain/entity"
 	"github.com/Uwasaru/Sayka/domain/repository"
 	"github.com/Uwasaru/Sayka/infrastructure/database"
+	d "github.com/Uwasaru/Sayka/infrastructure/persistence/dto"
 )
 
 var _ repository.UserRepository = &UserRepository{}
 
-// UserRepositoryはユーザーに関する永続化を担当します
 type UserRepository struct {
 	conn *database.Conn
 }
 
-// NewUserRepositoryは新しいUserRepositoryを初期化し構造体のポインタを返します
-func NewUserRepository(conn *database.Conn) *UserRepository {
+func NewUserRepository(conn *database.Conn) repository.UserRepository {
 	return &UserRepository{
 		conn: conn,
 	}
 }
 
-// GetByIDはIDを指定してユーザーを取得します
-func (ur *UserRepository) GetByID(id string) (*entity.User, error) {
-	user := &entity.User{}
-	err := ur.db.QueryRow("SELECT * FROM users WHERE id = ?", id).Scan(&user.ID, &user.GithubID, &user.GithubIcon, &user.AccessToken, &user.RefleshToken, &user.TokenExpire, &user.CreatedAt)
+func (ur *UserRepository) CreateUser(ctx context.Context, user *entity.User) (*entity.User, error) {
+	query := `
+	INSERT INTO users (id, name,img)
+	VALUES (:id,:name,:img)
+	`
+	dto := d.UserEntityToDto(user)
+
+	_, err := ur.conn.DB.NamedExecContext(ctx, query, &dto)
 	if err != nil {
 		return nil, err
 	}
-	return user, nil
+	return d.UserDtoToEntity(&dto), nil
 }
 
-// GetByGithubIdはEGithubIDを指定してユーザーを取得します
-func (ur *UserRepository) GetByGithubId(GithubID string) (*entity.User, error) {
-	user := &entity.User{}
-	err := ur.db.QueryRow("SELECT * FROM users WHERE github_id = ?", GithubID).Scan(&user.ID, &user.GithubID, &user.GithubIcon, &user.AccessToken, &user.RefleshToken, &user.TokenExpire, &user.CreatedAt)
+func (ur *UserRepository) DeleteUser(ctx context.Context, id string) error {
+	query := `
+	DELETE FROM users
+	WHERE id = :id
+	`
+
+	_, err := ur.conn.DB.NamedExecContext(ctx, query, map[string]interface{}{"id": id})
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (ur *UserRepository) GetUser(ctx context.Context, id string) (*entity.User, error) {
+	query := `
+	SELECT *
+	FROM users
+	WHERE id = ?
+	`
+	var dto d.UserDto
+	err := ur.conn.DB.GetContext(ctx, &dto, query, id)
 	if err != nil {
 		return nil, err
 	}
-	return user, nil
-}
-
-// CreateUserはユーザーを作成します
-func (ur *UserRepository) CreateUser(user *entity.User) error {
-	_, err := ur.db.Exec("INSERT INTO users (id, github_id, github_icon, access_token, reflesh_token, token_expire) VALUES (?, ?, ?, ?, ?, ?)", user.ID, user.GithubID, user.GithubIcon, user.AccessToken, user.RefleshToken, user.TokenExpire)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-// UpdateUserはユーザーを更新します
-func (ur *UserRepository) UpdateUser(user *entity.User) error {
-	_, err := ur.db.Exec("UPDATE users SET github_id = ?, github_icon = ?, access_token = ?, reflesh_token = ?, token_expire = ? WHERE id = ?", user.GithubID, user.GithubIcon, user.AccessToken, user.RefleshToken, user.TokenExpire, user.ID)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-// DeleteUserはユーザーを削除します
-func (ur *UserRepository) DeleteUser(id string) error {
-	_, err := ur.db.Exec("DELETE FROM users WHERE id = ?", id)
-	if err != nil {
-		return err
-	}
-	return nil
+	return d.UserDtoToEntity(&dto), nil
 }

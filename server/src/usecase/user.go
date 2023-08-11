@@ -1,6 +1,10 @@
 package usecase
 
 import (
+	"context"
+	"database/sql"
+	"fmt"
+
 	"github.com/Uwasaru/Sayka/domain/entity"
 	"github.com/Uwasaru/Sayka/domain/repository"
 )
@@ -8,51 +12,49 @@ import (
 var _ IUserUsecase = &UserUsecase{}
 
 type UserUsecase struct {
-	userRepository repository.UserRepository
+	repo repository.UserRepository
 }
 
-// UserUsecaseはユーザーに関するユースケースを担当します
 type IUserUsecase interface {
-	// GetByIDはIDを指定してユーザーを取得します
-	GetByID(id string) (*entity.User, error)
-	// GetByGithubIdはGithubIdを指定してユーザーを取得します
-	GetByGithubId(GithubId string) (*entity.User, error)
-	// CreateUserはユーザーを作成します
-	CreateUser(user *entity.User) error
-	// UpdateUserはユーザーを更新します
-	UpdateUser(user *entity.User) error
-	// DeleteUserはユーザーを削除します
-	DeleteUser(id string) error
+	CreateUser(ctx context.Context, user *entity.User) (*entity.User, error)
+	DeleteUser(ctx context.Context, id string) error
+	GetUser(ctx context.Context, id string) (*entity.User, error)
 }
 
-// NewUserUsecaseは新しいUserUsecaseを初期化し構造体のポインタを返します
-func NewUserUsecase(ur repository.UserRepository) IUserUsecase {
+func NewUserUsecase(repo repository.UserRepository) IUserUsecase {
 	return &UserUsecase{
-		userRepository: ur,
+		repo: repo,
 	}
 }
 
-// GetByIDはIDを指定してユーザーを取得します
-func (uu *UserUsecase) GetByID(id string) (*entity.User, error) {
-	return uu.userRepository.GetByID(id)
+func (uu *UserUsecase) CreateUser(ctx context.Context, user *entity.User) (*entity.User, error) {
+	if user.Name == "" {
+		return nil, fmt.Errorf("user name empty")
+	}
+	if user.Img == "" {
+		return nil, fmt.Errorf("img name empty")
+	}
+
+	resuser, err := uu.repo.CreateUser(ctx, user)
+	return resuser, err
 }
 
-// GetByGithubIdはGithubIdを指定してユーザーを取得します
-func (uu *UserUsecase) GetByGithubId(GithubId string) (*entity.User, error) {
-	return uu.userRepository.GetByGithubId(GithubId)
+func (uu *UserUsecase) DeleteUser(ctx context.Context, id string) error {
+	if id == "" {
+		return fmt.Errorf("id empty")
+	}
+	_, err := uu.GetUser(ctx, id)
+	if err == sql.ErrNoRows {
+		return fmt.Errorf("The user with this id does not exist")
+	}
+	err = uu.repo.DeleteUser(ctx, id)
+	return err
 }
 
-// CreateUserはユーザーを作成します
-func (uu *UserUsecase) CreateUser(user *entity.User) error {
-	return uu.userRepository.CreateUser(user)
-}
-
-// UpdateUserはユーザーを更新します
-func (uu *UserUsecase) UpdateUser(user *entity.User) error {
-	return uu.userRepository.UpdateUser(user)
-}
-
-// DeleteUserはユーザーを削除します
-func (uu *UserUsecase) DeleteUser(id string) error {
-	return uu.userRepository.DeleteUser(id)
+func (uu *UserUsecase) GetUser(ctx context.Context, id string) (*entity.User, error) {
+	if id == "" {
+		return nil, fmt.Errorf("id empty")
+	}
+	resuser, err := uu.repo.GetUser(ctx, id)
+	return resuser, err
 }
