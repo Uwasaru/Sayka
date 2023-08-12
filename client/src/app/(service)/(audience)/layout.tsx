@@ -1,9 +1,9 @@
-import { HomeNavigation } from "./_components/HomeNavigation";
+import { AudienceNavigation } from "./_components/AudienceNavigation";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div>
-      <HomeNavigation />
+      <AudienceNavigation />
       {children}
     </div>
   );

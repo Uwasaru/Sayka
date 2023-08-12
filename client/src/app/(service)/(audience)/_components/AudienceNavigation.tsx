@@ -8,7 +8,7 @@ const NAV_LINKS = [
   { name: "ホーム", href: "/" },
   { name: "タイムライン", href: "/timeline" },
 ];
-export const HomeNavigation = () => {
+export const AudienceNavigation = () => {
   const pathname = usePathname();
 
   return (

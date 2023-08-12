@@ -1,0 +1,46 @@
+import Image from "next/image";
+import React, { FC } from "react";
+import { AiFillGithub } from "react-icons/ai";
+
+type TProps = {
+  user: {
+    id: number;
+    name: string;
+    icon: string;
+    like_count: number;
+    sayka_count: number;
+  };
+};
+export const Profile: FC<TProps> = ({ user }) => {
+  return (
+    <div className="p-4 border border-gray-800 mr-10 rounded-lg">
+      <div className="flex justify-center flex-col items-center p-5 space-y-5">
+        <Image
+          src={user.icon}
+          alt="user icon"
+          width={100}
+          height={100}
+          className="rounded-full"
+        />
+        <div className="text-lg font-semibold">@{user.name}</div>
+        <div>B3 / Student / Software Engineer</div>
+        <div className="flex items-center justify-center">
+          <a href={`https://github.com/${user.name}`}>
+            <AiFillGithub size={27} />
+          </a>
+        </div>
+        <div>
+          <div className="border-b px-5 mb-5">
+            {user.like_count} contributions
+          </div>
+          <div className="flex items-center justify-center">
+            <div className="flex flex-col items-center text-sm">
+              <div>{user.sayka_count}</div>
+              <div>投稿数</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};

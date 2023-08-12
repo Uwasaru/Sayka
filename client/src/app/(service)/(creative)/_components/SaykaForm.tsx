@@ -80,12 +80,14 @@ export const SaykaForm: React.FC = () => {
             isRequired
             name="title"
             placeholder="成果物共有アプリケーション『Sayka』"
+            hasCharCount
           />
           <InputBlock
             text="成果物の内容"
             subText="100字以内で入力してください。"
             isRequired
             name="description"
+            hasCharCount
             feature="textarea"
           />
           <ContentSubTitle text="タグ" />

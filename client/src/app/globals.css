@@ -25,3 +25,12 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+blockquote {
+  border-left: 4px solid #ddd;
+  margin-left: 0;
+  margin-right: 0;
+  padding-left: 1rem;
+  color: #666;
+  font-style: italic;
+}

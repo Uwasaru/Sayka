@@ -1,9 +1,8 @@
 "use client";
 
 import { ErrorMessage } from "@hookform/error-message";
-import { FC } from "react";
+import { FC, useState } from "react";
 import { useFormContext, RegisterOptions } from "react-hook-form";
-import { AiFillGithub } from "react-icons/ai";
 
 type TProps = {
   text: string;
@@ -16,7 +15,10 @@ type TProps = {
   defaultValue?: string | number;
   icon?: React.ReactNode;
   feature?: "input" | "textarea";
-  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  hasCharCount?: boolean;
+  onChange?: (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => void;
 };
 
 export const InputBlock: FC<TProps> = ({
@@ -30,6 +32,7 @@ export const InputBlock: FC<TProps> = ({
   defaultValue,
   icon,
   feature = "input",
+  hasCharCount = false,
   onChange,
 }) => {
   const {
@@ -40,6 +43,21 @@ export const InputBlock: FC<TProps> = ({
   const colorStyle = errors[name]
     ? "bg-red-100 focus:outline-red-200"
     : "border-gray-600 focus:bg-indigo-100 focus:outline-indigo-200";
+
+  const [charCount, setCharCount] = useState(0);
+
+  const handleCharCountChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const charNum = event.target.value.length;
+    setCharCount(charNum);
+  };
+  const handleChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    handleCharCountChange(event);
+    onChange && onChange(event);
+  };
 
   return (
     <div className="mb-5">
@@ -77,6 +95,7 @@ export const InputBlock: FC<TProps> = ({
           {...register(name, options)}
           placeholder={placeholder}
           defaultValue={defaultValue}
+          onChange={handleChange}
         />
       ) : (
         <input
@@ -86,8 +105,13 @@ export const InputBlock: FC<TProps> = ({
           {...register(name, options)}
           placeholder={placeholder}
           defaultValue={defaultValue}
-          onChange={onChange}
+          onChange={handleChange}
         />
+      )}
+      {hasCharCount && (
+        <div className="text-xs text-gray-400 mt-2 flex justify-end">
+          {charCount} 文字
+        </div>
       )}
     </div>
   );

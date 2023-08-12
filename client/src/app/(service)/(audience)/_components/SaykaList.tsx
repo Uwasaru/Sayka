@@ -31,8 +31,10 @@ export const SaykaMockData: TSayka[] = [
   },
   {
     id: 2,
-    title: "Sayka 2",
-    description: "Sayka 2 description",
+    title:
+      "最強のアプリ-最強のアプリ-最強のアプリ-最強のアプリ-最強のアプリ-最強のアプリ-最強のアプリ-",
+    description:
+      "testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest",
     like_count: 1,
     comment_count: 5,
     github_url: "https://github.com/39TO",
@@ -58,7 +60,7 @@ export const SaykaMockData: TSayka[] = [
   {
     id: 3,
     title: "Sayka 2",
-    description: "Sayka 2 description",
+    description: "console.log('Hello World')",
     like_count: 1,
     comment_count: 5,
     github_url: "https://github.com/39TO",
