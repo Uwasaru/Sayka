@@ -68,18 +68,18 @@ export const CommentModal: FC<TProps> = ({ id }) => {
   return (
     <div className="fixed inset-0 z-50 flex justify-end">
       <div
-        className="absolute inset-0 bg-black opacity-50"
+        className="absolute inset-0 bg-black opacity-50 transition-opacity duration-300 ease-in-out"
         onClick={handleClose}
       />
 
-      <div className="z-10 flex h-full w-2/5 flex-col bg-white shadow-xl">
+      <div className="z-10 flex h-full w-2/5 flex-col overflow-hidden rounded-l-xl bg-white shadow-2xl">
         {/* sayka */}
-        <div className="p-8">
+        <div className="border-b border-gray-200 p-8">
           <div className="flex justify-end">
             <GrClose
               size={33}
               onClick={handleClose}
-              className="rounded-full p-2 hover:bg-teal-400"
+              className="rounded-full p-2 transition-colors duration-300 hover:bg-teal-400"
             />
           </div>
           <div className="space-y-5">
@@ -105,13 +105,12 @@ export const CommentModal: FC<TProps> = ({ id }) => {
             </div>
           </div>
         </div>
-        <div className="border-2 border-teal-400" />
-        {/* comment */}
-        <div className="flex grow flex-col overflow-y-scroll">
+
+        <div className="grow flex-col overflow-y-scroll bg-gray-50">
           {comments.map((comment) => (
             <div
               key={comment.id}
-              className="flex flex-col gap-2 border-t-2 border-t-gray-300 px-8 py-4">
+              className="flex flex-col gap-2 border-t border-gray-300 px-8 py-4">
               <div className="flex items-center space-x-3">
                 <Image
                   src={comment.user.icon}
@@ -127,20 +126,21 @@ export const CommentModal: FC<TProps> = ({ id }) => {
                 </Link>
               </div>
               <div className="flex flex-col space-y-3">
-                <div className="">{comment.contents}</div>
-                <div className="text-sm font-semibold">
+                <div className="text-gray-700">{comment.contents}</div>
+                <div className="text-sm font-medium text-gray-500">
                   {comment.created_at}
                 </div>
               </div>
             </div>
           ))}
         </div>
-        <div className="flex items-center gap-5 px-5">
+
+        <div className="flex items-center gap-5 border-t border-gray-200 bg-white p-5">
           <textarea
-            className="mb-3 w-full rounded-full border px-5 py-2"
-            placeholder="Write your comment here..."></textarea>
-          <button className="rounded-lg">
-            <VscSend size={30} fill="#2DD4BF" />
+            className="focus:shadow-outline w-full rounded-md border px-5 py-2 transition-shadow focus:outline-none"
+            placeholder="Aa"></textarea>
+          <button className="rounded-full bg-teal-400 p-2 transition-colors duration-300 hover:bg-teal-500">
+            <VscSend size={30} fill="white" />
           </button>
         </div>
       </div>

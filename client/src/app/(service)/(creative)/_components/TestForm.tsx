@@ -3,45 +3,22 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm, SubmitHandler, FormProvider } from "react-hook-form";
-import { AiFillGithub } from "react-icons/ai";
 import { GrClose } from "react-icons/gr";
-import { TfiLayoutSlider } from "react-icons/tfi";
-import { TfiWorld } from "react-icons/tfi";
 import { z } from "zod";
 
 import { Tag } from "@/ui/Tag";
-import { ContentSubTitle, Explanation } from "@/ui/Text";
 
 import { InputBlock } from "./InputBlock";
 
 const schema = z.object({
-  title: z
-    .string()
-    .nonempty({ message: "必須項目です。" })
-    .max(20, "20字以内で入力してください。"),
-  description: z
-    .string()
-    .nonempty({ message: "必須項目です。" })
-    .max(100, "100字以内で入力してください。"),
-  github_url: z.union([
-    z.literal(""),
-    z.string().regex(/^https:\/\//, "URLを正しい形で入力してください。"),
-  ]),
-  slide_url: z.union([
-    z.literal(""),
-    z.string().regex(/^https:\/\//, "URLを正しい形で入力してください。"),
-  ]),
-  app_url: z.union([
-    z.literal(""),
-    z.string().regex(/^https:\/\//, "URLを正しい形で入力してください。"),
-  ]),
+  title: z.string().nonempty({ message: "Name is required" }),
 });
 
 type FormData = {
   title: string;
 };
 
-export const SaykaForm: React.FC = () => {
+export const TestForm: React.FC = () => {
   const [tags, setTags] = useState<string[]>([]);
   const methods = useForm<FormData>({
     resolver: zodResolver(schema),
@@ -79,17 +56,10 @@ export const SaykaForm: React.FC = () => {
             text="成果物のタイトル"
             isRequired
             name="title"
+            options={{ required: "必須項目です" }}
+            type="text"
             placeholder="成果物共有アプリケーション『Sayka』"
           />
-          <InputBlock
-            text="成果物の内容"
-            subText="100字以内で入力してください。"
-            isRequired
-            name="description"
-            feature="textarea"
-          />
-          <ContentSubTitle text="タグ" />
-          <Explanation text="成果物に関するタグを最大5つ付与することができます。" />
           <input
             id="tags"
             type="text"
@@ -115,25 +85,6 @@ export const SaykaForm: React.FC = () => {
             ))}
           </div>
 
-          <ContentSubTitle text="関連URL" />
-          <InputBlock
-            text="GitHubなどのソースコード"
-            name="github_url"
-            placeholder="https://github.com/~"
-            icon={<AiFillGithub size={18} />}
-          />
-          <InputBlock
-            text="Google SlideやCanvaなどのプレゼンテーション資料"
-            name="slide_url"
-            placeholder="https://docs.google.com/~"
-            icon={<TfiLayoutSlider size={18} />}
-          />
-          <InputBlock
-            text="作成したアプリケーションのURL"
-            name="app_url"
-            placeholder="https://sayka.vercel.app"
-            icon={<TfiWorld size={18} />}
-          />
           <div className="flex justify-center pt-5">
             <button
               type="submit"

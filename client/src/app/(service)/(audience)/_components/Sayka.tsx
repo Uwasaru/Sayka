@@ -41,7 +41,7 @@ type TSaykaHeaderProps = {
 
 export const Sayka: FC<TProps> = ({ data }) => {
   return (
-    <div className="space-y-5 rounded-md border border-gray-900 p-5 shadow-lg transform transition-transform hover:-translate-y-1 hover:shadow-xl">
+    <div className="space-y-5 rounded-md border border-gray-900 p-5 shadow-lg transition-transform hover:-translate-y-1 hover:shadow-xl">
       <SaykaHeader user={data.user} />
       <SaykaBody data={data} />
       <SaykaFooter data={data} />

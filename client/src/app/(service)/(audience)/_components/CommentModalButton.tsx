@@ -25,7 +25,7 @@ export const CommentModalButton: FC<TProps> = ({ id }) => {
     <div>
       <button
         onClick={handleClick}
-        className="transform transition-transform hover:-translate-y-1">
+        className="transition-transform hover:-translate-y-1">
         <LiaCommentAlt size={24} />
       </button>
     </div>

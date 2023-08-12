@@ -5,11 +5,16 @@ import { FC } from "react";
 type TProps = {
   label: string;
   children: React.ReactNode;
+  placement?: "top" | "right" | "bottom" | "left";
 };
 
-export const TooltipUI: FC<TProps> = ({ label, children }) => {
+export const TooltipUI: FC<TProps> = ({
+  label,
+  children,
+  placement = "top",
+}) => {
   return (
-    <Tooltip label={label} placement="top" hasArrow>
+    <Tooltip label={label} placement={placement} hasArrow>
       {children}
     </Tooltip>
   );
