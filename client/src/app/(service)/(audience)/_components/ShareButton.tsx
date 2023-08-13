@@ -1,6 +1,7 @@
 // components/ShareButton.tsx
 import { getEnv } from "@/utils/env";
 import { FC } from "react";
+import { IoMdShareAlt } from "react-icons/io";
 
 type ShareButtonProps = {
   saykaId: number;
@@ -10,10 +11,8 @@ const { clientURL } = getEnv();
 
 export const ShareButton: FC<ShareButtonProps> = ({ saykaId }) => {
   return (
-    <button
-      onClick={() => handleShare(saykaId)}
-      className="px-4 py-2 bg-blue-500 text-white rounded">
-      Share
+    <button onClick={() => handleShare(saykaId)}>
+      <IoMdShareAlt size={24} />
     </button>
   );
 };

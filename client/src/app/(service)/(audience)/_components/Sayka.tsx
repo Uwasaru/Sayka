@@ -115,9 +115,7 @@ const SaykaFooter: FC<TProps> = ({ data }) => {
           <LikeButton saykaId={data.id} />
           {data.like_count}
         </div>
-        <div>
-          <ShareButton saykaId={data.id} />
-        </div>
+        <ShareButton saykaId={data.id} />
       </div>
       <div className="flex w-[50%] items-center justify-end gap-5">
         {data.github_url && (
