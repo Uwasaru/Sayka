@@ -6,10 +6,11 @@ import { useRouter } from "next/navigation";
 import React, { FC } from "react";
 import { GrClose } from "react-icons/gr";
 import { VscSend } from "react-icons/vsc";
+import ReactMarkdown from "react-markdown";
+
+import { CodeBlock } from "@/ui/Text/components/CodeBlock";
 
 import { SaykaMockData } from "./SaykaList";
-import ReactMarkdown from "react-markdown";
-import { CodeBlock } from "@/ui/Text/components/CodeBlock";
 
 type TProps = {
   id: number;
@@ -30,7 +31,7 @@ const saykaComment = [
   {
     id: 2,
     contents:
-      " > console.log(data) \n\nこれは一人で開発されましたか？よければ一緒にやりたいです！ \n\n```console.log('Hello World')```",
+      " > console.log(data) \n\nこれは一人で開発されましたか？よければ一緒にやりたいです！ \n\n```console.log('Hello World')```ga`aa`",
     created_at: "2021-10-10",
     user: {
       id: 5,
@@ -129,9 +130,7 @@ export const CommentModal: FC<TProps> = ({ id }) => {
               </div>
               <div className="flex flex-col space-y-3">
                 <div className="text-gray-700">
-                  <ReactMarkdown
-                    className="prose lg:prose-md m-auto"
-                    components={CodeBlock}>
+                  <ReactMarkdown className="m-auto" components={CodeBlock}>
                     {comment.contents}
                   </ReactMarkdown>
                 </div>

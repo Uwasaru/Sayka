@@ -7,7 +7,7 @@ type TProps = {
 export const Explanation: FC<TProps> = ({ text }) => {
   return (
     <div className="py-2">
-      <div className="pb-3 text-gray-800 text-sm">{text}</div>
+      <div className="pb-3 text-sm text-gray-800">{text}</div>
     </div>
   );
 };

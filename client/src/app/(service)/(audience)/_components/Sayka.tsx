@@ -1,7 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
-import { FC } from "react";
+import { FC, useState } from "react";
 import { AiFillGithub } from "react-icons/ai";
+import { BsThreeDotsVertical } from "react-icons/bs";
 import { TfiLayoutSlider } from "react-icons/tfi";
 import { TfiWorld } from "react-icons/tfi";
 import { VscHeartFilled } from "react-icons/vsc";
@@ -10,6 +11,7 @@ import { TagInItem } from "@/ui/Tag";
 import { TooltipUI } from "@/ui/Tooltip";
 
 import { CommentModalButton } from "./CommentModalButton";
+import { FixModal } from "./FixModal";
 
 export type TSayka = {
   id: number;
@@ -35,47 +37,63 @@ type TProps = {
   data: TSayka;
 };
 
-type TSaykaHeaderProps = {
-  user: TSayka["user"];
+type TSaykaProps = {
+  data: TSayka;
+  changeFilterTag: (tag: string) => void;
 };
 
-export const Sayka: FC<TProps> = ({ data }) => {
+export const Sayka: FC<TSaykaProps> = ({ data, changeFilterTag }) => {
   return (
     <div className="space-y-5 rounded-md border border-gray-900 p-5 shadow-lg transition-transform hover:-translate-y-1 hover:shadow-xl">
-      <SaykaHeader user={data.user} />
-      <SaykaBody data={data} />
+      <SaykaHeader data={data} />
+      <SaykaBody data={data} changeFilterTag={changeFilterTag} />
       <SaykaFooter data={data} />
     </div>
   );
 };
 
-const SaykaHeader: FC<TSaykaHeaderProps> = ({ user }) => {
+const SaykaHeader: FC<TProps> = ({ data }) => {
+  const [isModalVisible, setModalVisible] = useState(false);
+
   return (
-    <div className="flex items-center space-x-3">
-      <Image
-        src={user.icon}
-        alt="user icon"
-        width={30}
-        height={30}
-        className="rounded-full"
+    <div className="relative flex items-center justify-between">
+      <FixModal
+        isVisible={isModalVisible}
+        onClose={() => setModalVisible(false)}
+        id={data.id}
       />
-      <Link
-        href={`/mypage/${user.id}`}
-        className="border-b-teal-400 hover:border-b-2">
-        @{user.name}
-      </Link>
+      <div className="flex items-center">
+        <Image
+          src={data.user.icon}
+          alt="user icon"
+          width={30}
+          height={30}
+          className="rounded-full mr-1"
+        />
+        <Link
+          href={`/mypage/${data.user.id}`}
+          className="border-b-teal-400 hover:border-b-2">
+          @{data.user.name}
+        </Link>
+      </div>
+      <div>
+        <BsThreeDotsVertical
+          size={24}
+          onClick={() => setModalVisible(!isModalVisible)}
+        />
+      </div>
     </div>
   );
 };
 
-const SaykaBody: FC<TProps> = ({ data }) => {
+const SaykaBody: FC<TSaykaProps> = ({ data, changeFilterTag }) => {
   return (
     <div className="flex flex-col space-y-3">
       <div className="text-xl font-extrabold md:text-3xl">{data.title}</div>
       <div>{data.description}</div>
       <div className="flex space-x-2">
         {data.tags?.map((tag) => (
-          <TagInItem key={tag.id} tag={tag} />
+          <TagInItem key={tag.id} tag={tag} changeFilterTag={changeFilterTag} />
         ))}
       </div>
     </div>

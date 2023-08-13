@@ -9,17 +9,18 @@ const customCode: CodeComponent = ({ inline, className, children }) => {
   const name = match?.[2] ? match[2].slice(1) : "";
   return !inline && match ? (
     <>
-      {name && <span className=" py-1 px-2 text-xs">{name}</span>}
+      {name && <span className=" px-2 py-1 text-xs">{name}</span>}
       <SyntaxHighlighter
         style={style}
         language={lang}
         PreTag="div"
+        // eslint-disable-next-line tailwindcss/no-custom-classname
         className="md-codeblock">
         {String(children).replace(/\n$/, "")}
       </SyntaxHighlighter>
     </>
   ) : (
-    <code className="rounded-md bg-gray-700 text-white p-1 text-xs">
+    <code className="rounded-md bg-gray-700 p-1 text-xs text-white ">
       {children}
     </code>
   );

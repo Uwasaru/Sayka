@@ -1,4 +1,9 @@
+"use client";
+
+import { useState } from "react";
+
 import { Sayka, TSayka } from "./Sayka";
+import { TagFilter } from "./TagFilter";
 
 // TODO: APIから取得したデータを表示する
 export const SaykaMockData: TSayka[] = [
@@ -112,11 +117,35 @@ export const SaykaMockData: TSayka[] = [
 ];
 
 export const SaykaList = () => {
+  const [tagState, setTagState] = useState<string>("ALL");
+
+  const changeFilterTag = (tag: string) => {
+    setTagState(tag);
+  };
+
+  const handleSubmit = (tag: string) => {
+    console.log("Submitted:", tag);
+  };
+
+  const clickTag = (tag: string) => {
+    changeFilterTag(tag);
+    if (tagState !== tag) {
+      handleSubmit(tag);
+    }
+  };
+
   return (
-    <div className="space-y-5">
-      {SaykaMockData.map((sayka) => (
-        <Sayka key={sayka.id} data={sayka} />
-      ))}
+    <div>
+      <TagFilter
+        tag={tagState}
+        changeFilterTag={changeFilterTag}
+        onSubmit={handleSubmit}
+      />
+      <div className="mt-5 space-y-5">
+        {SaykaMockData.map((sayka) => (
+          <Sayka key={sayka.id} data={sayka} changeFilterTag={clickTag} />
+        ))}
+      </div>
     </div>
   );
 };

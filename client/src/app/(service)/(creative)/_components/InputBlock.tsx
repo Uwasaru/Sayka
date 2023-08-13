@@ -109,7 +109,7 @@ export const InputBlock: FC<TProps> = ({
         />
       )}
       {hasCharCount && (
-        <div className="text-xs text-gray-400 mt-2 flex justify-end">
+        <div className="mt-2 flex justify-end text-xs text-gray-400">
           {charCount} 文字
         </div>
       )}

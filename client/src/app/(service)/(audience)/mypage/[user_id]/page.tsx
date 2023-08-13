@@ -1,4 +1,5 @@
 import { SaykaList } from "../../_components/SaykaList";
+
 import { Profile } from "./_components/Profile";
 
 const Page = () => {
