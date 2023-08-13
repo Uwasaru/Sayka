@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import { FC, useState } from "react";
@@ -5,7 +7,6 @@ import { AiFillGithub } from "react-icons/ai";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { TfiLayoutSlider } from "react-icons/tfi";
 import { TfiWorld } from "react-icons/tfi";
-import { VscHeartFilled } from "react-icons/vsc";
 
 import { TagInItem } from "@/ui/Tag";
 import { TooltipUI } from "@/ui/Tooltip";
@@ -13,6 +14,7 @@ import { TooltipUI } from "@/ui/Tooltip";
 import { CommentModalButton } from "./CommentModalButton";
 import { FixModal } from "./FixModal";
 import { LikeButton } from "./LikeButton";
+import { ShareButton } from "./ShareButton";
 
 export type TSayka = {
   id: number;
@@ -40,7 +42,7 @@ type TProps = {
 
 type TSaykaProps = {
   data: TSayka;
-  changeFilterTag: (tag: string) => void;
+  changeFilterTag?: (tag: string) => void;
 };
 
 export const Sayka: FC<TSaykaProps> = ({ data, changeFilterTag }) => {
@@ -110,8 +112,11 @@ const SaykaFooter: FC<TProps> = ({ data }) => {
           {data.comment_count}
         </div>
         <div className="flex items-center gap-x-1">
-          <LikeButton sayka_id={1} />
+          <LikeButton saykaId={data.id} />
           {data.like_count}
+        </div>
+        <div>
+          <ShareButton saykaId={data.id} />
         </div>
       </div>
       <div className="flex w-[50%] items-center justify-end gap-5">

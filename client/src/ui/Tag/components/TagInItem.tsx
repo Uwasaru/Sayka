@@ -5,11 +5,12 @@ type TProps = {
     id: number;
     name: string;
   };
-  changeFilterTag: (tag: string) => void;
+  changeFilterTag?: (tag: string) => void;
 };
 
 export const TagInItem: FC<TProps> = ({ tag, changeFilterTag }) => {
   const handleClick = () => {
+    if (!changeFilterTag) return;
     changeFilterTag(tag.name);
   };
   return (

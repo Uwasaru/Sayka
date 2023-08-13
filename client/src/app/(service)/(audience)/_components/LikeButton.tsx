@@ -5,10 +5,10 @@ import { VscHeartFilled } from "react-icons/vsc";
 import { VscHeart } from "react-icons/vsc";
 
 type TProps = {
-  sayka_id: number;
+  saykaId: number;
 };
 
-export const LikeButton: FC<TProps> = ({ sayka_id }) => {
+export const LikeButton: FC<TProps> = ({ saykaId }) => {
   // const user = await (async () => {
   //   const user = await getLoggedInUser(getToken() || '')
   //   if (user.type === 'error') return undefined
