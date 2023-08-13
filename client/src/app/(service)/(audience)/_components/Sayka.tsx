@@ -12,6 +12,7 @@ import { TooltipUI } from "@/ui/Tooltip";
 
 import { CommentModalButton } from "./CommentModalButton";
 import { FixModal } from "./FixModal";
+import { LikeButton } from "./LikeButton";
 
 export type TSayka = {
   id: number;
@@ -109,7 +110,7 @@ const SaykaFooter: FC<TProps> = ({ data }) => {
           {data.comment_count}
         </div>
         <div className="flex items-center gap-x-1">
-          <VscHeartFilled size={24} color="#2DD4BF" />
+          <LikeButton sayka_id={1} />
           {data.like_count}
         </div>
       </div>

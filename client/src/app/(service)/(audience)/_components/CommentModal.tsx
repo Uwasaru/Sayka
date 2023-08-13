@@ -11,6 +11,8 @@ import ReactMarkdown from "react-markdown";
 import { CodeBlock } from "@/ui/Text/components/CodeBlock";
 
 import { SaykaMockData } from "./SaykaList";
+import { useAtom } from "jotai";
+import { modalState } from "@/store/atoms/modalAtom";
 
 type TProps = {
   id: number;
@@ -53,6 +55,14 @@ const saykaComment = [
 ];
 
 export const CommentModal: FC<TProps> = ({ id }) => {
+  // const user = await (async () => {
+  //   const user = await getLoggedInUser(getToken() || '')
+  //   if (user.type === 'error') return undefined
+  //   return user.value.user
+  // })()
+  const user = null;
+  const [_, setIsOpen] = useAtom(modalState);
+
   const router = useRouter();
 
   // SaykaMockDataのidが{id}と一致するものを取得
@@ -67,9 +77,13 @@ export const CommentModal: FC<TProps> = ({ id }) => {
   // commentを取得
   const comments = saykaComment;
 
+  const commentByGuest = () => {
+    setIsOpen(true);
+  };
+
   // commentを取得
   return (
-    <div className="fixed inset-0 z-50 flex justify-end">
+    <div className="fixed inset-0 z-10 flex justify-end">
       <div
         className="absolute inset-0 bg-black opacity-50 transition-opacity duration-300 ease-in-out"
         onClick={handleClose}
@@ -142,14 +156,24 @@ export const CommentModal: FC<TProps> = ({ id }) => {
           ))}
         </div>
 
-        <div className="flex items-center gap-5 border-t border-gray-200 bg-white p-5">
-          <textarea
-            className="focus:shadow-outline w-full rounded-md border px-5 py-2 transition-shadow focus:outline-none"
-            placeholder="Aa"></textarea>
-          <button className="rounded-full bg-teal-400 p-2 transition-colors duration-300 hover:bg-teal-500">
-            <VscSend size={30} fill="white" />
-          </button>
-        </div>
+        {user ? (
+          <div className="flex items-center gap-5 border-t border-gray-200 bg-white p-5">
+            <textarea
+              className="focus:shadow-outline w-full rounded-md border px-5 py-2 transition-shadow focus:outline-none"
+              placeholder="Aa"></textarea>
+            <button className="rounded-full bg-teal-400 p-2 transition-colors duration-300 hover:bg-teal-500">
+              <VscSend size={30} fill="white" />
+            </button>
+          </div>
+        ) : (
+          <div className="flex justify-end items-center gap-5 border-t border-gray-200 bg-white p-5">
+            <button
+              onClick={commentByGuest}
+              className="rounded bg-sc px-4 py-2 font-semibold text-white transition duration-300 hover:bg-hover-sc">
+              コメントする
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

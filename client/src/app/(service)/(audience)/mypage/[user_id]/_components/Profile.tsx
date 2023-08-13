@@ -1,3 +1,4 @@
+import { TooltipUI } from "@/ui/Tooltip";
 import Image from "next/image";
 import React, { FC } from "react";
 import { AiFillGithub } from "react-icons/ai";
@@ -25,9 +26,11 @@ export const Profile: FC<TProps> = ({ user }) => {
         <div className="text-lg font-semibold">@{user.name}</div>
         <div>B3 / Student / Software Engineer</div>
         <div className="flex items-center justify-center">
-          <a href={`https://github.com/${user.name}`}>
-            <AiFillGithub size={27} />
-          </a>
+          <TooltipUI label="GitHubへ">
+            <a href={`https://github.com/${user.name}`}>
+              <AiFillGithub size={27} />
+            </a>
+          </TooltipUI>
         </div>
         <div>
           <div className="mb-5 border-b px-5">

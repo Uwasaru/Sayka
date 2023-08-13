@@ -30,7 +30,7 @@ export const SaykaMockData: TSayka[] = [
       },
       {
         id: 2,
-        name: "next.js",
+        name: "nextjs",
       },
     ],
   },
@@ -58,7 +58,7 @@ export const SaykaMockData: TSayka[] = [
       },
       {
         id: 2,
-        name: "起業家",
+        name: "サッカー選手",
       },
     ],
   },

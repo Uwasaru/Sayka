@@ -15,6 +15,7 @@ export const TagFilter: FC<TProps> = ({ tag, changeFilterTag, onSubmit }) => {
       changeFilterTag("ALL");
     }
     onSubmit(tag);
+    console.log(tag?.length);
   };
 
   return (
@@ -26,7 +27,7 @@ export const TagFilter: FC<TProps> = ({ tag, changeFilterTag, onSubmit }) => {
           type="tag"
           value={tag}
           onChange={(e) => changeFilterTag(e.target.value)}
-          size={tag?.length || 1}
+          size={tag?.length + 5 || 1}
           className="bg-transparent focus:outline-none"
           onBlur={handleSubmit}
           onKeyDown={(e) => {
