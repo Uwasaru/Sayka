@@ -1,16 +1,16 @@
 package utils
 
 import (
-	"github.com/golang-jwt/jwt/v4"
-	"github.com/oklog/ulid"
-	"github.com/google/uuid"
-	"golang.org/x/crypto/bcrypt"
 	"crypto/sha256"
+	"encoding/hex"
+	"github.com/golang-jwt/jwt/v4"
+	"github.com/google/uuid"
+	"github.com/oklog/ulid"
+	"golang.org/x/crypto/bcrypt"
 	"math/rand"
 	"os"
 	"strconv"
 	"time"
-	"encoding/hex"
 )
 
 func Ulid() string {
@@ -21,7 +21,7 @@ func Ulid() string {
 
 func Uuid() string {
 	uuidObj, _ := uuid.NewRandom()
-  return uuidObj.String()
+	return uuidObj.String()
 }
 
 func RandomString(n int) string {

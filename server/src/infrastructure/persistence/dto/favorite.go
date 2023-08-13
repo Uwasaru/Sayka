@@ -14,7 +14,7 @@ type FavoritesDto []*FavoriteDto
 
 func FavoriteDtoToEntity(dto *FavoriteDto) *entity.Favorite {
 	return &entity.Favorite{
-		ID: dto.ID,
+		ID:     dto.ID,
 		UserID: dto.UserID,
 		PostID: dto.PostID,
 	}
@@ -22,7 +22,7 @@ func FavoriteDtoToEntity(dto *FavoriteDto) *entity.Favorite {
 
 func FavoriteEntityToDto(f *entity.Favorite) FavoriteDto {
 	return FavoriteDto{
-		ID: f.ID,
+		ID:     f.ID,
 		UserID: f.UserID,
 		PostID: f.PostID,
 	}

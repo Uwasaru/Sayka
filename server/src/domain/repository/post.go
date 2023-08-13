@@ -9,7 +9,7 @@ import (
 type PostRepository interface {
 	GetByID(ctx context.Context, id string) (*entity.Post, error)
 	GetByUserID(ctx context.Context, userID string) (*entity.Posts, error)
-	GetAll(ctx context.Context, ) (*entity.Posts, error)
+	GetAll(ctx context.Context) (*entity.Posts, error)
 	CreatePost(ctx context.Context, post *entity.Post) error
 	UpdatePost(ctx context.Context, post *entity.Post) error
 	DeletePost(ctx context.Context, id string) error

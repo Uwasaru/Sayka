@@ -18,7 +18,7 @@ type ICommentUsecase interface {
 	GetByID(ctx context.Context, id string) (*entity.Comment, error)
 	GetByUserID(ctx context.Context, userID string) (*entity.Comments, error)
 	GetByPostID(ctx context.Context, postID string) (*entity.Comments, error)
-	GetAll(ctx context.Context, ) (*entity.Comments, error)
+	GetAll(ctx context.Context) (*entity.Comments, error)
 	CreateComment(ctx context.Context, comment *entity.Comment) error
 	DeleteComment(ctx context.Context, id string) error
 }
@@ -36,17 +36,17 @@ func (cu *CommentUsecase) GetByID(ctx context.Context, id string) (*entity.Comme
 }
 
 // GetByUserIDはUserIDを指定してコメントを取得します
-func (cu *CommentUsecase) GetByUserID(ctx context.Context,userID string) (*entity.Comments, error) {
+func (cu *CommentUsecase) GetByUserID(ctx context.Context, userID string) (*entity.Comments, error) {
 	return cu.cr.GetByUserID(ctx, userID)
 }
 
 // GetByPostIDはPostIDを指定してコメントを取得します
-func (cu *CommentUsecase) GetByPostID(ctx context.Context,postID string) (*entity.Comments, error) {
+func (cu *CommentUsecase) GetByPostID(ctx context.Context, postID string) (*entity.Comments, error) {
 	return cu.cr.GetByPostID(ctx, postID)
 }
 
 // GetAllは全てのコメントを取得します
-func (cu *CommentUsecase) GetAll(ctx context.Context) ( *entity.Comments, error) {
+func (cu *CommentUsecase) GetAll(ctx context.Context) (*entity.Comments, error) {
 	return cu.cr.GetAll(ctx)
 }
 

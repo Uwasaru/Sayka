@@ -5,7 +5,6 @@ import (
 	"github.com/Uwasaru/Sayka/domain/entity"
 )
 
-
 // TagRepositoryはタグに関する永続化を担当します
 
 type TagRepository interface {
