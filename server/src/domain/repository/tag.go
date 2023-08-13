@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"context"
 	"github.com/Uwasaru/Sayka/domain/entity"
 )
 
@@ -8,14 +9,9 @@ import (
 // TagRepositoryはタグに関する永続化を担当します
 
 type TagRepository interface {
-	// GetByIDはIDを指定してタグを取得します
-	GetByID(id string) (*entity.Tag, error)
-	// GetByNameはNameを指定してタグを取得します
-	GetByName(name string) (*entity.Tag, error)
-	// GetAllは全てのタグを取得します
-	GetAll() (*entity.Tags, error)
-	// Createはタグを作成します
-	CreateTag(tag *entity.Tag) error
-	// Deleteはタグを削除します
-	DeleteTag(id string) error
+	GetByID(ctx context.Context, id string) (*entity.Tag, error)
+	GetByName(ctx context.Context, name string) (*entity.Tag, error)
+	GetAll(ctx context.Context) (*entity.Tags, error)
+	CreateTag(ctx context.Context, tag *entity.Tag) error
+	DeleteTag(ctx context.Context, id string) error
 }

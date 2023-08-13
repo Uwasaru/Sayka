@@ -1,9 +1,12 @@
 package persistence
 
 import (
+	"context"
+
 	"github.com/Uwasaru/Sayka/domain/entity"
 	"github.com/Uwasaru/Sayka/domain/repository"
 	"github.com/Uwasaru/Sayka/infrastructure/database"
+	d "github.com/Uwasaru/Sayka/infrastructure/persistence/dto"
 )
 
 var _ repository.CommentRepository = &CommentRepository{}
@@ -18,82 +21,109 @@ func NewCommentRepository(conn *database.Conn) *CommentRepository {
 	}
 }
 
-func (cr *CommentRepository) GetByID(id string) (*entity.Comment, error) {
-	comment := &entity.Comment{}
-	err := cr.db.QueryRow("SELECT * FROM comments WHERE id = ?", id).Scan(&comment.ID, &comment.UserID, &comment.PostID, &comment.Content, &comment.Type, &comment.CreatedAt)
+func (cr *CommentRepository) GetByID(ctx context.Context, id string) (*entity.Comment, error) {
+	query := `
+	SELECT *
+	FROM comments
+	WHERE id = ?
+	`
+	var dto d.CommentDto
+	err := cr.conn.DB.GetContext(ctx, &dto, query, id)
 	if err != nil {
 		return nil, err
 	}
-	return comment, nil
+	return d.CommentDtoToEntity(&dto), nil
 }
 
-func (cr *CommentRepository) GetByUserID(userID string) (*entity.Comments, error) {
-	rows, err := cr.db.Query("SELECT * FROM comments WHERE user_id = ?", userID)
+func (cr *CommentRepository) GetByUserID(ctx context.Context, userID string) (*entity.Comments, error) {
+	query := `
+	SELECT *
+	FROM comments
+	WHERE user_id = ?
+	`
+	rows, err := cr.conn.DB.QueryContext(ctx, query, userID)
 	if err != nil {
 		return nil, err
 	}
-	defer rows.Close()
 
-	comments := &entity.Comments{}
+	var comments entity.Comments
 	for rows.Next() {
-		comment := &entity.Comment{}
-		err := rows.Scan(&comment.ID, &comment.UserID, &comment.PostID, &comment.Content, &comment.Type, &comment.CreatedAt)
+		var dto d.CommentDto
+		err := rows.Scan(&dto)
 		if err != nil {
 			return nil, err
 		}
-		*comments = append(*comments, comment)
+		comments = append(comments, d.CommentDtoToEntity(&dto))
 	}
-	return comments, nil
+	return &comments, nil
 }
 
-func (cr *CommentRepository) GetByPostID(postID string) (*entity.Comments, error) {
-	rows, err := cr.db.Query("SELECT * FROM comments WHERE post_id = ?", postID)
+func (cr *CommentRepository) GetByPostID(ctx context.Context, postID string) (*entity.Comments, error) {
+	query := `
+	SELECT *
+	FROM comments
+	WHERE post_id = ?
+	`
+	rows, err := cr.conn.DB.QueryContext(ctx, query, postID)
 	if err != nil {
 		return nil, err
 	}
-	defer rows.Close()
 
-	comments := &entity.Comments{}
+	var comments entity.Comments
 	for rows.Next() {
-		comment := &entity.Comment{}
-		err := rows.Scan(&comment.ID, &comment.UserID, &comment.PostID, &comment.Content, &comment.Type, &comment.CreatedAt)
+		var dto d.CommentDto
+		err := rows.Scan(&dto)
 		if err != nil {
 			return nil, err
 		}
-		*comments = append(*comments, comment)
+		comments = append(comments, d.CommentDtoToEntity(&dto))
 	}
-	return comments, nil
+	return &comments, nil
 }
 
-func (cr *CommentRepository) GetAll() (*entity.Comments, error) {
-	rows, err := cr.db.Query("SELECT * FROM comments")
+func (cr *CommentRepository) GetAll(ctx context.Context) (*entity.Comments, error) {
+	query := `
+	SELECT *
+	FROM comments
+	`
+	rows, err := cr.conn.DB.QueryContext(ctx, query)
 	if err != nil {
 		return nil, err
 	}
-	defer rows.Close()
 
-	comments := &entity.Comments{}
+	var comments entity.Comments
 	for rows.Next() {
-		comment := &entity.Comment{}
-		err := rows.Scan(&comment.ID, &comment.UserID, &comment.PostID, &comment.Content, &comment.Type, &comment.CreatedAt)
+		var dto d.CommentDto
+		err := rows.Scan(&dto)
 		if err != nil {
 			return nil, err
 		}
-		*comments = append(*comments, comment)
+		comments = append(comments, d.CommentDtoToEntity(&dto))
 	}
-	return comments, nil
+	return &comments, nil
 }
 
-func (cr *CommentRepository) CreateComment(comment *entity.Comment) error {
-	_, err := cr.db.Exec("INSERT INTO comments (id, user_id, post_id, content, type, created_at) VALUES (?, ?, ?, ?, ?, ?)", comment.ID, comment.UserID, comment.PostID, comment.Content, comment.Type, comment.CreatedAt)
+func (cr *CommentRepository) CreateComment(ctx context.Context, comment *entity.Comment) error {
+	query := `
+	INSERT INTO comments (id, user_id, post_id, content, type, created_at)
+	VALUES (:id, :user_id, :post_id, :content, :type, :created_at)
+	`
+	dto := d.CommentEntityToDto(comment)
+
+	_, err := cr.conn.DB.NamedExecContext(ctx, query, &dto)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func (cr *CommentRepository) DeleteComment(id string) error {
-	_, err := cr.db.Exec("DELETE FROM comments WHERE id = ?", id)
+func (cr *CommentRepository) DeleteComment(ctx context.Context, id string) error {
+	query := `
+	DELETE FROM comments
+	WHERE id = :id
+	`
+
+	_, err := cr.conn.DB.NamedExecContext(ctx, query, map[string]interface{}{"id": id})
 	if err != nil {
 		return err
 	}

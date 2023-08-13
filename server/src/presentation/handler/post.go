@@ -22,65 +22,65 @@ func NewPostHandler(pu usecase.IPostUsecase) *PostHandler {
 }
 
 // GetByIDはIDを指定して投稿を取得します
-func (ph *PostHandler) GetByID(c *gin.Context) {
-	id := c.Param("id")
-	post, err := ph.pu.GetByID(id)
+func (ph *PostHandler) GetByID(ctx *gin.Context) {
+	id := ctx.Param("id")
+	post, err := ph.pu.GetByID(ctx, id)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, post)
+	ctx.JSON(http.StatusOK, post)
 }
 
 // GetByUserIDはUserIDを指定して投稿を取得します
-func (ph *PostHandler) GetByUserID(c *gin.Context) {
-	userID := c.Param("userID")
-	posts, err := ph.pu.GetByUserID(userID)
+func (ph *PostHandler) GetByUserID(ctx *gin.Context) {
+	userID := ctx.Param("userID")
+	posts, err := ph.pu.GetByUserID(ctx, userID)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, posts)
+	ctx.JSON(http.StatusOK, posts)
 }
 
 // GetAllは全ての投稿を取得します
-func (ph *PostHandler) GetAll(c *gin.Context) {
-	posts, err := ph.pu.GetAll()
+func (ph *PostHandler) GetAll(ctx *gin.Context) {
+	posts, err := ph.pu.GetAll(ctx)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, posts)
+	ctx.JSON(http.StatusOK, posts)
 }
 
 // CreatePostは投稿を作成します
-func (ph *PostHandler) CreatePost(c *gin.Context) {
+func (ph *PostHandler) CreatePost(ctx *gin.Context) {
 	post_json := &json.PostJson{}
-	if err := c.BindJSON(post_json); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	if err := ctx.BindJSON(post_json); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 	post := json.PostJsonToEntity(post_json)
 	post.ID = utils.Ulid()
 	post.CreatedAt = utils.GetCurrentTimeStamps()
-	if err := ph.pu.CreatePost(post); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	if err := ph.pu.CreatePost(ctx, post); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, post)
+	ctx.JSON(http.StatusOK, post)
 }
 
 // UpdatePostは投稿を更新します
-func (ph *PostHandler) UpdatePost(c *gin.Context) {
-	id := c.Param("id")
-	post, err := ph.pu.GetByID(id)
+func (ph *PostHandler) UpdatePost(ctx *gin.Context) {
+	id := ctx.Param("id")
+	post, err := ph.pu.GetByID(ctx, id)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 	post_json := &json.PostJson{}
-	if err := c.BindJSON(post_json); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	if err := ctx.BindJSON(post_json); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 	post.UserID = post_json.UserID
@@ -89,19 +89,19 @@ func (ph *PostHandler) UpdatePost(c *gin.Context) {
 	post.GithubUrl = post_json.GithubUrl
 	post.SlideUrl = post_json.SlideUrl
 	post.Title = post_json.Title
-	if err := ph.pu.UpdatePost(post); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	if err := ph.pu.UpdatePost(ctx, post); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, post)
+	ctx.JSON(http.StatusOK, post)
 }
 
 // DeletePostは投稿を削除します
-func (ph *PostHandler) DeletePost(c *gin.Context) {
-	id := c.Param("id")
-	if err := ph.pu.DeletePost(id); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+func (ph *PostHandler) DeletePost(ctx *gin.Context) {
+	id := ctx.Param("id")
+	if err := ph.pu.DeletePost(ctx, id); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"message": "success"})
+	ctx.JSON(http.StatusOK, gin.H{"message": "success"})
 }

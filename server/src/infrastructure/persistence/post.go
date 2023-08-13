@@ -1,9 +1,12 @@
 package persistence
 
 import (
+	"context"
+
 	"github.com/Uwasaru/Sayka/domain/entity"
 	"github.com/Uwasaru/Sayka/domain/repository"
 	"github.com/Uwasaru/Sayka/infrastructure/database"
+	d "github.com/Uwasaru/Sayka/infrastructure/persistence/dto"
 )
 
 var _ repository.PostRepository = &PostRepository{}
@@ -21,58 +24,76 @@ func NewPostRepository(conn *database.Conn) *PostRepository {
 }
 
 // GetByIDはIDを指定して投稿を取得します
-func (pr *PostRepository) GetByID(id string) (*entity.Post, error) {
-	post := &entity.Post{}
-	err := pr.db.QueryRow("SELECT * FROM posts WHERE id = ?", id).Scan(&post.ID, &post.UserID, &post.Title, &post.GithubUrl, &post.AppUrl, &post.SlideUrl, &post.Description, &post.CreatedAt)
+func (pr *PostRepository) GetByID(ctx context.Context, id string) (*entity.Post, error) {
+	query := `
+	SELECT *
+	FROM posts
+	WHERE id = ?
+	`
+	var dto d.PostDto
+	err := pr.conn.DB.GetContext(ctx, &dto, query, id)
 	if err != nil {
 		return nil, err
 	}
-	return post, nil
+	return d.PostDtoToEntity(&dto), nil
 }
 
 // GetByUserIDはUserIDを指定して投稿を取得します
-func (pr *PostRepository) GetByUserID(userID string) (*entity.Posts, error) {
-	rows, err := pr.db.Query("SELECT * FROM posts WHERE user_id = ?", userID)
+func (pr *PostRepository) GetByUserID(ctx context.Context, userID string) (*entity.Posts, error) {
+	query := `
+	SELECT *
+	FROM posts
+	WHERE user_id = ?
+	`
+	rows, err := pr.conn.DB.QueryContext(ctx, query, userID)
 	if err != nil {
 		return nil, err
 	}
-	defer rows.Close()
 
-	posts := &entity.Posts{}
+	var posts entity.Posts
 	for rows.Next() {
-		post := &entity.Post{}
-		err := rows.Scan(&post.ID, &post.UserID, &post.Title, &post.GithubUrl, &post.AppUrl, &post.SlideUrl, &post.Description, &post.CreatedAt)
+		var dto d.PostDto
+		err := rows.Scan(&dto)
 		if err != nil {
 			return nil, err
 		}
-		*posts = append(*posts, post)
+		posts = append(posts, d.PostDtoToEntity(&dto))
 	}
-	return posts, nil
+	return &posts, nil
 }
 
 // GetAllは全ての投稿を取得します
-func (pr *PostRepository) GetAll() (*entity.Posts, error) {
-	rows, err := pr.db.Query("SELECT * FROM posts")
+func (pr *PostRepository) GetAll(ctx context.Context) (*entity.Posts, error) {
+	query := `
+	SELECT *
+	FROM posts
+	`
+	rows, err := pr.conn.DB.QueryContext(ctx, query)
 	if err != nil {
 		return nil, err
 	}
-	defer rows.Close()
 
-	posts := &entity.Posts{}
+	var posts entity.Posts
 	for rows.Next() {
-		post := &entity.Post{}
-		err := rows.Scan(&post.ID, &post.UserID, &post.Title, &post.GithubUrl, &post.AppUrl, &post.SlideUrl, &post.Description, &post.CreatedAt)
+		var dto d.PostDto
+		err := rows.Scan(&dto)
 		if err != nil {
 			return nil, err
 		}
-		*posts = append(*posts, post)
+		posts = append(posts, d.PostDtoToEntity(&dto))
 	}
-	return posts, nil
+	return &posts, nil
 }
 
 // CreatePostは投稿を作成します
-func (pr *PostRepository) CreatePost(post *entity.Post) error {
-	_, err := pr.db.Exec("INSERT INTO posts (id, user_id, title, github_url, app_url, slide_url, description, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", post.ID, post.UserID, post.Title, post.GithubUrl, post.AppUrl, post.SlideUrl, post.Description, post.CreatedAt)
+func (pr *PostRepository) CreatePost(ctx context.Context, post *entity.Post) error {
+	query := `
+	INSERT INTO posts (id, user_id, title, github_url, app_url, slide_url, description)
+	VALUES (:id,:user_id,:title,:github_url,:app_url,:slide_url,:description)
+	`
+	dto := d.PostEntityToDto(post)
+
+	_, err := pr.conn.DB.NamedExecContext(ctx, query, &dto)
 	if err != nil {
 		return err
 	}
@@ -80,8 +101,15 @@ func (pr *PostRepository) CreatePost(post *entity.Post) error {
 }
 
 // UpdatePostは投稿を更新します
-func (pr *PostRepository) UpdatePost(post *entity.Post) error {
-	_, err := pr.db.Exec("UPDATE posts SET title = ?, github_url = ?, app_url = ?, slide_url = ?, description = ? WHERE id = ?", post.Title, post.GithubUrl, post.AppUrl, post.SlideUrl, post.Description, post.ID)
+func (pr *PostRepository) UpdatePost(ctx context.Context, post *entity.Post) error {
+	query := `
+	UPDATE posts
+	SET title = :title, github_url = :github_url, app_url = :app_url, slide_url = :slide_url, description = :description
+	WHERE id = :id
+	`
+	dto := d.PostEntityToDto(post)
+
+	_, err := pr.conn.DB.NamedExecContext(ctx, query, &dto)
 	if err != nil {
 		return err
 	}
@@ -89,8 +117,13 @@ func (pr *PostRepository) UpdatePost(post *entity.Post) error {
 }
 
 // DeletePostは投稿を削除します
-func (pr *PostRepository) DeletePost(id string) error {
-	_, err := pr.db.Exec("DELETE FROM posts WHERE id = ?", id)
+func (pr *PostRepository) DeletePost(ctx context.Context, id string) error {
+	query := `
+	DELETE FROM posts
+	WHERE id = :id
+	`
+
+	_, err := pr.conn.DB.NamedExecContext(ctx, query, map[string]interface{}{"id": id})
 	if err != nil {
 		return err
 	}

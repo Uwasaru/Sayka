@@ -22,71 +22,71 @@ func NewCommentHandler(cu usecase.ICommentUsecase) *CommentHandler {
 }
 
 // GetByIDはIDを指定して投稿を取得します
-func (ch *CommentHandler) GetByID(c *gin.Context) {
-	id := c.Param("id")
-	comment, err := ch.cu.GetByID(id)
+func (ch *CommentHandler) GetByID(ctx *gin.Context) {
+	id := ctx.Param("id")
+	comment, err := ch.cu.GetByID(ctx, id)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, comment)
+	ctx.JSON(http.StatusOK, comment)
 }
 
 // GetByUserIDはUserIDを指定して投稿を取得します
-func (ch *CommentHandler) GetByUserID(c *gin.Context) {
-	userID := c.Param("userID")
-	comments, err := ch.cu.GetByUserID(userID)
+func (ch *CommentHandler) GetByUserID(ctx *gin.Context) {
+	userID := ctx.Param("userID")
+	comments, err := ch.cu.GetByUserID(ctx, userID)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, comments)
+	ctx.JSON(http.StatusOK, comments)
 }
 
 // GetByPostIDはPostIDを指定して投稿を取得します
-func (ch *CommentHandler) GetByPostID(c *gin.Context) {
-	postID := c.Param("postID")
-	comments, err := ch.cu.GetByPostID(postID)
+func (ch *CommentHandler) GetByPostID(ctx *gin.Context) {
+	postID := ctx.Param("postID")
+	comments, err := ch.cu.GetByPostID(ctx, postID)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, comments)
+	ctx.JSON(http.StatusOK, comments)
 }
 
 // GetAllは全ての投稿を取得します
-func (ch *CommentHandler) GetAll(c *gin.Context) {
-	comments, err := ch.cu.GetAll()
+func (ch *CommentHandler) GetAll(ctx *gin.Context) {
+	comments, err := ch.cu.GetAll(ctx)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, comments)
+	ctx.JSON(http.StatusOK, comments)
 }
 
 // CreateCommentは投稿を作成します
-func (ch *CommentHandler) CreateComment(c *gin.Context) {
+func (ch *CommentHandler) CreateComment(ctx *gin.Context) {
 	comment_json := &json.CommentJson{}
 	comment_json.ID = utils.Ulid()
 	comment_json.CreatedAt = utils.GetCurrentTimeStamps()
-	if err := c.BindJSON(comment_json); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	if err := ctx.BindJSON(comment_json); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 	comment := json.CommentJsonToEntity(comment_json)
-	if err := ch.cu.CreateComment(comment); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	if err := ch.cu.CreateComment(ctx, comment); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, comment)
+	ctx.JSON(http.StatusOK, comment)
 }
 
 // DeleteCommentは投稿を削除します
-func (ch *CommentHandler) DeleteComment(c *gin.Context) {
-	id := c.Param("id")
-	if err := ch.cu.DeleteComment(id); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+func (ch *CommentHandler) DeleteComment(ctx *gin.Context) {
+	id := ctx.Param("id")
+	if err := ch.cu.DeleteComment(ctx, id); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"message": "deleted"})
+	ctx.JSON(http.StatusOK, gin.H{"message": "deleted"})
 }

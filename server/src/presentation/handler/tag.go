@@ -22,49 +22,49 @@ func NewTagHandler(tu usecase.ITagUsecase) *TagHandler {
 }
 
 // GetByIDはIDを指定して投稿を取得します
-func (th *TagHandler) GetByID(c *gin.Context) {
-	id := c.Param("id")
-	tag, err := th.tu.GetByID(id)
+func (th *TagHandler) GetByID(ctx *gin.Context) {
+	id := ctx.Param("id")
+	tag, err := th.tu.GetByID(ctx, id)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, tag)
+	ctx.JSON(http.StatusOK, tag)
 }
 
 // GetByNameはNameを指定して投稿を取得します
-func (th *TagHandler) GetByName(c *gin.Context) {
-	name := c.Param("name")
-	tag, err := th.tu.GetByName(name)
+func (th *TagHandler) GetByName(ctx *gin.Context) {
+	name := ctx.Param("name")
+	tag, err := th.tu.GetByName(ctx, name)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, tag)
+	ctx.JSON(http.StatusOK, tag)
 }
 
 // GetAllは全ての投稿を取得します
-func (th *TagHandler) GetAll(c *gin.Context) {
-	tags, err := th.tu.GetAll()
+func (th *TagHandler) GetAll(ctx *gin.Context) {
+	tags, err := th.tu.GetAll(ctx)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, tags)
+	ctx.JSON(http.StatusOK, tags)
 }
 
 // CreateTagは投稿を作成します
-func (th *TagHandler) CreateTag(c *gin.Context) {
+func (th *TagHandler) CreateTag(ctx *gin.Context) {
 	tag_json := &json.TagJson{}
 	tag_json.ID = utils.Ulid()
-	if err := c.BindJSON(tag_json); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	if err := ctx.BindJSON(tag_json); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 	tag := json.TagEntityToJson(tag_json)
-	if err := th.tu.CreateTag(tag); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	if err := th.tu.CreateTag(ctx, tag); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, tag)
+	ctx.JSON(http.StatusOK, tag)
 }

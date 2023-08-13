@@ -1,9 +1,12 @@
 package persistence
 
 import (
+	"context"
+
 	"github.com/Uwasaru/Sayka/domain/entity"
 	"github.com/Uwasaru/Sayka/domain/repository"
 	"github.com/Uwasaru/Sayka/infrastructure/database"
+	d "github.com/Uwasaru/Sayka/infrastructure/persistence/dto"
 )
 
 var _ repository.SessionRepository = &SessionRepository{}
@@ -21,48 +24,65 @@ func NewSessionRepository(conn *database.Conn) *SessionRepository {
 }
 
 // GetByIDはIDを指定してセッションを取得します
-func (sr *SessionRepository) GetByID(id string) (*entity.Session, error) {
-	session := &entity.Session{}
-	err := sr.db.QueryRow("SELECT * FROM sessions WHERE id = ?", id).Scan(&session.ID, &session.SessionID, &session.UserID, &session.Token, &session.TokenExpire)
+func (sr *SessionRepository) GetByID(ctx context.Context, id string) (*entity.Session, error) {
+	query := `
+	SELECT *
+	FROM sessions
+	WHERE id = ?
+	`
+	var dto d.SessionDto
+	err := sr.conn.DB.GetContext(ctx, &dto, query, id)
 	if err != nil {
 		return nil, err
 	}
-	return session, nil
+	return d.SessionDtoToEntity(&dto), nil
 }
 
 // GetByUserIDはUserIDを指定してセッションを取得します
-func (sr *SessionRepository) GetByUserID(userID string) (*entity.Session, error) {
-	session := &entity.Session{}
-	err := sr.db.QueryRow("SELECT * FROM sessions WHERE user_id = ?", userID).Scan(&session.ID, &session.SessionID, &session.UserID, &session.Token, &session.TokenExpire)
+func (sr *SessionRepository) GetByUserID(ctx context.Context, userID string) (*entity.Session, error) {
+	query := `
+	SELECT *
+	FROM sessions
+	WHERE user_id = ?
+	`
+	var dto d.SessionDto
+	err := sr.conn.DB.GetContext(ctx, &dto, query, userID)
 	if err != nil {
 		return nil, err
 	}
-	return session, nil
+	return d.SessionDtoToEntity(&dto), nil
 }
 
 // GetAllは全てのセッションを取得します
-func (sr *SessionRepository) GetAll() (*entity.Sessions, error) {
-	rows, err := sr.db.Query("SELECT * FROM sessions")
+func (sr *SessionRepository) GetAll(ctx context.Context) (*entity.Sessions, error) {
+	query := `
+	SELECT *
+	FROM sessions
+	`
+	rows, err := sr.conn.DB.QueryContext(ctx, query)
 	if err != nil {
 		return nil, err
 	}
-	defer rows.Close()
 
-	sessions := &entity.Sessions{}
+	var sessions entity.Sessions
 	for rows.Next() {
-		session := &entity.Session{}
-		err := rows.Scan(&session.ID, &session.SessionID, &session.UserID, &session.Token, &session.TokenExpire)
+		var dto d.SessionDto
+		err := rows.Scan(&dto)
 		if err != nil {
 			return nil, err
 		}
-		*sessions = append(*sessions, session)
+		sessions = append(sessions, d.SessionDtoToEntity(&dto))
 	}
-	return sessions, nil
+	return &sessions, nil
 }
 
 // Createはセッションを作成します
-func (sr *SessionRepository) CreateSession(session *entity.Session) error {
-	_, err := sr.db.Exec("INSERT INTO sessions (session_id, user_id, token, token_expire) VALUES (?, ?, ?, ?)", session.SessionID, session.UserID, session.Token, session.TokenExpire)
+func (sr *SessionRepository) CreateSession(ctx context.Context, session *entity.Session) error {
+	query := `
+	INSERT INTO sessions (session_id, user_id, token, token_expire)
+	VALUES (?, ?, ?, ?)
+	`
+	_, err := sr.conn.DB.ExecContext(ctx, query, session.SessionID, session.UserID, session.Token, session.TokenExpire)
 	if err != nil {
 		return err
 	}
@@ -70,8 +90,13 @@ func (sr *SessionRepository) CreateSession(session *entity.Session) error {
 }
 
 // Updateはセッションを更新します
-func (sr *SessionRepository) UpdateSession(session *entity.Session) error {
-	_, err := sr.db.Exec("UPDATE sessions SET session_id = ?, user_id = ?, token = ?, token_expire = ? WHERE id = ?", session.SessionID, session.UserID, session.Token, session.TokenExpire, session.ID)
+func (sr *SessionRepository) UpdateSession(ctx context.Context, session *entity.Session) error {
+	query := `
+	UPDATE sessions
+	SET token = ?, token_expire = ?
+	WHERE id = ?
+	`
+	_, err := sr.conn.DB.ExecContext(ctx, query, session.Token, session.TokenExpire, session.ID)
 	if err != nil {
 		return err
 	}
@@ -79,8 +104,12 @@ func (sr *SessionRepository) UpdateSession(session *entity.Session) error {
 }
 
 // Deleteはセッションを削除します
-func (sr *SessionRepository) DeleteSession(id string) error {
-	_, err := sr.db.Exec("DELETE FROM sessions WHERE id = ?", id)
+func (sr *SessionRepository) DeleteSession(ctx context.Context, id string) error {
+	query := `
+	DELETE FROM sessions
+	WHERE id = ?
+	`
+	_, err := sr.conn.DB.ExecContext(ctx, query, id)
 	if err != nil {
 		return err
 	}

@@ -1,0 +1,393 @@
+# vscode shift + option + p
+openapi: "3.0.0"
+
+info: #APIのメタデータ
+  title: "APIの名称(必須)"
+  description: |
+    #APIの簡潔な説明
+    - Get 説明
+    - Post 説明
+  termsOfService: "https://tastylog.com/terms/" #APIの利用規約のURL
+  contact: #コンタクト情報。(サポートページのURLやメールアドレス等)
+    name: "Customer Support"
+    url: "https://test.com/support/"
+    email: "support-desk@tastylog.com"
+  license: #ライセンス情報
+    name: "MIT License"
+    url: "https://opensource.org/licenses/MIT"
+  version: "1.0.0" #APIドキュメントのバージョン(必須)
+
+servers: #APIを提供するサーバ
+- url: "http://localhost:{port}" #APIサーバーのURL
+  description: "APIサーバーの説明1"
+  variables:
+    port:
+      description: "値の説明"
+      # enum: ["8080"] #利用できる値
+      default: "8080"
+- url: "http://localhost/{version}" #APIサーバーのURL
+  description: "APIサーバーの説明2"
+  variables:
+    version:
+      description: "値の説明"
+      enum: ["1.0", "2.0"] #利用できるバージョン
+      default: "1.0"
+- url: "https://api.test.com/v1"
+  description: "API Test"
+
+tags:
+- name: "user" #タグの名前
+  description: "ユーザー関連" #タグの説明
+- name: "comment"
+  description: "コメント関連"
+- name: "favorite"
+  description: "いいね関連"
+- name: "sayka"
+  description: "投稿関連"
+
+
+paths:
+  "/user/login":
+    get:
+      summary: "ログイン"
+      description: "ログインの説明"
+      tags: ["user"]
+      parameters:
+      - name: "email"
+        description: "メールアドレス"
+        in: query
+        required: true
+        schema: { type: string }
+      - name: "password"
+        description: "パスワード"
+        in: query
+        required: true
+        schema: { type: string }
+      responses:
+        "200":
+          description: "Success operation"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token: { type: string }
+                  user:
+                    type: object
+                    properties:
+                      id: { type: integer }
+                      name: { type: string }
+                      email: { type: string }
+                      role: { type: string }
+                      createdAt: { type: string }
+                      updatedAt: { type: string }
+
+  "/user/logout":
+    get:
+      summary: "ログアウト"
+      description: "ログアウトの説明"
+      tags: ["user"]
+      responses:
+        "200":
+          description: "Success operation"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message: { type: string }
+
+  "/user/register":
+    post:
+      summary: "ユーザー登録"
+      description: "ユーザー登録の説明"
+      tags: ["user"]
+      requestBody:
+        description: "リクエストボディの説明"
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name: { type: string }
+                email: { type: string }
+                password: { type: string }
+      responses:
+        "201":
+          description: "Success operation"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token: { type: string }
+                  user:
+                    type: object
+                    properties:
+                      id: { type: integer }
+                      name: { type: string }
+                      email: { type: string }
+                      role: { type: string }
+                      createdAt: { type: string }
+                      updatedAt: { type: string }
+
+  "/user/{id}":
+    get:
+      summary: "ユーザー情報取得"
+      description: "ユーザー情報取得の説明"
+      tags: ["user"]
+      parameters:
+      - name: "id"
+        description: "ユーザーID"
+        in: path
+        required: true
+        schema: { type: integer }
+      responses:
+        "200":
+          description: "Success operation"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    type: object
+                    properties:
+                      id: { type: integer }
+                      name: { type: string }
+                      email: { type: string }
+                      role: { type: string }
+                      createdAt: { type: string }
+                      updatedAt: { type: string }
+
+  "/comment/{post_id}":
+    get:
+      summary: "コメント取得"
+      description: "コメント取得の説明"
+      tags: ["comment"]
+      parameters:
+      - name: "post_id"
+        description: "投稿ID"
+        in: path
+        required: true
+        schema: { type: integer }
+      responses:
+        "200":
+          description: "Success operation"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                    type: object
+                    properties:
+                      id: { type: integer }
+                      userId: { type: integer }
+                      postId: { type: integer }
+                      content: { type: string }
+                      createdAt: { type: string }
+
+  "/comment/create":
+    post:
+      summary: "コメント作成"
+      description: "コメント作成の説明"
+      tags: ["comment"]
+      requestBody:
+        description: "リクエストボディの説明"
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId: { type: integer }
+                postId: { type: integer }
+                content: { type: string }
+      responses:
+        "200":
+          description: "Success operation"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id: { type: integer }
+                  userId: { type: integer }
+                  postId: { type: integer }
+                  content: { type: string }
+                  createdAt: { type: string }
+
+
+  "/comment/delete/{id}":
+    delete:
+      summary: "コメント削除"
+      description: "コメント削除の説明"
+      tags: ["comment"]
+      parameters:
+      - name: "id"
+        description: "コメントID"
+        in: path
+        required: true
+        schema: { type: integer }
+      responses:
+        "200":
+          description: "Success operation"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message: { type: string }
+
+  "/favorite/{post_id}":
+    post:
+      summary: "いいね"
+      description: "いいねの説明"
+      tags: ["favorite"]
+      parameters:
+      - name: "post_id"
+        description: "投稿ID"
+        in: path
+        required: true
+        schema: { type: integer }
+      - name: "user_id"
+        description: "ユーザーID"
+        in: query
+        required: true
+        schema: { type: integer }
+      responses:
+        "201":
+          description: "Success operation"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id: { type: integer }
+                  userId: { type: integer }
+                  postId: { type: integer }
+                  createdAt: { type: string }
+
+  "/sayka":
+    get:
+      summary: "投稿取得"
+      description: "直近の10件を取得"
+      tags: ["sayka"]
+      responses:
+        "200":
+          description: "Success operation"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id: { type: string }
+                    userId: { type: string }
+                    title: { type: string }
+                    description: { type: string }
+                    github_url: { type: string }
+                    slide_url: { type: string }
+                    app_url: { type: string }
+                    qiita_url: { type: string }
+                    tags: { type: array }
+                    favorites: { type: array }
+                    comments: { type: array }
+                    createdAt: { type: string }
+
+  "/sayka/create":
+    post:
+      summary: "投稿作成"
+      description: "投稿作成の説明"
+      tags: ["sayka"]
+      requestBody:
+        description: "リクエストボディの説明"
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user:
+                  type: object
+                  properties:
+                    name: { type: string }
+                    icon: { type: string }
+                title: { type: string }
+                description: { type: string }
+                github_url: { type: string }
+                slide_url: { type: string }
+                app_url: { type: string }
+                qiita_url: { type: string }
+                favorites: { type: array }
+                tags: { type: array }
+      responses:
+        "200":
+          description: "Success operation"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: { type: boolean }
+
+  "/sayka/update/{id}":
+    put:
+      summary: "投稿更新"
+      description: "投稿更新の説明"
+      tags: ["sayka"]
+      parameters:
+      - name: "id"
+        description: "投稿ID"
+        in: path
+        required: true
+        schema: { type: integer }
+      requestBody:
+        description: "リクエストボディの説明"
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId: { type: string }
+                title: { type: string }
+                description: { type: string }
+                github_url: { type: string }
+                slide_url: { type: string }
+                app_url: { type: string }
+                qiita_url: { type: string }
+                tags: { type: array }
+      responses:
+        "200":
+          description: "Success operation"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: { type: boolean }
+
+  "/sayka/delete/{id}":
+    delete:
+      summary: "投稿削除"
+      description: "投稿削除の説明"
+      tags: ["sayka"]
+      parameters:
+      - name: "id"
+        description: "投稿ID"
+        in: path
+        required: true
+        schema: { type: integer }
+      responses:
+        "200":
+          description: "Success operation"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: { type: boolean }
+

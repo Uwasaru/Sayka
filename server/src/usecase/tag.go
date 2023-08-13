@@ -1,6 +1,7 @@
 package usecase
 
 import (
+	"context"
 	"github.com/Uwasaru/Sayka/domain/entity"
 	"github.com/Uwasaru/Sayka/domain/repository"
 )
@@ -14,16 +15,11 @@ type TagUsecase struct {
 
 // ITagUsecaseは投稿に関するユースケースを担当します
 type ITagUsecase interface {
-	// GetByIDはIDを指定して投稿を取得します
-	GetByID(id string) (*entity.Tag, error)
-	// GetByNameはNameを指定して投稿を取得します
-	GetByName(name string) (*entity.Tag, error)
-	// GetAllは全ての投稿を取得します
-	GetAll() (*entity.Tags, error)
-	// Createは投稿を作成します
-	CreateTag(tag *entity.Tag) error
-	// Deleteは投稿を削除します
-	DeleteTag(id string) error
+	GetByID(ctx context.Context, id string) (*entity.Tag, error)
+	GetByName(ctx context.Context, name string) (*entity.Tag, error)
+	GetAll(ctx context.Context) (*entity.Tags, error)
+	CreateTag(ctx context.Context, tag *entity.Tag) error
+	DeleteTag(ctx context.Context, id string) error
 }
 
 // NewTagUsecaseは新しいTagUsecaseを初期化し構造体のポインタを返します
@@ -34,26 +30,26 @@ func NewTagUsecase(tr repository.TagRepository) ITagUsecase {
 }
 
 // GetByIDはIDを指定して投稿を取得します
-func (tu *TagUsecase) GetByID(id string) (*entity.Tag, error) {
-	return tu.tr.GetByID(id)
+func (tu *TagUsecase) GetByID(ctx context.Context, id string) (*entity.Tag, error) {
+	return tu.tr.GetByID(ctx, id)
 }
 
 // GetByNameはNameを指定して投稿を取得します
-func (tu *TagUsecase) GetByName(name string) (*entity.Tag, error) {
-	return tu.tr.GetByName(name)
+func (tu *TagUsecase) GetByName(ctx context.Context, name string) (*entity.Tag, error) {
+	return tu.tr.GetByName(ctx, name)
 }
 
 // GetAllは全ての投稿を取得します
-func (tu *TagUsecase) GetAll() (*entity.Tags, error) {
-	return tu.tr.GetAll()
+func (tu *TagUsecase) GetAll(ctx context.Context) (*entity.Tags, error) {
+	return tu.tr.GetAll(ctx)
 }
 
 // Createは投稿を作成します
-func (tu *TagUsecase) CreateTag(tag *entity.Tag) error {
-	return tu.tr.CreateTag(tag)
+func (tu *TagUsecase) CreateTag(ctx context.Context, tag *entity.Tag) error {
+	return tu.tr.CreateTag(ctx, tag)
 }
 
 // Deleteは投稿を削除します
-func (tu *TagUsecase) DeleteTag(id string) error {
-	return tu.tr.DeleteTag(id)
+func (tu *TagUsecase) DeleteTag(ctx context.Context, id string) error {
+	return tu.tr.DeleteTag(ctx, id)
 }

@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"context"
 	"github.com/Uwasaru/Sayka/domain/entity"
 )
 
@@ -8,15 +9,15 @@ import (
 
 type SessionRepository interface {
 	// GetByIDはIDを指定してセッションを取得します
-	GetByID(id string) (*entity.Session, error)
+	GetByID(ctx context.Context, id string) (*entity.Session, error)
 	// GetByUserIDはUserIDを指定してセッションを取得します
-	GetByUserID(userID string) (*entity.Session, error)
+	GetByUserID(ctx context.Context, userID string) (*entity.Session, error)
 	// GetAllは全てのセッションを取得します
-	GetAll() (*entity.Sessions, error)
+	GetAll(ctx context.Context) (*entity.Sessions, error)
 	// Createはセッションを作成します
-	CreateSession(session *entity.Session) error
+	CreateSession(ctx context.Context, session *entity.Session) error
 	// Updateはセッションを更新します
-	UpdateSession(session *entity.Session) error
+	UpdateSession(ctx context.Context, session *entity.Session) error
 	// Deleteはセッションを削除します
-	DeleteSession(id string) error
+	DeleteSession(ctx context.Context, id string) error
 }
