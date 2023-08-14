@@ -13,10 +13,10 @@ const Page = ({ params }: TProps) => {
   );
 
   if (!sayka) {
-    return <div>404</div>;
+    return <div>not found</div>;
   }
   return (
-    <div className="mt-5">
+    <div className="mt-40">
       <Sayka data={sayka} />
     </div>
   );
