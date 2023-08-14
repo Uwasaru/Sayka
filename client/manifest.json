@@ -5,7 +5,7 @@
     "siteName": "Sayka",
     "images": [
       {
-        "url": "https://sayka.vercel.app/public/ogp.png",
+        "url": "https://sayka.vercel.app/ogp.png",
         "width": 800,
         "height": 600
       }

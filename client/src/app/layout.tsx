@@ -18,12 +18,11 @@ export const metadata: Metadata = {
     siteName: "Sayka",
     images: [
       {
-        url: "https://sayka.vercel.app/_next/image?url=%2Fogp.png&w=64&q=75",
+        url: "https://sayka.vercel.app/ogp.png",
         width: 800,
         height: 600,
       },
     ],
-    locale: "en_US",
     type: "website",
   },
 };
