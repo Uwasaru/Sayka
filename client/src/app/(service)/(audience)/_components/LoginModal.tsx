@@ -31,7 +31,7 @@ export const LoginModal: FC = () => {
       />
 
       {/* Modal content */}
-      <div className="z-10 w-2/5 bg-white rounded-xl shadow-2xl overflow-hidden">
+      <div className="z-10 md:w-2/5 w-4/5 bg-white rounded-xl shadow-2xl overflow-hidden ">
         {/* Header */}
         <div className="p-5">
           <div className="flex justify-end">

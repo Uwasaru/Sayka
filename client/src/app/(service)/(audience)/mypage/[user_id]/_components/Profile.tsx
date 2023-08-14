@@ -14,7 +14,7 @@ type TProps = {
 };
 export const Profile: FC<TProps> = ({ user }) => {
   return (
-    <div className="mr-10 rounded-lg border border-gray-800 p-4">
+    <div className="rounded-lg border border-gray-800 p-4">
       <div className="flex flex-col items-center justify-center space-y-5 p-5">
         <Image
           src={user.icon}

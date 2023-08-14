@@ -105,8 +105,8 @@ const SaykaBody: FC<TSaykaProps> = ({ data, changeFilterTag }) => {
 
 const SaykaFooter: FC<TProps> = ({ data }) => {
   return (
-    <div className="flex">
-      <div className="flex w-[50%] items-center justify-start gap-5">
+    <div className="flex md:flex-row flex-col-reverse">
+      <div className="flex md:w-[50%] items-center justify-start gap-5 ">
         <div className="flex items-center gap-1">
           <CommentModalButton id={data.id} />
           {data.comment_count}
@@ -117,7 +117,7 @@ const SaykaFooter: FC<TProps> = ({ data }) => {
         </div>
         <ShareButton saykaId={data.id} />
       </div>
-      <div className="flex w-[50%] items-center justify-end gap-5">
+      <div className="flex md:w-[50%] items-center justify-end gap-5 pb-5 md:pb-0">
         {data.github_url && (
           <TooltipUI label="ソースコードへ">
             <Link href={data.github_url} className="flex items-center gap-1">

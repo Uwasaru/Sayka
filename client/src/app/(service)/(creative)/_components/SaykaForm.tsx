@@ -72,79 +72,77 @@ export const SaykaForm: React.FC = () => {
   };
 
   return (
-    <div>
-      <FormProvider {...methods}>
-        <form onSubmit={methods.handleSubmit(onSubmit)}>
-          <InputBlock
-            text="成果物のタイトル"
-            isRequired
-            name="title"
-            placeholder="成果物共有アプリケーション『Sayka』"
-            hasCharCount
-          />
-          <InputBlock
-            text="成果物の内容"
-            subText="100字以内で入力してください。"
-            isRequired
-            name="description"
-            hasCharCount
-            feature="textarea"
-          />
-          <ContentSubTitle text="タグ" />
-          <Explanation text="成果物に関するタグを最大5つ付与することができます。" />
-          <input
-            id="tags"
-            type="text"
-            onChange={handleInputChange}
-            placeholder="タグを入力しカンマを入力すると追加されます。"
-            className="w-full rounded border border-gray-600 p-3 text-sm focus:bg-indigo-100 focus:outline-indigo-200"
-          />
-          {tags.length >= 5 && (
-            <div className="mt-1 font-bold text-red-600">
-              5つ以上のタグは禁止です。
+    <FormProvider {...methods}>
+      <form onSubmit={methods.handleSubmit(onSubmit)}>
+        <InputBlock
+          text="成果物のタイトル"
+          isRequired
+          name="title"
+          placeholder="成果物共有アプリケーション『Sayka』"
+          hasCharCount
+        />
+        <InputBlock
+          text="成果物の内容"
+          subText="100字以内で入力してください。"
+          isRequired
+          name="description"
+          hasCharCount
+          feature="textarea"
+        />
+        <ContentSubTitle text="タグ" />
+        <Explanation text="成果物に関するタグを最大5つ付与することができます。" />
+        <input
+          id="tags"
+          type="text"
+          onChange={handleInputChange}
+          placeholder="タグを入力しカンマを入力すると追加されます。"
+          className="w-full rounded border border-gray-600 p-3 text-sm focus:bg-indigo-100 focus:outline-indigo-200"
+        />
+        {tags.length >= 5 && (
+          <div className="mt-1 font-bold text-red-600">
+            5つ以上のタグは禁止です。
+          </div>
+        )}
+        <div className="mt-5 flex flex-wrap space-x-3">
+          {tags.map((tag, index) => (
+            <div key={index} className="flex items-center">
+              <Tag text={tag} />
+              <GrClose
+                className="ml-1 cursor-pointer"
+                size={13}
+                onClick={() => handleTagRemove(index)}
+              />
             </div>
-          )}
-          <div className="mt-5 flex flex-wrap space-x-3">
-            {tags.map((tag, index) => (
-              <div key={index} className="flex items-center">
-                <Tag text={tag} />
-                <GrClose
-                  className="ml-1 cursor-pointer"
-                  size={13}
-                  onClick={() => handleTagRemove(index)}
-                />
-              </div>
-            ))}
-          </div>
+          ))}
+        </div>
 
-          <ContentSubTitle text="関連URL" />
-          <InputBlock
-            text="GitHubなどのソースコード"
-            name="github_url"
-            placeholder="https://github.com/~"
-            icon={<AiFillGithub size={18} />}
-          />
-          <InputBlock
-            text="Google SlideやCanvaなどのプレゼンテーション資料"
-            name="slide_url"
-            placeholder="https://docs.google.com/~"
-            icon={<TfiLayoutSlider size={18} />}
-          />
-          <InputBlock
-            text="作成したアプリケーションのURL"
-            name="app_url"
-            placeholder="https://sayka.vercel.app"
-            icon={<TfiWorld size={18} />}
-          />
-          <div className="flex justify-center pt-5">
-            <button
-              type="submit"
-              className="w-36 rounded bg-sc px-4 py-2 font-semibold text-white transition duration-300 hover:bg-hover-sc">
-              投稿する
-            </button>
-          </div>
-        </form>
-      </FormProvider>
-    </div>
+        <ContentSubTitle text="関連URL" />
+        <InputBlock
+          text="GitHubなどのソースコード"
+          name="github_url"
+          placeholder="https://github.com/~"
+          icon={<AiFillGithub size={18} />}
+        />
+        <InputBlock
+          text="Google SlideやCanvaなどのプレゼンテーション資料"
+          name="slide_url"
+          placeholder="https://docs.google.com/~"
+          icon={<TfiLayoutSlider size={18} />}
+        />
+        <InputBlock
+          text="作成したアプリケーションのURL"
+          name="app_url"
+          placeholder="https://sayka.vercel.app"
+          icon={<TfiWorld size={18} />}
+        />
+        <div className="flex justify-center pt-5">
+          <button
+            type="submit"
+            className="w-36 rounded bg-sc px-4 py-2 font-semibold text-white transition duration-300 hover:bg-hover-sc">
+            投稿する
+          </button>
+        </div>
+      </form>
+    </FormProvider>
   );
 };

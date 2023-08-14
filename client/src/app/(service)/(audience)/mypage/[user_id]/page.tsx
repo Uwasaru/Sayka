@@ -4,8 +4,8 @@ import { Profile } from "./_components/Profile";
 
 const Page = () => {
   return (
-    <div className="grid grid-cols-5 p-5">
-      <div className="hidden md:col-span-2 md:block">
+    <div className="grid grid-cols-5 md:p-5 space-y-5">
+      <div className="md:col-span-2 col-span-5 md:mr-10 mb-5 md:mb-0">
         <Profile
           user={{
             id: 1,
@@ -16,7 +16,7 @@ const Page = () => {
           }}
         />
       </div>
-      <div className="col-span-10 md:col-span-3">
+      <div className="col-span-5 md:col-span-3">
         <SaykaList />
       </div>
     </div>
