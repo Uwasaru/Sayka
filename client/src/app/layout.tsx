@@ -10,7 +10,7 @@ const murecho = Murecho({ weight: "100", subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Sayka",
   description: "成果物を投稿するアプリケーションです",
-  // manifest: "/manifest.json",
+  manifest: "/manifest.json",
   openGraph: {
     title: "Sayka",
     description: "成果物を投稿するアプリケーション",
@@ -23,7 +23,10 @@ export const metadata: Metadata = {
         height: 400,
       },
     ],
-    type: "website",
+    type: "article",
+  },
+  twitter: {
+    card: "summary_large_image",
   },
   icons: "https://sayka.vercel.app/logo_solo.png",
 };

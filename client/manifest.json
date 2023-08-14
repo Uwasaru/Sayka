@@ -1,16 +1,12 @@
 {
-    "title": "Sayka",
-    "description": "成果物を投稿するアプリケーション",
-    "url": "https://sayka.vercel.app/",
-    "siteName": "Sayka",
-    "images": [
+    "name": "Saykaです",
+    "description": "A readable Hacker News app.",
+    "icons": [
       {
-        "url": "https://sayka.vercel.app/ogp.png",
-        "width": 800,
-        "height": 600
+        "src": "https://sayka.vercel.app/logo_solo.png",
+        "sizes": "180x180",
+        "type": "image/png"
       }
-    ],
-    "locale": "en_US",
-    "type": "website"
-}
+    ]
+  }
   
