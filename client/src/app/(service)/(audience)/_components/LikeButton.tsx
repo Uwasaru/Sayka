@@ -7,9 +7,10 @@ import { modalState } from "@/store/atoms/modalAtom";
 
 type TProps = {
   saykaId: number;
+  likeCount: number;
 };
 
-export const LikeButton: FC<TProps> = ({ saykaId }) => {
+export const LikeButton: FC<TProps> = ({ saykaId, likeCount }) => {
   // const user = await (async () => {
   //   const user = await getLoggedInUser(getToken() || '')
   //   if (user.type === 'error') return undefined
@@ -17,9 +18,17 @@ export const LikeButton: FC<TProps> = ({ saykaId }) => {
   // })()
   const user = null;
   const [liked, setLiked] = useState(false);
+  const [likeCountState, setLikeCountState] = useState(likeCount);
 
   const handleHeartClick = () => {
     setLiked(!liked);
+    if (liked) {
+      setLikeCountState(likeCountState - 1);
+    } else {
+      setLikeCountState(likeCountState + 1);
+    }
+    // リクエスト
+    // TODO: すぐ送らずに遅延させる
   };
 
   const [_, setIsOpen] = useAtom(modalState);
@@ -29,17 +38,26 @@ export const LikeButton: FC<TProps> = ({ saykaId }) => {
 
   if (!user) {
     return (
-      <div>
+      <div className="flex items-center gap-x-1">
         <VscHeart size={24} onClick={handleHeartClickByGuest} />
+        {likeCountState}
       </div>
     );
   }
 
   if (!liked) {
-    return <VscHeart size={24} onClick={handleHeartClick} />;
+    return (
+      <div className="flex items-center gap-x-1">
+        <VscHeart size={24} onClick={handleHeartClick} />
+        {likeCountState}
+      </div>
+    );
   }
 
   return (
-    <VscHeartFilled size={24} color="#2DD4BF" onClick={handleHeartClick} />
+    <div className="flex items-center gap-x-1">
+      <VscHeartFilled size={24} color="#2DD4BF" onClick={handleHeartClick} />
+      {likeCountState}
+    </div>
   );
 };

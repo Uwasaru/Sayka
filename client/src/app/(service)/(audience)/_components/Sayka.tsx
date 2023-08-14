@@ -7,12 +7,14 @@ import { AiFillGithub } from "react-icons/ai";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { TfiLayoutSlider } from "react-icons/tfi";
 import { TfiWorld } from "react-icons/tfi";
+import { MdOutlineArticle } from "react-icons/md";
+import { PiFigmaLogoDuotone } from "react-icons/pi";
 
 import { TSayka } from "@/api/mock/type";
 import { TagInItem } from "@/ui/Tag";
 import { TooltipUI } from "@/ui/Tooltip";
 
-import { CommentModalButton } from "./CommentModalButton";
+import { CommentButton } from "./CommentButton";
 import { FixModal } from "./FixModal";
 import { LikeButton } from "./LikeButton";
 import { ShareButton } from "./ShareButton";
@@ -52,7 +54,7 @@ const SaykaHeader: FC<TProps> = ({ data }) => {
           alt="user icon"
           width={30}
           height={30}
-          className="mr-1 rounded-full"
+          className="mr-2 rounded-full"
         />
         <Link
           href={`/mypage/${data.user.id}`}
@@ -74,10 +76,12 @@ const SaykaBody: FC<TSaykaProps> = ({ data, changeFilterTag }) => {
   return (
     <div className="flex flex-col space-y-3">
       <div className="text-xl font-extrabold md:text-3xl">{data.title}</div>
-      <div>{data.description}</div>
-      <div className="flex space-x-2">
+      <div className="md:text-base text-xs">{data.description}</div>
+      <div className="flex flex-wrap">
         {data.tags?.map((tag) => (
-          <TagInItem key={tag.id} tag={tag} changeFilterTag={changeFilterTag} />
+          <div className="py-1 mr-2" key={tag.id}>
+            <TagInItem tag={tag} changeFilterTag={changeFilterTag} />
+          </div>
         ))}
       </div>
     </div>
@@ -88,14 +92,8 @@ const SaykaFooter: FC<TProps> = ({ data }) => {
   return (
     <div className="flex flex-col-reverse md:flex-row">
       <div className="flex items-center justify-start gap-5 md:w-[50%] ">
-        <div className="flex items-center gap-1">
-          <CommentModalButton id={data.id} />
-          {data.comment_count}
-        </div>
-        <div className="flex items-center gap-x-1">
-          <LikeButton saykaId={data.id} />
-          {data.like_count}
-        </div>
+        <CommentButton saykaId={data.id} commentCount={data.comment_count} />
+        <LikeButton saykaId={data.id} likeCount={data.like_count} />
         <ShareButton saykaId={data.id} saykaTitle={data.title} />
       </div>
       <div className="flex items-center justify-end gap-5 pb-5 md:w-[50%] md:pb-0">
@@ -106,10 +104,24 @@ const SaykaFooter: FC<TProps> = ({ data }) => {
             </Link>
           </TooltipUI>
         )}
+        {data.figma_url && (
+          <TooltipUI label="Figmaへ">
+            <Link href={data.figma_url} className="flex items-center gap-1">
+              <PiFigmaLogoDuotone size={24} />
+            </Link>
+          </TooltipUI>
+        )}
         {data.slide_url && (
           <TooltipUI label="プレゼンテーションへ">
             <Link href={data.slide_url} className="flex items-center gap-1">
               <TfiLayoutSlider size={24} />
+            </Link>
+          </TooltipUI>
+        )}
+        {data.article_url && (
+          <TooltipUI label="記事へ">
+            <Link href={data.article_url} className="flex items-center gap-1">
+              <MdOutlineArticle size={24} />
             </Link>
           </TooltipUI>
         )}

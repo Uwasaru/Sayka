@@ -6,14 +6,15 @@ import { FC } from "react";
 import { LiaCommentAlt } from "react-icons/lia";
 
 type TProps = {
-  id: number;
+  saykaId: number;
+  commentCount: number;
 };
 
-export const CommentModalButton: FC<TProps> = ({ id }) => {
+export const CommentButton: FC<TProps> = ({ saykaId, commentCount }) => {
   const pathname = usePathname();
   const router = useRouter();
 
-  const newQuery = { modal: "true", sayka_id: String(id) };
+  const newQuery = { modal: "true", sayka_id: String(saykaId) };
 
   const queryString = new URLSearchParams(newQuery).toString();
 
@@ -22,12 +23,13 @@ export const CommentModalButton: FC<TProps> = ({ id }) => {
   };
 
   return (
-    <div>
+    <div className="flex items-center gap-x-1">
       <button
         onClick={handleClick}
         className="transition-transform hover:-translate-y-1">
         <LiaCommentAlt size={24} />
       </button>
+      {commentCount}
     </div>
   );
 };

@@ -44,7 +44,9 @@ export const InputBlock: FC<TProps> = ({
     ? "bg-red-100 focus:outline-red-200"
     : "border-gray-600 focus:bg-indigo-100 focus:outline-indigo-200";
 
-  const [charCount, setCharCount] = useState(0);
+  const [charCount, setCharCount] = useState(
+    defaultValue ? defaultValue.toString().length : 0
+  );
 
   const handleCharCountChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>

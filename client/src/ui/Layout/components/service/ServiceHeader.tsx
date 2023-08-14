@@ -7,6 +7,7 @@ import { LiaUserCircleSolid } from "react-icons/lia";
 import { LoginModal } from "@/app/(service)/(audience)/_components/LoginModal";
 import { modalState } from "@/store/atoms/modalAtom";
 import { SaykaLogo } from "@/ui/svg/SaykaLogo";
+import { ColorButton } from "@/ui/Button";
 
 type TProps = {
   user?: {
@@ -36,13 +37,9 @@ export const ServiceHeader: FC<TProps> = ({ user }) => {
           <Link href="/timeline">
             <SaykaLogo />
           </Link>
-          <div className="flex items-center space-x-5">
-            <LiaUserCircleSolid size={34} />
-            <button
-              onClick={handleOpen}
-              className="rounded bg-sc px-4 py-2 font-semibold text-white transition duration-300 hover:bg-hover-sc">
-              ログインする
-            </button>
+          <div className="flex items-center space-x-5 ">
+            <LiaUserCircleSolid size={34} className="md:block hidden" />
+            <ColorButton label="ログイン" onClick={handleOpen} />
           </div>
         </header>
         {isOpen && <LoginModal />}

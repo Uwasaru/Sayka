@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { useForm, SubmitHandler, FormProvider } from "react-hook-form";
 import { AiFillGithub } from "react-icons/ai";
 import { GrClose } from "react-icons/gr";
@@ -15,6 +15,7 @@ import { ContentSubTitle, Explanation } from "@/ui/Text";
 import { InputBlock } from "./InputBlock";
 import { PiFigmaLogoDuotone } from "react-icons/pi";
 import { MdOutlineArticle } from "react-icons/md";
+import { mock_saykas } from "@/api";
 
 const schema = z.object({
   title: z
@@ -43,12 +44,28 @@ type FormData = {
   title: string;
 };
 
-export const SaykaForm: FC = () => {
+type TProps = {
+  saykaId: number;
+};
+
+export const SaykaEditForm: FC<TProps> = ({ saykaId }) => {
   const [tags, setTags] = useState<string[]>([]);
   const [tagError, setTagError] = useState<string | null>(null);
   const methods = useForm<FormData>({
     resolver: zodResolver(schema),
   });
+
+  // TODO
+  const sayka = mock_saykas.find((sayka) => sayka.id === saykaId);
+
+  useEffect(() => {
+    if (!sayka) return;
+    if (!sayka.tags) return;
+    const currentTags = sayka.tags.map((t) => t.name);
+    setTags(currentTags);
+  }, [sayka]);
+
+  if (!sayka) return null;
 
   const onSubmit: SubmitHandler<FormData> = (data) => {
     const submitData = {
@@ -90,6 +107,7 @@ export const SaykaForm: FC = () => {
           isRequired
           name="title"
           placeholder="成果物共有アプリケーション『Sayka』"
+          defaultValue={sayka?.title}
           hasCharCount
         />
         <InputBlock
@@ -98,6 +116,7 @@ export const SaykaForm: FC = () => {
           isRequired
           name="description"
           hasCharCount
+          defaultValue={sayka?.description}
           feature="textarea"
         />
         <ContentSubTitle text="タグ" />
@@ -135,30 +154,35 @@ export const SaykaForm: FC = () => {
         <InputBlock
           text="GitHubなどのソースコード"
           name="github_url"
+          defaultValue={sayka?.github_url}
           placeholder="https://github.com/~"
           icon={<AiFillGithub size={18} />}
         />
         <InputBlock
           text="Figmaなどのデザイン"
           name="figma_url"
+          defaultValue={sayka?.figma_url}
           placeholder="https://www.figma.com/~"
           icon={<PiFigmaLogoDuotone size={18} />}
         />
         <InputBlock
           text="Google SlideやCanvaなどのプレゼンテーション資料"
           name="slide_url"
+          defaultValue={sayka?.slide_url}
           placeholder="https://docs.google.com/~"
           icon={<TfiLayoutSlider size={18} />}
         />
         <InputBlock
           text="Qiitaやドキュメント資料"
           name="article_url"
+          defaultValue={sayka?.article_url}
           placeholder="https://qiita.com/~"
           icon={<MdOutlineArticle size={18} />}
         />
         <InputBlock
           text="作成したアプリケーションのURL"
-          name="app_url"
+          name="application_url"
+          defaultValue={sayka?.application_url}
           placeholder="https://sayka.vercel.app"
           icon={<TfiWorld size={18} />}
         />
@@ -166,7 +190,7 @@ export const SaykaForm: FC = () => {
           <button
             type="submit"
             className="w-36 rounded bg-sc px-4 py-2 font-semibold text-white transition duration-300 hover:bg-hover-sc">
-            投稿する
+            編集する
           </button>
         </div>
       </form>

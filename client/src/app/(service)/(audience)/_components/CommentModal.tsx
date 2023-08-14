@@ -4,14 +4,15 @@ import { useAtom } from "jotai";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { FC } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { GrClose } from "react-icons/gr";
-import { VscSend } from "react-icons/vsc";
 import ReactMarkdown from "react-markdown";
 
 import { mock_saykaComments_saykaId1, mock_saykas } from "@/api";
 import { modalState } from "@/store/atoms/modalAtom";
 import { CodeBlock } from "@/ui/Text/components/CodeBlock";
+import { TComment } from "@/api/mock/type";
+import { BsSend } from "react-icons/bs";
 
 type TProps = {
   id: number;
@@ -25,6 +26,14 @@ export const CommentModal: FC<TProps> = ({ id }) => {
   // })()
   const user = null;
   const [_, setIsOpen] = useAtom(modalState);
+  const [commentList, setCommentList] = useState<TComment[]>([]);
+  const [comment, setComment] = useState("");
+
+  // commentを取得
+  useEffect(() => {
+    const comments = mock_saykaComments_saykaId1;
+    setCommentList(comments);
+  }, []);
 
   const router = useRouter();
 
@@ -37,11 +46,19 @@ export const CommentModal: FC<TProps> = ({ id }) => {
     router.back();
   };
 
-  // commentを取得
-  const comments = mock_saykaComments_saykaId1;
-
   const commentByGuest = () => {
     setIsOpen(true);
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setComment(e.target.value);
+  };
+
+  const handleSend = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    // TODO: リクエスト
+    console.log(comment);
+    setComment("");
   };
 
   // commentを取得
@@ -87,7 +104,7 @@ export const CommentModal: FC<TProps> = ({ id }) => {
         </div>
 
         <div className="grow flex-col overflow-y-scroll bg-gray-50">
-          {comments.map((comment) => (
+          {commentList.map((comment) => (
             <div
               key={comment.id}
               className="flex flex-col gap-2 border-t border-gray-300 px-8 py-4">
@@ -119,15 +136,19 @@ export const CommentModal: FC<TProps> = ({ id }) => {
           ))}
         </div>
 
-        {user ? (
-          <div className="flex items-center gap-5 border-t border-gray-200 bg-white p-5">
+        {!user ? (
+          <form
+            onSubmit={handleSend}
+            className="flex items-center gap-5 border-t border-gray-200 bg-white p-5">
             <textarea
-              className="focus:shadow-outline w-full rounded-md border px-5 py-2 transition-shadow focus:outline-none"
+              value={comment}
+              onChange={handleInputChange}
+              className="focus:shadow-outline w-full rounded-xl border px-5 py-2 text-sm transition-shadow focus:outline-none"
               placeholder="Aa"></textarea>
-            <button className="rounded-full bg-teal-400 p-2 transition-colors duration-300 hover:bg-teal-500">
-              <VscSend size={30} fill="white" />
+            <button className="rounded-full hover:bg-teal-400 p-2 ">
+              <BsSend size={24} />
             </button>
-          </div>
+          </form>
         ) : (
           <div className="flex items-center justify-end gap-5 border-t border-gray-200 bg-white p-5">
             <button

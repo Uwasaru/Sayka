@@ -1,4 +1,4 @@
-import { TSayka, TTag, TUser } from "./type";
+import { TComment, TSayka, TTag, TUser } from "./type";
 
 // user
 export const mock_user_1: TUser = {
@@ -32,7 +32,7 @@ export const mock_tag_2: TTag = {
 
 export const mock_tag_3: TTag = {
   id: 3,
-  name: "java",
+  name: "javascript初心者",
 };
 
 export const mock_tag_4: TTag = {
@@ -60,8 +60,11 @@ export const mock_saykas: TSayka[] = [
     slide_url:
       "https://docs.google.com/presentation/d/1DsnKwxItsMPsA7-WeWLvDOIMLbApLPPFBtJD5WLemy4/edit?usp=sharing",
     application_url: "https://nextjs.org/docs",
+    figma_url:
+      "https://www.figma.com/file/1DsnKwxItsMPsA7-WeWLvDOIMLbApLPPFBtJD5WLemy4/edit",
+    article_url: "https://qiita.com/39_to",
     user: mock_user_1,
-    tags: [mock_tag_1, mock_tag_2, mock_tag_4],
+    tags: [mock_tag_1, mock_tag_2, mock_tag_3, mock_tag_4],
   },
   {
     id: 2,
@@ -103,7 +106,7 @@ export const mock_saykas: TSayka[] = [
 export const mock_saykaNull: TSayka[] = [];
 
 // saykaComments
-export const mock_saykaComments_saykaId1 = [
+export const mock_saykaComments_saykaId1: TComment[] = [
   {
     id: 1,
     contents:

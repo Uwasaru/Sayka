@@ -21,7 +21,7 @@ export const TagFilter: FC<TProps> = ({ tag, changeFilterTag, onSubmit }) => {
   return (
     <div className="flex items-center space-x-2">
       <BsFilterLeft size={24} />
-      <div className="inline-block cursor-pointer rounded-2xl border border-gray-300 bg-gradient-to-r from-gray-400 to-gray-500 px-3 py-1 font-semibold shadow-md focus-within:ring-2 focus-within:ring-teal-400 hover:bg-gradient-to-r hover:from-gray-200 hover:to-gray-300">
+      <div className="inline-block cursor-pointer rounded-2xl border border-gray-300 bg-gradient-to-r from-gray-200 to-gray-300 px-3 py-1 font-semibold shadow-md focus-within:ring-2 focus-within:ring-teal-400 hover:bg-gradient-to-r hover:from-gray-100 hover:to-gray-200 ">
         #{" "}
         <input
           type="tag"
