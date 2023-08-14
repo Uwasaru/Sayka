@@ -136,7 +136,7 @@ export const CommentModal: FC<TProps> = ({ id }) => {
           ))}
         </div>
 
-        {!user ? (
+        {user ? (
           <form
             onSubmit={handleSend}
             className="flex items-center gap-5 border-t border-gray-200 bg-white p-5">
