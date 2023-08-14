@@ -22,4 +22,4 @@ services:
       - GITHUB_SECRET=${GITHUB_SECRET}
       - GITHUB_CALLBACK_API=${GITHUB_CALLBACK_API}
       - GITHUB_GETME=${GITHUB_GETME}
-      - rawPrivKey=${rawPrivKey
+      - rawPrivKey=${rawPrivKey}
