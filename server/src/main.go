@@ -18,5 +18,6 @@ func main() {
 	r.InitCommentRouter(conn)
 	r.InitTagRouter(conn)
 	r.InitSessionRouter(conn)
+	r.InitAuthRouter(conn)
 	r.Serve()
 }

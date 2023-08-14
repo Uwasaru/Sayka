@@ -6,7 +6,7 @@ import (
 
 type LoginSessions struct {
 	ID     string
-	UserID string
+	UserID int
 	Expiry time.Time
 }
 
@@ -16,7 +16,7 @@ type AuthStates struct {
 }
 
 type GithubAuth struct {
-	UserID       string
+	UserID       int
 	AccessToken  string
 	RefreshToken string
 	Expiry       time.Time

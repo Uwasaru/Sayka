@@ -36,7 +36,7 @@ func (repo *AuthRepository) StoreState(ctx context.Context, authState *entity.Au
 	return err
 }
 
-func (repo *AuthRepository) StoreSession(ctx context.Context, sessionID string, userId string) error {
+func (repo *AuthRepository) StoreSession(ctx context.Context, sessionID string, userId int) error {
 	dto := &d.LoginSessionsDto{}
 	dto.ID = sessionID
 	dto.UserID = userId
@@ -50,7 +50,7 @@ func (repo *AuthRepository) StoreSession(ctx context.Context, sessionID string, 
 	return err
 }
 
-func (repo *AuthRepository) StoreORUpdateToken(ctx context.Context, userId string, token *oauth2.Token) error {
+func (repo *AuthRepository) StoreORUpdateToken(ctx context.Context, userId int, token *oauth2.Token) error {
 	found, err := repo.GetTokenByUserID(ctx, userId)
 	if err != nil && err != sql.ErrNoRows {
 		return err
@@ -94,7 +94,7 @@ func (repo *AuthRepository) DeleteState(ctx context.Context, state string) error
 	return err
 }
 
-func (repo *AuthRepository) GetTokenByUserID(ctx context.Context, userId string) (*oauth2.Token, error) {
+func (repo *AuthRepository) GetTokenByUserID(ctx context.Context, userId int) (*oauth2.Token, error) {
 	var dto d.GithubAuthDto
 
 	query := `
@@ -114,7 +114,7 @@ func (repo *AuthRepository) GetTokenByUserID(ctx context.Context, userId string)
 	}, nil
 }
 
-func (repo *AuthRepository) StoreToken(ctx context.Context, userId string, token *oauth2.Token) error {
+func (repo *AuthRepository) StoreToken(ctx context.Context, userId int, token *oauth2.Token) error {
 
 	dto := d.GithubAuthDto{}
 	dto.UserID = userId
@@ -130,7 +130,7 @@ func (repo *AuthRepository) StoreToken(ctx context.Context, userId string, token
 	return err
 }
 
-func (repo *AuthRepository) UpdateToken(ctx context.Context, userId string, token *oauth2.Token) error {
+func (repo *AuthRepository) UpdateToken(ctx context.Context, userId int, token *oauth2.Token) error {
 	dto := d.GithubAuthDto{}
 	dto.UserID = userId
 	dto.AccessToken = token.AccessToken
@@ -157,7 +157,7 @@ func (repo *AuthRepository) DeleteSession(ctx context.Context, sessionID string)
 	return err
 }
 
-func (repo *AuthRepository) GetUserIdFromSession(ctx context.Context, sessionId string) (string, error) {
+func (repo *AuthRepository) GetUserIdFromSession(ctx context.Context, sessionId string) (int, error) {
 	var dto d.LoginSessionsDto
 
 	query := `
@@ -168,7 +168,7 @@ func (repo *AuthRepository) GetUserIdFromSession(ctx context.Context, sessionId 
 	`
 	err := repo.conn.DB.GetContext(ctx, &dto, query, sessionId)
 	if err != nil {
-		return "", err
+		return 0, err
 	}
 	return dto.UserID, nil
 }

@@ -3,7 +3,7 @@ package dto
 import "github.com/Uwasaru/Sayka/domain/entity"
 
 type UserDto struct {
-	ID   string `db:"id"`
+	ID   int `db:"id"`
 	Name string `db:"name"`
 	Img  string `db:"img"`
 }

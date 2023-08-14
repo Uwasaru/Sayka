@@ -2,6 +2,7 @@ package context
 
 import (
 	"context"
+	"strconv"
 
 	"golang.org/x/oauth2"
 )
@@ -26,18 +27,19 @@ func GetToken(ctx context.Context) (*oauth2.Token, bool) {
 	return token, ok
 }
 
-func SetUserId(ctx context.Context, userId string) context.Context {
-	if userId != "" {
+func SetUserId(ctx context.Context, userId int) context.Context {
+	if userId != 0 {
 		return context.WithValue(ctx, userIdKey, userId)
 	}
 	return ctx
 }
 
-func GetUser(ctx context.Context) (string, bool) {
+func GetUser(ctx context.Context) (int, bool) {
 	v := ctx.Value(userIdKey)
 	userId, ok := v.(string)
 	if !ok {
-		return "", ok
+		return 0, ok
 	}
-	return userId, ok
+	i, _ := strconv.Atoi(userId)
+	return i, ok
 }

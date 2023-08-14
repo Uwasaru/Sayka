@@ -24,9 +24,9 @@ type IAuthUsecase interface {
 	Authorization(ctx context.Context, state, code string) (string, string, error)
 	DeleteSession(ctx context.Context, sessionID string) error
 	CheckSessionExpiry(ctx context.Context, sessionID string) (bool, error)
-	GetUserIdFromSession(ctx context.Context, sessionId string) (string, error)
-	GetTokenByUserId(ctx context.Context, userId string) (*oauth2.Token, error)
-	RefreshAccessToken(ctx context.Context, userId string, token *oauth2.Token) (*oauth2.Token, error)
+	GetUserIdFromSession(ctx context.Context, sessionId string) (int, error)
+	GetTokenByUserId(ctx context.Context, userId int) (*oauth2.Token, error)
+	RefreshAccessToken(ctx context.Context, userId int, token *oauth2.Token) (*oauth2.Token, error)
 }
 
 func NewAuthUsecase(ra repository.AuthRepository, rg repository.GithubRepository, ur repository.UserRepository) IAuthUsecase {
@@ -74,11 +74,11 @@ func (uc *Auth) Authorization(ctx context.Context, state, code string) (string, 
 	return storedState.RedirectURL, sessionID, nil
 }
 
-func (uc *Auth) createUserIfNotExists(ctx context.Context) (string, error) {
+func (uc *Auth) createUserIfNotExists(ctx context.Context) (int, error) {
 	// githubからユーザー情報を取得
 	user, err := uc.githubRepo.GetMe(ctx)
 	if err != nil {
-		return "", fmt.Errorf("getMe: %w", err)
+		return 0, fmt.Errorf("getMe: %w", err)
 	}
 
 	// ユーザが既に存在するか確認
@@ -86,11 +86,11 @@ func (uc *Auth) createUserIfNotExists(ctx context.Context) (string, error) {
 	if err != nil && err == sql.ErrNoRows {
 		user, err = uc.userRepo.CreateUser(context.Background(), user)
 		if err != nil {
-			return "", err
+			return 0, err
 		}
 	}
 	if err != nil {
-		return "", err
+		return 0, err
 	}
 	return user.ID, err
 }
@@ -117,22 +117,22 @@ func (uc *Auth) CheckSessionExpiry(ctx context.Context, sessionID string) (bool,
 	return true, nil
 }
 
-func (uc *Auth) GetUserIdFromSession(ctx context.Context, sessionId string) (string, error) {
+func (uc *Auth) GetUserIdFromSession(ctx context.Context, sessionId string) (int, error) {
 	userId, err := uc.authRepo.GetUserIdFromSession(ctx, sessionId)
 	if err != nil {
-		return "", fmt.Errorf("getUserIDFromSession: %w", err)
+		return 0, fmt.Errorf("getUserIDFromSession: %w", err)
 	}
 	return userId, nil
 }
 
-func (uc *Auth) GetTokenByUserId(ctx context.Context, userId string) (*oauth2.Token, error) {
+func (uc *Auth) GetTokenByUserId(ctx context.Context, userId int) (*oauth2.Token, error) {
 	token, err := uc.authRepo.GetTokenByUserID(ctx, userId)
 	if err != nil {
 		return nil, fmt.Errorf("getTokenByUserID: %w", err)
 	}
 	return token, nil
 }
-func (uc *Auth) RefreshAccessToken(ctx context.Context, userId string, token *oauth2.Token) (*oauth2.Token, error) {
+func (uc *Auth) RefreshAccessToken(ctx context.Context, userId int, token *oauth2.Token) (*oauth2.Token, error) {
 	if token.Valid() {
 		return token, nil
 	}

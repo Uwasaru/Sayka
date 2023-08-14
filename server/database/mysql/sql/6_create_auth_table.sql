@@ -1,5 +1,5 @@
 CREATE TABLE `github_auths` (
-  `user_id` varchar(255) COLLATE utf8mb4_bin NOT NULL COMMENT 'ユーザID',
+  `user_id` int(8) COLLATE utf8mb4_bin NOT NULL COMMENT 'ユーザID',
   `access_token` varchar(255) COLLATE utf8mb4_bin NOT NULL COMMENT 'OAuth2のアクセストークン',
   `refresh_token` varchar(255) COLLATE utf8mb4_bin NOT NULL COMMENT 'OAuth2のリフレッシュトークン',
   `expiry` datetime NOT NULL COMMENT 'アクセストークンの有効期限',

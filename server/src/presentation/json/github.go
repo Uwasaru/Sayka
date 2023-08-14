@@ -1,7 +1,7 @@
 package json
 
 type GithubUserJson struct {
-	ID        string `json:"id"`
-	Name      string `json:"username"`
+	ID        int `json:"id"`
+	Name      string `json:"login"`
 	AvatarUrl string `json:"avatar_url"`
 }

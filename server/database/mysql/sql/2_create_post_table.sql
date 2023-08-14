@@ -1,7 +1,7 @@
 CREATE TABLE `posts` (
   `id`          varchar(255) COLLATE utf8mb4_bin NOT NULL,
   `title`       varchar(255) COLLATE utf8mb4_bin NOT NULL,
-  `user_id`     varchar(255) COLLATE utf8mb4_bin NOT NULL,
+  `user_id`     int(8) COLLATE utf8mb4_bin NOT NULL,
   `github_url`  varchar(255) COLLATE utf8mb4_bin NOT NULL,
   `app_url`     varchar(255) COLLATE utf8mb4_bin NOT NULL,
   `slide_url`   varchar(255) COLLATE utf8mb4_bin NOT NULL,
