@@ -89,7 +89,7 @@ export const CommentModal: FC<TProps> = ({ id }) => {
         onClick={handleClose}
       />
 
-      <div className="z-10 flex h-full w-2/5 flex-col overflow-hidden rounded-l-xl bg-white shadow-2xl">
+      <div className="z-10 flex h-full md:w-2/5 w-full flex-col overflow-hidden rounded-l-xl bg-white shadow-2xl">
         {/* sayka */}
         <div className="border-b border-gray-200 p-8">
           <div className="flex justify-end">
