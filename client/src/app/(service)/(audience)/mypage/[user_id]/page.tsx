@@ -1,5 +1,7 @@
+"use client";
+
 import { mock_users } from "@/api";
-import { useRedirect } from "@/hooks/useRedirect";
+import { useRouter } from "next/navigation";
 import { MypageSaykaList } from "./_components/MypageSaykaList";
 import { Profile } from "./_components/Profile";
 
@@ -8,10 +10,10 @@ type TProps = {
 };
 
 const Page = ({ params }: TProps) => {
-  const { redirectToTimeline } = useRedirect();
+  const router = useRouter();
   const user = mock_users.find((user) => user.id === Number(params.user_id));
   if (!user) {
-    redirectToTimeline();
+    router.push("/timeline");
     return null;
   }
 
