@@ -19,8 +19,8 @@ export const metadata: Metadata = {
     images: [
       {
         url: "https://sayka.vercel.app/ogp.png",
-        width: 800,
-        height: 600,
+        width: 700,
+        height: 400,
       },
     ],
     type: "website",
