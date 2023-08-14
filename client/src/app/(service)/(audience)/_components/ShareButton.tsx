@@ -30,7 +30,7 @@ const { clientURL } = getEnv();
 // };
 
 export const ShareButton: FC<ShareButtonProps> = ({ saykaId }) => {
-  const url = `https://sayka.vercel.app/share/${saykaId}`;
+  const url = `https://sayka.vercel.app/shareSaykaInformation/${saykaId}`;
   const title = "成果物共有アプリ『Sayka』を作成しました！\n#Sayka\n";
   return (
     <TwitterShareButton url={url} title={title}>
