@@ -116,6 +116,8 @@ export const SaykaMockData: TSayka[] = [
   },
 ];
 
+export const SaykaMockNullData: TSayka[] = [];
+
 export const SaykaList = () => {
   const [tagState, setTagState] = useState<string>("ALL");
 

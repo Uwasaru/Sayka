@@ -1,4 +1,5 @@
 import { SaykaList } from "../../_components/SaykaList";
+import { MypageSaykaList } from "./_components/MypageSaykaList";
 
 import { Profile } from "./_components/Profile";
 
@@ -17,7 +18,7 @@ const Page = () => {
         />
       </div>
       <div className="col-span-5 md:col-span-3">
-        <SaykaList />
+        <MypageSaykaList />
       </div>
     </div>
   );
