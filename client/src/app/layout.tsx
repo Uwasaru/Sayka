@@ -25,6 +25,7 @@ export const metadata: Metadata = {
     ],
     type: "website",
   },
+  icons: "https://sayka.vercel.app/logo_solo.png",
 };
 
 export default function RootLayout({
