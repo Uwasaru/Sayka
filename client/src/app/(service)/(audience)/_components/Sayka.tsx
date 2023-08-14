@@ -47,7 +47,7 @@ type TSaykaProps = {
 
 export const Sayka: FC<TSaykaProps> = ({ data, changeFilterTag }) => {
   return (
-    <div className="space-y-5 rounded-md border border-gray-900 p-5 shadow-lg transition-transform hover:-translate-y-1 hover:shadow-xl">
+    <div className="space-y-5 rounded-md p-5 shadow-lg transition-transform hover:-translate-y-1 hover:shadow-xl border-4 border-gray-200">
       <SaykaHeader data={data} />
       <SaykaBody data={data} changeFilterTag={changeFilterTag} />
       <SaykaFooter data={data} />
