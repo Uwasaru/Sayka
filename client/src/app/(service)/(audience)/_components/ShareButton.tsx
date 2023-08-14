@@ -6,13 +6,14 @@ import { TwitterShareButton, TwitterIcon } from "react-share";
 
 type ShareButtonProps = {
   saykaId: number;
+  saykaTitle: string;
 };
 
 const { clientURL } = getEnv();
 
-export const ShareButton: FC<ShareButtonProps> = ({ saykaId }) => {
+export const ShareButton: FC<ShareButtonProps> = ({ saykaId, saykaTitle }) => {
   const url = `https://sayka.vercel.app/shareSaykaInformation/${saykaId}`;
-  const title = "成果物共有アプリ『Sayka』を作成しました！\n#Sayka";
+  const title = `${saykaTitle}を作成しました！\n#Sayka`;
   return (
     <TwitterShareButton url={url} title={title}>
       <TwitterIcon size={32} round />
