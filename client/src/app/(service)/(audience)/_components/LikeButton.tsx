@@ -1,8 +1,9 @@
-import { modalState } from "@/store/atoms/modalAtom";
 import { useAtom } from "jotai";
 import React, { FC, useState } from "react";
 import { VscHeartFilled } from "react-icons/vsc";
 import { VscHeart } from "react-icons/vsc";
+
+import { modalState } from "@/store/atoms/modalAtom";
 
 type TProps = {
   saykaId: number;

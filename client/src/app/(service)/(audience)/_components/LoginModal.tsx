@@ -1,11 +1,13 @@
-import { SaykaLogo } from "@/ui/svg/SaykaLogo";
+import { useAtom } from "jotai";
 import Image from "next/image";
 import { FC } from "react";
 import { GrClose } from "react-icons/gr";
 
-import { getEnv } from "@/utils/env";
-import { useAtom } from "jotai";
+
+
 import { modalState } from "@/store/atoms/modalAtom";
+import { SaykaLogo } from "@/ui/svg/SaykaLogo";
+import { getEnv } from "@/utils/env";
 
 const { serverURL, clientURL } = getEnv();
 
@@ -23,7 +25,7 @@ export const LoginModal: FC = () => {
 
   if (!isOpen) return null;
   return (
-    <div className="fixed inset-0 z-50 flex justify-center items-center">
+    <div className="fixed inset-0 z-50 flex items-center justify-center">
       {/* Background overlay */}
       <div
         className="absolute inset-0 bg-black opacity-50 transition-opacity duration-300 ease-in-out"
@@ -31,7 +33,7 @@ export const LoginModal: FC = () => {
       />
 
       {/* Modal content */}
-      <div className="z-10 md:w-2/5 w-4/5 bg-white rounded-xl shadow-2xl overflow-hidden ">
+      <div className="z-10 w-4/5 overflow-hidden rounded-xl bg-white shadow-2xl md:w-2/5 ">
         {/* Header */}
         <div className="p-5">
           <div className="flex justify-end">
@@ -50,7 +52,7 @@ export const LoginModal: FC = () => {
           <div className="flex justify-center">
             <a
               href={authUrl}
-              className="flex items-center rounded-md bg-white px-4 py-3 font-bold text-stone-900 hover:opacity-90 border-2 border-gray-800 hover:bg-sc mb-10">
+              className="mb-10 flex items-center rounded-md border-2 border-gray-800 bg-white px-4 py-3 font-bold text-stone-900 hover:bg-sc hover:opacity-90">
               <Image
                 src="/github-logo.svg"
                 alt="github"

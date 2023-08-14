@@ -4,10 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
 
-const NAV_LINKS = [
-  { name: "ホーム", href: "/" },
-  { name: "タイムライン", href: "/timeline" },
-];
+const NAV_LINKS = [{ name: "タイムライン", href: "/timeline" }];
 export const AudienceNavigation = () => {
   const pathname = usePathname();
 

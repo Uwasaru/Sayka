@@ -8,6 +8,7 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import { TfiLayoutSlider } from "react-icons/tfi";
 import { TfiWorld } from "react-icons/tfi";
 
+import { TSayka } from "@/api/mock/type";
 import { TagInItem } from "@/ui/Tag";
 import { TooltipUI } from "@/ui/Tooltip";
 
@@ -15,26 +16,6 @@ import { CommentModalButton } from "./CommentModalButton";
 import { FixModal } from "./FixModal";
 import { LikeButton } from "./LikeButton";
 import { ShareButton } from "./ShareButton";
-
-export type TSayka = {
-  id: number;
-  title: string;
-  description: string;
-  like_count: number;
-  comment_count: number;
-  github_url?: string;
-  slide_url?: string;
-  application_url?: string;
-  user: {
-    id: number;
-    name: string;
-    icon: string;
-  };
-  tags?: {
-    id: number;
-    name: string;
-  }[];
-};
 
 type TProps = {
   data: TSayka;
@@ -47,7 +28,7 @@ type TSaykaProps = {
 
 export const Sayka: FC<TSaykaProps> = ({ data, changeFilterTag }) => {
   return (
-    <div className="space-y-5 rounded-md p-5 shadow-lg transition-transform hover:-translate-y-1 hover:shadow-xl border-4 border-gray-200">
+    <div className="space-y-5 rounded-md border-4 border-gray-200 p-5 shadow-lg transition-transform hover:-translate-y-1 hover:shadow-xl">
       <SaykaHeader data={data} />
       <SaykaBody data={data} changeFilterTag={changeFilterTag} />
       <SaykaFooter data={data} />
@@ -71,7 +52,7 @@ const SaykaHeader: FC<TProps> = ({ data }) => {
           alt="user icon"
           width={30}
           height={30}
-          className="rounded-full mr-1"
+          className="mr-1 rounded-full"
         />
         <Link
           href={`/mypage/${data.user.id}`}
@@ -105,8 +86,8 @@ const SaykaBody: FC<TSaykaProps> = ({ data, changeFilterTag }) => {
 
 const SaykaFooter: FC<TProps> = ({ data }) => {
   return (
-    <div className="flex md:flex-row flex-col-reverse">
-      <div className="flex md:w-[50%] items-center justify-start gap-5 ">
+    <div className="flex flex-col-reverse md:flex-row">
+      <div className="flex items-center justify-start gap-5 md:w-[50%] ">
         <div className="flex items-center gap-1">
           <CommentModalButton id={data.id} />
           {data.comment_count}
@@ -117,7 +98,7 @@ const SaykaFooter: FC<TProps> = ({ data }) => {
         </div>
         <ShareButton saykaId={data.id} saykaTitle={data.title} />
       </div>
-      <div className="flex md:w-[50%] items-center justify-end gap-5 pb-5 md:pb-0">
+      <div className="flex items-center justify-end gap-5 pb-5 md:w-[50%] md:pb-0">
         {data.github_url && (
           <TooltipUI label="ソースコードへ">
             <Link href={data.github_url} className="flex items-center gap-1">

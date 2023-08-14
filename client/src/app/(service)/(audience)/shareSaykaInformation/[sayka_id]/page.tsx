@@ -1,14 +1,15 @@
 "use client";
 
+import { mock_saykas } from "@/api";
+
 import { Sayka } from "../../_components/Sayka";
-import { SaykaMockData } from "../../_components/SaykaList";
 
 type TProps = {
   params: { sayka_id: string };
 };
 
 const Page = ({ params }: TProps) => {
-  const sayka = SaykaMockData.find(
+  const sayka = mock_saykas.find(
     (sayka) => sayka.id === Number(params.sayka_id)
   );
 

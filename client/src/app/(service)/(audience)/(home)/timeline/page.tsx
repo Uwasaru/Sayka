@@ -3,7 +3,7 @@
 import { useSearchParams } from "next/navigation";
 
 import { CommentModal } from "../../_components/CommentModal";
-import { SaykaList } from "../../_components/SaykaList";
+import { SaykaListWithFilter } from "../../_components/SaykaListWithFilter";
 
 const Page = () => {
   const searchParams = useSearchParams();
@@ -15,7 +15,7 @@ const Page = () => {
 
   return (
     <div className="mt-5 md:mx-16">
-      <SaykaList />
+      <SaykaListWithFilter />
       {isOpenModal && saykaId && <CommentModal id={Number(saykaId)} />}
     </div>
   );

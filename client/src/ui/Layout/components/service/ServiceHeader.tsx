@@ -1,13 +1,12 @@
+import { useAtom } from "jotai";
 import Image from "next/image";
 import Link from "next/link";
-
-import { SaykaLogo } from "@/ui/svg/SaykaLogo";
 import { FC, useState } from "react";
-
 import { LiaUserCircleSolid } from "react-icons/lia";
+
 import { LoginModal } from "@/app/(service)/(audience)/_components/LoginModal";
-import { useAtom } from "jotai";
 import { modalState } from "@/store/atoms/modalAtom";
+import { SaykaLogo } from "@/ui/svg/SaykaLogo";
 
 type TProps = {
   user?: {

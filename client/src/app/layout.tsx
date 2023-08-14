@@ -21,7 +21,7 @@ export const metadata: Metadata = {
         url: "https://sayka.vercel.app/ogp.png",
       },
     ],
-    type: "article",
+    type: "website",
   },
   twitter: {
     card: "summary_large_image",
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
   icons: "https://sayka.vercel.app/logo_solo.png",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;

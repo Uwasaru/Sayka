@@ -1,7 +1,8 @@
-import { TooltipUI } from "@/ui/Tooltip";
 import Image from "next/image";
 import React, { FC } from "react";
 import { AiFillGithub } from "react-icons/ai";
+
+import { TooltipUI } from "@/ui/Tooltip";
 
 type TProps = {
   user: {

@@ -6,7 +6,7 @@ const Page = () => {
   return (
     <div>
       <ContentTitle text="成果の投稿" />
-      <div className="md:px-0 px-2">
+      <div className="px-2 md:px-0">
         <SaykaForm />
       </div>
     </div>

@@ -1,12 +1,10 @@
 "use client";
 
-import { useState } from "react";
-import { Sayka } from "../../../_components/Sayka";
-import {
-  SaykaList,
-  SaykaMockData,
-  SaykaMockNullData,
-} from "../../../_components/SaykaList";
+import { FC, useState } from "react";
+
+import { mock_saykas, mock_saykaNull } from "@/api";
+
+import { SaykaList } from "../../../_components/SaykaList";
 
 type list_kind = "MYSELF" | "FAVORITE" | "COMMENT";
 
@@ -30,12 +28,15 @@ const LISTS: list_type[] = [
   },
 ];
 
-export const MypageSaykaList = () => {
+type TProps = {
+  userId: number;
+};
+export const MypageSaykaList: FC<TProps> = ({ userId }) => {
   const [nowList, setList] = useState<list_kind>("MYSELF");
   return (
     <div>
-      <div className="border-b border-b-stone-900 font-semibold flex justify-center mx-5">
-        <div className="mx-10 flex space-x-10 font-semibold text-gray-600 items-center justify-center text-sm">
+      <div className="mx-5 flex justify-center border-b border-b-stone-900 font-semibold">
+        <div className="mx-10 flex items-center justify-center space-x-10 text-sm font-semibold text-gray-600">
           {LISTS.map((list) => {
             const isActive = nowList === list.name;
 
@@ -53,40 +54,22 @@ export const MypageSaykaList = () => {
         </div>
       </div>
       <div className="mx-10 mt-10">
-        {nowList === "MYSELF" && <MyselfSaykaList />}
-        {nowList === "FAVORITE" && <FavoriteSaykaList />}
-        {nowList === "COMMENT" && <CommentSaykaList />}
+        {nowList === "MYSELF" && <MyselfSaykaList userId={userId} />}
+        {nowList === "FAVORITE" && <FavoriteSaykaList userId={userId} />}
+        {nowList === "COMMENT" && <CommentSaykaList userId={userId} />}
       </div>
     </div>
   );
 };
 
-const MyselfSaykaList = () => {
-  return (
-    <div className="mt-5 space-y-5">
-      {SaykaMockData.map((sayka) => (
-        <Sayka key={sayka.id} data={sayka} />
-      ))}
-    </div>
-  );
+const MyselfSaykaList: FC<TProps> = ({ userId }) => {
+  return <SaykaList sayka={mock_saykas} />;
 };
 
-const FavoriteSaykaList = () => {
-  return (
-    <div className="mt-5 space-y-5">
-      {SaykaMockData.map((sayka) => (
-        <Sayka key={sayka.id} data={sayka} />
-      ))}
-    </div>
-  );
+const FavoriteSaykaList: FC<TProps> = ({ userId }) => {
+  return <SaykaList sayka={mock_saykas} />;
 };
 
-const CommentSaykaList = () => {
-  return (
-    <div className="mt-5 space-y-5">
-      {SaykaMockNullData.map((sayka) => (
-        <Sayka key={sayka.id} data={sayka} />
-      ))}
-    </div>
-  );
+const CommentSaykaList: FC<TProps> = ({ userId }) => {
+  return <SaykaList sayka={mock_saykaNull} />;
 };

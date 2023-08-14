@@ -30,17 +30,17 @@ export const FixModal: FC<TProps> = ({ isVisible, onClose, id }) => {
   return (
     <div
       ref={modalRef}
-      className="absolute right-0 top-0 z-10 w-48 border border-gray-200 bg-white shadow-md rounded"
+      className="absolute right-0 top-0 z-10 w-48 rounded border border-gray-200 bg-white shadow-md"
       onClick={(e) => e.stopPropagation()}>
       <Link
         href={`/edit/${id}`}
-        className="w-full px-4 py-2 text-left hover:bg-gray-100 font-semibold flex items-center text-green-700">
+        className="flex w-full items-center px-4 py-2 text-left font-semibold text-green-700 hover:bg-gray-100">
         <AiOutlineEdit size={20} className="mr-2" />
         編集
       </Link>
       <button
         onClick={() => console.log("削除")}
-        className=" w-full px-4 py-2 text-left hover:bg-gray-100 font-semibold flex items-center text-red-800">
+        className=" flex w-full items-center px-4 py-2 text-left font-semibold text-red-800 hover:bg-gray-100">
         <AiOutlineDelete size={20} className="mr-2" />
         削除
       </button>

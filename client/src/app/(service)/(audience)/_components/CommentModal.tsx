@@ -1,5 +1,6 @@
 "use client";
 
+import { useAtom } from "jotai";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -8,51 +9,13 @@ import { GrClose } from "react-icons/gr";
 import { VscSend } from "react-icons/vsc";
 import ReactMarkdown from "react-markdown";
 
-import { CodeBlock } from "@/ui/Text/components/CodeBlock";
-
-import { SaykaMockData } from "./SaykaList";
-import { useAtom } from "jotai";
+import { mock_saykaComments_saykaId1, mock_saykas } from "@/api";
 import { modalState } from "@/store/atoms/modalAtom";
+import { CodeBlock } from "@/ui/Text/components/CodeBlock";
 
 type TProps = {
   id: number;
 };
-
-const saykaComment = [
-  {
-    id: 1,
-    contents:
-      "面白いですね！！！これからも頑張ってください！面白いですね！！！これからも頑張ってください！面白いですね！！！これからも頑張ってください！面白いですね！！！これからも頑張ってください！面白いですね！！！これからも頑張ってください！面白いですね！！！これからも頑張ってください！面白いですね！！！これからも頑張ってください！面白いですね！！！これからも頑張ってください！",
-    created_at: "2021-10-10",
-    user: {
-      id: 5,
-      name: "teyang",
-      icon: "/icon2.jpg",
-    },
-  },
-  {
-    id: 2,
-    contents:
-      " > console.log(data) \n\nこれは一人で開発されましたか？よければ一緒にやりたいです！ \n\n```console.log('Hello World')```ga`aa`",
-    created_at: "2021-10-10",
-    user: {
-      id: 5,
-      name: "teyang",
-      icon: "/icon2.jpg",
-    },
-  },
-  {
-    id: 3,
-    contents:
-      "これは一人で開発されましたか？よければ一緒にやりたいです！これは一人で開発されましたか？よければ一緒にやりたいです！これは一人で開発されましたか？よければ一緒にやりたいです！これは一人で開発されましたか？よければ一緒にやりたいです！これは一人で開発されましたか？よければ一緒にやりたいです！これは一人で開発されましたか？よければ一緒にやりたいです！これは一人で開発されましたか？よければ一緒にやりたいです！これは一人で開発されましたか？よければ一緒にやりたいです！",
-    created_at: "2021-10-10",
-    user: {
-      id: 5,
-      name: "teyang",
-      icon: "/icon2.jpg",
-    },
-  },
-];
 
 export const CommentModal: FC<TProps> = ({ id }) => {
   // const user = await (async () => {
@@ -66,7 +29,7 @@ export const CommentModal: FC<TProps> = ({ id }) => {
   const router = useRouter();
 
   // SaykaMockDataのidが{id}と一致するものを取得
-  const sayka = SaykaMockData.find((sayka) => sayka.id === id);
+  const sayka = mock_saykas.find((sayka) => sayka.id === id);
 
   if (!sayka) return null;
 
@@ -75,7 +38,7 @@ export const CommentModal: FC<TProps> = ({ id }) => {
   };
 
   // commentを取得
-  const comments = saykaComment;
+  const comments = mock_saykaComments_saykaId1;
 
   const commentByGuest = () => {
     setIsOpen(true);
@@ -89,7 +52,7 @@ export const CommentModal: FC<TProps> = ({ id }) => {
         onClick={handleClose}
       />
 
-      <div className="z-10 flex h-full md:w-2/5 w-full flex-col overflow-hidden rounded-l-xl bg-white shadow-2xl">
+      <div className="z-10 flex h-full w-full flex-col overflow-hidden rounded-l-xl bg-white shadow-2xl md:w-2/5">
         {/* sayka */}
         <div className="border-b border-gray-200 p-8">
           <div className="flex justify-end">
@@ -166,7 +129,7 @@ export const CommentModal: FC<TProps> = ({ id }) => {
             </button>
           </div>
         ) : (
-          <div className="flex justify-end items-center gap-5 border-t border-gray-200 bg-white p-5">
+          <div className="flex items-center justify-end gap-5 border-t border-gray-200 bg-white p-5">
             <button
               onClick={commentByGuest}
               className="rounded bg-sc px-4 py-2 font-semibold text-white transition duration-300 hover:bg-hover-sc">
