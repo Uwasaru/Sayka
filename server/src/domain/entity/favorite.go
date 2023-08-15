@@ -7,4 +7,6 @@ type Favorite struct {
 	PostID string `json:"post_id"`
 }
 
+type FavoriteUsers [] string
+
 type Favorites []*Favorite

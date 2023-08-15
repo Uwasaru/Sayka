@@ -17,7 +17,7 @@ type FavoriteUsecase struct {
 type IFavoriteUsecase interface {
 	GetByID(ctx context.Context, id string) (*entity.Favorite, error)
 	GetByUserID(ctx context.Context, userID string) (*entity.Favorites, error)
-	GetByPostID(ctx context.Context, postID string) (*entity.Favorites, error)
+	GetByPostID(ctx context.Context, postID string) (entity.FavoriteUsers, error)
 	GetAll(ctx context.Context) (*entity.Favorites, error)
 	CreateFavorite(ctx context.Context, favorite *entity.Favorite) error
 	DeleteFavorite(ctx context.Context, id string) error
@@ -41,7 +41,7 @@ func (fu *FavoriteUsecase) GetByUserID(ctx context.Context, userID string) (*ent
 }
 
 // GetByPostIDはPostIDを指定して投稿を取得します
-func (fu *FavoriteUsecase) GetByPostID(ctx context.Context, postID string) (*entity.Favorites, error) {
+func (fu *FavoriteUsecase) GetByPostID(ctx context.Context, postID string) (entity.FavoriteUsers, error) {
 	return fu.fr.GetByPostID(ctx, postID)
 }
 

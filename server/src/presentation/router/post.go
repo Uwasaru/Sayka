@@ -9,7 +9,9 @@ import (
 
 func (r Router) InitPostRouter(conn *database.Conn) {
 	pr := persistence.NewPostRepository(conn)
-	pu := usecase.NewPostUsecase(pr)
+	fr := persistence.NewFavoriteRepository(conn)
+	cr := persistence.NewCommentRepository(conn)
+	pu := usecase.NewPostUsecase(pr, fr, cr)
 	ph := handler.NewPostHandler(pu)
 
 	g := r.Engine.Group("/post")

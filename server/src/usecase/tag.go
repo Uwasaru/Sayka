@@ -17,6 +17,7 @@ type TagUsecase struct {
 type ITagUsecase interface {
 	GetByID(ctx context.Context, id string) (*entity.Tag, error)
 	GetByName(ctx context.Context, name string) (*entity.Tag, error)
+	GetByPostID(ctx context.Context, postID string) (*entity.Tags, error)
 	GetAll(ctx context.Context) (*entity.Tags, error)
 	CreateTag(ctx context.Context, tag *entity.Tag) error
 	DeleteTag(ctx context.Context, id string) error
@@ -37,6 +38,11 @@ func (tu *TagUsecase) GetByID(ctx context.Context, id string) (*entity.Tag, erro
 // GetByNameはNameを指定して投稿を取得します
 func (tu *TagUsecase) GetByName(ctx context.Context, name string) (*entity.Tag, error) {
 	return tu.tr.GetByName(ctx, name)
+}
+
+// GetByPostIDはPostIDを指定して投稿を取得します
+func (tu *TagUsecase) GetByPostID(ctx context.Context, postID string) (*entity.Tags, error) {
+	return tu.tr.GetByPostID(ctx, postID)
 }
 
 // GetAllは全ての投稿を取得します

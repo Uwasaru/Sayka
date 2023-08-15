@@ -10,6 +10,10 @@ type FavoriteDto struct {
 	PostID string `db:"post_id"`
 }
 
+type FavoriteUserDto struct {
+	UserID string `db:"user_id"`
+}
+
 type FavoritesDto []*FavoriteDto
 
 func FavoriteDtoToEntity(dto *FavoriteDto) *entity.Favorite {
@@ -18,6 +22,10 @@ func FavoriteDtoToEntity(dto *FavoriteDto) *entity.Favorite {
 		UserID: dto.UserID,
 		PostID: dto.PostID,
 	}
+}
+
+func FavoriteUserDtoToEntity(dto *FavoriteUserDto) string {
+	return dto.UserID
 }
 
 func FavoriteEntityToDto(f *entity.Favorite) FavoriteDto {

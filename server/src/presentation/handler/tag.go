@@ -23,7 +23,7 @@ func NewTagHandler(tu usecase.ITagUsecase) *TagHandler {
 // GetByIDはIDを指定して投稿を取得します
 func (th *TagHandler) GetByID(ctx *gin.Context) {
 	id := ctx.Param("id")
-	tag, err := th.tu.GetByID(ctx, id)
+	tag, err := th.tu.GetByPostID(ctx, id)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return

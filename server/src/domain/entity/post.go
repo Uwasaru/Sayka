@@ -14,6 +14,9 @@ type Post struct {
 	SlideUrl    string    `json:"slide_url"`
 	Description string    `json:"description"`
 	Tags        []string  `json:"tags"`
+	Favorites   int       `json:"favorites"`
+	Comments    int       `json:"comments"`
+	IsFavorite  bool      `json:"is_favorite"`
 	CreatedAt   time.Time `json:"created_at"`
 }
 

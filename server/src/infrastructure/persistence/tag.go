@@ -78,6 +78,30 @@ func (tr *TagRepository) GetAll(ctx context.Context) (*entity.Tags, error) {
 	return &tags, nil
 }
 
+// GetByPostIDはPostIDを指定してタグを取得します
+func (tr *TagRepository) GetByPostID(ctx context.Context, postID string) (*entity.Tags, error) {
+	query := `
+	SELECT *
+	FROM tags
+	WHERE post_id = ?
+	`
+	rows, err := tr.conn.DB.Query(query, postID)
+	if err != nil {
+		return nil, err
+	}
+
+	var tags entity.Tags
+	for rows.Next() {
+		var dto d.TagDto
+		err := rows.Scan(&dto.ID, &dto.PostID, &dto.Name)
+		if err != nil {
+			return nil, err
+		}
+		tags = append(tags, d.TagDtoToEntity(&dto))
+	}
+	return &tags, nil
+}
+
 // Createはタグを作成します
 func (tr *TagRepository) CreateTag(ctx context.Context, tag *entity.Tag) error {
 	query := `

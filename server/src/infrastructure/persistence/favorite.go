@@ -2,6 +2,7 @@ package persistence
 
 import (
 	"context"
+
 	"github.com/Uwasaru/Sayka/domain/entity"
 	"github.com/Uwasaru/Sayka/domain/repository"
 	"github.com/Uwasaru/Sayka/infrastructure/database"
@@ -53,7 +54,7 @@ func (fr *FavoriteRepository) GetByUserID(ctx context.Context, userID string) (*
 	var favorites entity.Favorites
 	for rows.Next() {
 		var dto d.FavoriteDto
-		err := rows.Scan(&dto)
+		err := rows.Scan(&dto.ID, &dto.UserID, &dto.PostID)
 		if err != nil {
 			return nil, err
 		}
@@ -63,9 +64,9 @@ func (fr *FavoriteRepository) GetByUserID(ctx context.Context, userID string) (*
 }
 
 // GetByPostIDはPostIDを指定して投稿を取得します
-func (fr *FavoriteRepository) GetByPostID(ctx context.Context, postID string) (*entity.Favorites, error) {
+func (fr *FavoriteRepository) GetByPostID(ctx context.Context, postID string) (entity.FavoriteUsers, error) {
 	query := `
-	SELECT *
+	SELECT user_id
 	FROM favorites
 	WHERE post_id = ?
 	`
@@ -74,16 +75,16 @@ func (fr *FavoriteRepository) GetByPostID(ctx context.Context, postID string) (*
 		return nil, err
 	}
 
-	var favorites entity.Favorites
+	var favorites = make(entity.FavoriteUsers, 0)
 	for rows.Next() {
-		var dto d.FavoriteDto
-		err := rows.Scan(&dto)
+		var dto d.FavoriteUserDto
+		err := rows.Scan(&dto.UserID)
 		if err != nil {
 			return nil, err
 		}
-		favorites = append(favorites, d.FavoriteDtoToEntity(&dto))
+		favorites = append(favorites, d.FavoriteUserDtoToEntity(&dto))
 	}
-	return &favorites, nil
+	return favorites, nil
 }
 
 // GetAllは全ての投稿を取得します
@@ -97,10 +98,10 @@ func (fr *FavoriteRepository) GetAll(ctx context.Context) (*entity.Favorites, er
 		return nil, err
 	}
 
-	var favorites entity.Favorites
+	var favorites = entity.Favorites{}
 	for rows.Next() {
 		var dto d.FavoriteDto
-		err := rows.Scan(&dto)
+		err := rows.Scan(&dto.ID, &dto.UserID, &dto.PostID)
 		if err != nil {
 			return nil, err
 		}
@@ -122,7 +123,9 @@ func (fr *FavoriteRepository) CreateFavorite(ctx context.Context, favorite *enti
 		:post_id
 	)
 	`
-	_, err := fr.conn.DB.NamedExecContext(ctx, query, favorite)
+
+	dto := d.FavoriteEntityToDto(favorite)
+	_, err := fr.conn.DB.NamedExecContext(ctx, query, &dto)
 	if err != nil {
 		return err
 	}

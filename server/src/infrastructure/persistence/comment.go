@@ -58,9 +58,9 @@ func (cr *CommentRepository) GetByUserID(ctx context.Context, userID string) (*e
 	return &comments, nil
 }
 
-func (cr *CommentRepository) GetByPostID(ctx context.Context, postID string) (*entity.Comments, error) {
+func (cr *CommentRepository) GetByPostID(ctx context.Context, postID string) (entity.CommentPosts, error) {
 	query := `
-	SELECT *
+	SELECT id
 	FROM comments
 	WHERE post_id = ?
 	`
@@ -69,16 +69,16 @@ func (cr *CommentRepository) GetByPostID(ctx context.Context, postID string) (*e
 		return nil, err
 	}
 
-	var comments entity.Comments
+	var comments entity.CommentPosts
 	for rows.Next() {
-		var dto d.CommentDto
+		var dto d.CommentPostDto
 		err := rows.Scan(&dto)
 		if err != nil {
 			return nil, err
 		}
-		comments = append(comments, d.CommentDtoToEntity(&dto))
+		comments = append(comments, d.CommentPostDtoToEntity(&dto))
 	}
-	return &comments, nil
+	return comments, nil
 }
 
 func (cr *CommentRepository) GetAll(ctx context.Context) (*entity.Comments, error) {

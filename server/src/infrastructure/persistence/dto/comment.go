@@ -14,6 +14,10 @@ type CommentDto struct {
 	CreatedAt time.Time `db:"created_at"`
 }
 
+type CommentPostDto struct {
+	PostID string `db:"post_id"`
+}
+
 type CommentsDto []*CommentDto
 
 func CommentDtoToEntity(dto *CommentDto) *entity.Comment {
@@ -25,6 +29,10 @@ func CommentDtoToEntity(dto *CommentDto) *entity.Comment {
 		Type:      dto.Type,
 		CreatedAt: dto.CreatedAt,
 	}
+}
+
+func CommentPostDtoToEntity(dto *CommentPostDto) string {
+	return dto.PostID
 }
 
 func CommentEntityToDto(c *entity.Comment) CommentDto {
