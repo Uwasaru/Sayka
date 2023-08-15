@@ -1,7 +1,8 @@
 // components/ShareButton.tsx
-import { TooltipUI } from "@/ui/Tooltip";
 import { FC } from "react";
 import { TwitterShareButton, TwitterIcon } from "react-share";
+
+import { TooltipUI } from "@/ui/Tooltip";
 
 type ShareButtonProps = {
   saykaId: number;

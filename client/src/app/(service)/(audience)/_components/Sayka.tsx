@@ -5,12 +5,13 @@ import Link from "next/link";
 import { FC, useMemo, useState } from "react";
 import { AiFillGithub } from "react-icons/ai";
 import { BsThreeDotsVertical } from "react-icons/bs";
-import { TfiLayoutSlider } from "react-icons/tfi";
-import { TfiWorld } from "react-icons/tfi";
 import { MdOutlineArticle } from "react-icons/md";
 import { PiFigmaLogoDuotone } from "react-icons/pi";
+import { TfiLayoutSlider } from "react-icons/tfi";
+import { TfiWorld } from "react-icons/tfi";
 
 import { TSayka } from "@/api/mock/type";
+import { TUser } from "@/types/User";
 import { TagInItem } from "@/ui/Tag";
 import { TooltipUI } from "@/ui/Tooltip";
 
@@ -18,7 +19,6 @@ import { CommentButton } from "./CommentButton";
 import { FixModal } from "./FixModal";
 import { LikeButton } from "./LikeButton";
 import { ShareButton } from "./ShareButton";
-import { TUser } from "@/types/User";
 
 type TProps = {
   data: TSayka;
@@ -78,10 +78,10 @@ const SaykaBody: FC<TProps> = ({ data, changeFilterTag }) => {
   return (
     <div className="flex flex-col space-y-3">
       <div className="text-xl font-extrabold md:text-3xl">{data.title}</div>
-      <div className="md:text-base text-xs">{data.description}</div>
+      <div className="text-xs md:text-base">{data.description}</div>
       <div className="flex flex-wrap">
         {data.tags?.map((tag) => (
-          <div className="py-1 mr-2" key={tag.id}>
+          <div className="mr-2 py-1" key={tag.id}>
             <TagInItem tag={tag} changeFilterTag={changeFilterTag} />
           </div>
         ))}

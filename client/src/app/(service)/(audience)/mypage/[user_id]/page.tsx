@@ -1,7 +1,9 @@
 "use client";
 
-import { mock_users } from "@/api";
 import { useRouter } from "next/navigation";
+
+import { mock_users } from "@/api";
+
 import { MypageSaykaList } from "./_components/MypageSaykaList";
 import { Profile } from "./_components/Profile";
 

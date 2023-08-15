@@ -1,8 +1,8 @@
 "use client";
+import { useRouter } from "next/navigation";
 import { SlArrowLeft } from "react-icons/sl";
 
 import { TooltipUI } from "@/ui/Tooltip";
-import { useRouter } from "next/navigation";
 
 export const CreativeNavigation = () => {
   const router = useRouter();

@@ -5,15 +5,15 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { FC, useEffect, useState } from "react";
+import { BsSend } from "react-icons/bs";
 import { GrClose } from "react-icons/gr";
 import ReactMarkdown from "react-markdown";
 
 import { mock_saykaComments_saykaId1, mock_saykas } from "@/api";
-import { modalState } from "@/store/atoms/modalAtom";
-import { CodeBlock } from "@/ui/Text/components/CodeBlock";
 import { TComment } from "@/api/mock/type";
-import { BsSend } from "react-icons/bs";
+import { modalState } from "@/store/atoms/modalAtom";
 import { TUser } from "@/types/User";
+import { CodeBlock } from "@/ui/Text/components/CodeBlock";
 
 type TProps = {
   id: number;
@@ -141,7 +141,7 @@ export const CommentModal: FC<TProps> = ({ id, user }) => {
               onChange={handleInputChange}
               className="focus:shadow-outline w-full rounded-xl border px-5 py-2 text-sm transition-shadow focus:outline-none"
               placeholder="Aa"></textarea>
-            <button className="rounded-full hover:bg-teal-400 p-2 ">
+            <button className="rounded-full p-2 hover:bg-teal-400 ">
               <BsSend size={24} />
             </button>
           </form>

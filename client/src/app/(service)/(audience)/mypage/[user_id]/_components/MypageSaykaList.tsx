@@ -44,8 +44,8 @@ export const MypageSaykaList: FC<TProps> = ({ userId }) => {
               <button
                 className={
                   isActive
-                    ? "border-b-4 border-sc text-xs lg:text-sm md:w-34 lg:w-32 w-24 "
-                    : "hover:text-gray-900 text-xs lg:text-sm md:w-34 lg:w-32 w-24 "
+                    ? "md:w-34 w-24 border-b-4 border-sc text-xs lg:w-32 lg:text-sm "
+                    : "md:w-34 w-24 text-xs hover:text-gray-900 lg:w-32 lg:text-sm "
                 }
                 key={list.name}
                 onClick={() => setList(list.name)}>

@@ -6,9 +6,9 @@ import { LiaUserCircleSolid } from "react-icons/lia";
 
 import { LoginModal } from "@/app/(service)/(audience)/_components/LoginModal";
 import { modalState } from "@/store/atoms/modalAtom";
-import { SaykaLogo } from "@/ui/svg/SaykaLogo";
-import { ColorButton } from "@/ui/Button";
 import { TUser } from "@/types/User";
+import { ColorButton } from "@/ui/Button";
+import { SaykaLogo } from "@/ui/svg/SaykaLogo";
 
 type TProps = {
   user?: TUser;
@@ -28,7 +28,7 @@ export const ServiceHeader: FC<TProps> = ({ user }) => {
             <SaykaLogo />
           </Link>
           <div className="flex items-center space-x-5 ">
-            <LiaUserCircleSolid size={34} className="md:block hidden" />
+            <LiaUserCircleSolid size={34} className="hidden md:block" />
             <ColorButton label="ログイン" onClick={handleOpen} />
           </div>
         </header>

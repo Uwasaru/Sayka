@@ -1,9 +1,9 @@
 import { FC } from "react";
 
 import { TSayka } from "@/api/mock/type";
+import { TUser } from "@/types/User";
 
 import { Sayka } from "./Sayka";
-import { TUser } from "@/types/User";
 
 type TProps = {
   sayka: TSayka[];

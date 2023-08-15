@@ -5,6 +5,8 @@ import { FC, useState } from "react";
 import { useForm, SubmitHandler, FormProvider } from "react-hook-form";
 import { AiFillGithub } from "react-icons/ai";
 import { GrClose } from "react-icons/gr";
+import { MdOutlineArticle } from "react-icons/md";
+import { PiFigmaLogoDuotone } from "react-icons/pi";
 import { TfiLayoutSlider } from "react-icons/tfi";
 import { TfiWorld } from "react-icons/tfi";
 import { z } from "zod";
@@ -13,8 +15,6 @@ import { Tag } from "@/ui/Tag";
 import { ContentSubTitle, Explanation } from "@/ui/Text";
 
 import { InputBlock } from "./InputBlock";
-import { PiFigmaLogoDuotone } from "react-icons/pi";
-import { MdOutlineArticle } from "react-icons/md";
 
 const schema = z.object({
   title: z
@@ -119,7 +119,7 @@ export const SaykaForm: FC = () => {
         )}
         <div className="mt-5 flex flex-wrap ">
           {tags.map((tag, index) => (
-            <div key={index} className="flex items-center py-1 mr-2">
+            <div key={index} className="mr-2 flex items-center py-1">
               <Tag text={tag} />
               <GrClose
                 className="ml-1 cursor-pointer"

@@ -1,7 +1,9 @@
 // import { Auth } from "@/features";
+import { redirect } from "next/navigation";
+
 import { getLoggedInUser } from "@/api";
 import { getToken } from "@/features";
-import { redirect } from "next/navigation";
+
 import { CreativeNavigation } from "./_components/CreativeNavigation";
 
 export default async function Layout({

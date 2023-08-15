@@ -15,7 +15,7 @@ export const TagInItem: FC<TProps> = ({ tag, changeFilterTag }) => {
   };
   return (
     <div
-      className="inline-block rounded-2xl border border-gray-300 bg-gradient-to-r from-gray-200 to-gray-300 px-3 py-1 font-semibold shadow-md transition-all duration-300 ease-in-out hover:from-gray-100 hover:to-gray-200 hover:shadow-lg md:text-base whitespace-nowrap text-xs"
+      className="inline-block whitespace-nowrap rounded-2xl border border-gray-300 bg-gradient-to-r from-gray-200 to-gray-300 px-3 py-1 text-xs font-semibold shadow-md transition-all duration-300 ease-in-out hover:from-gray-100 hover:to-gray-200 hover:shadow-lg md:text-base"
       onClick={handleClick}>
       # {tag.name}
     </div>

@@ -3,10 +3,10 @@
 import { FC, useState } from "react";
 
 import { mock_saykas } from "@/api";
+import { TUser } from "@/types/User";
 
 import { SaykaList } from "./SaykaList";
 import { TagFilter } from "./TagFilter";
-import { TUser } from "@/types/User";
 
 type TProps = {
   user?: TUser;
