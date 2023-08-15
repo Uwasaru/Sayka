@@ -1,52 +1,55 @@
-import Ajv, { AnySchema } from 'ajv'
-import { JTDDataType } from 'ajv/dist/core'
+import Ajv, { AnySchema } from "ajv";
+import { JTDDataType } from "ajv/dist/core";
 
-import { Result } from './types'
+import { Result } from "./types";
 
 export type ResponseError = {
-  status: number
-  message: string
-}
+  status: number;
+  message: string;
+};
 
 const ajv = new Ajv({
   allErrors: false,
   strict: false,
-})
+});
 
-const resp2result = async <T extends AnySchema>(resp: Response): Promise<Result<T, ResponseError>> => {
-  const data = (await resp.json()) as T
-  const validate = ajv.compile<JTDDataType<T>>(data)
+const resp2result = async <T extends AnySchema>(
+  resp: Response
+): Promise<Result<T, ResponseError>> => {
+  const data = (await resp.json()) as T;
+  const validate = ajv.compile<JTDDataType<T>>(data);
   if (!resp.ok) {
     return {
-      type: 'error',
+      type: "error",
       error: {
         status: resp.status,
         message: resp.statusText,
       },
-    }
+    };
   } else if (!validate(data)) {
     return {
-      type: 'error',
+      type: "error",
       error: {
         status: resp.status,
         message: JSON.stringify(validate.errors),
       },
-    }
+    };
   }
-  return { type: 'ok', value: data }
-}
+  return { type: "ok", value: data };
+};
 
 export const apiClient = {
   get: async <T extends AnySchema>(url: string, token?: string) => {
     const data = await fetch(url, {
-      cache: 'no-store',
-      credentials: 'include',
-      method: 'GET',
+      cache: "no-store",
+      credentials: "include",
+      method: "GET",
       headers: {
         ...(token && { jwt: token }),
       },
-    })
-    return await resp2result<T>(data)
+    });
+    console.log("data", data);
+    return await resp2result<T>(data);
   },
   post: async <T extends AnySchema>(
     url: string,
@@ -54,16 +57,16 @@ export const apiClient = {
     token?: string
   ) => {
     const data = await fetch(url, {
-      cache: 'no-store',
-      credentials: 'include',
-      method: 'POST',
+      cache: "no-store",
+      credentials: "include",
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         ...(token && { jwt: token }),
       },
       body: JSON.stringify(body),
-    })
-    return await resp2result<T>(data)
+    });
+    return await resp2result<T>(data);
   },
   put: async <T extends AnySchema>(
     url: string,
@@ -71,16 +74,16 @@ export const apiClient = {
     token?: string
   ) => {
     const data = await fetch(url, {
-      cache: 'no-store',
-      credentials: 'include',
-      method: 'PUT',
+      cache: "no-store",
+      credentials: "include",
+      method: "PUT",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         ...(token && { jwt: token }),
       },
       body: JSON.stringify(body),
-    })
-    return await resp2result<T>(data)
+    });
+    return await resp2result<T>(data);
   },
   delete: async <T extends AnySchema>(
     url: string,
@@ -88,15 +91,15 @@ export const apiClient = {
     token?: string
   ) => {
     const data = await fetch(url, {
-      cache: 'no-store',
-      credentials: 'include',
-      method: 'DELETE',
+      cache: "no-store",
+      credentials: "include",
+      method: "DELETE",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         ...(token && { jwt: token }),
       },
       body: JSON.stringify(body),
-    })
-    return await resp2result<T>(data)
+    });
+    return await resp2result<T>(data);
   },
-}
+};

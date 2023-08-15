@@ -10,9 +10,6 @@ const Page = () => {
   const isOpenModal = searchParams.get("modal");
   const saykaId = searchParams.get("sayka_id");
 
-  console.log(isOpenModal);
-  console.log(saykaId);
-
   return (
     <div className="mt-5 md:mx-16">
       <SaykaListWithFilter />

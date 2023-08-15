@@ -1,17 +1,23 @@
-import { JTDDataType } from 'ajv/dist/core'
+import { JTDDataType } from "ajv/dist/core";
 
 const loggedInUserSchema = {
-  type: 'object',
+  type: "object",
   properties: {
     user: {
-      type: 'object',
+      type: "object",
       properties: {
-        Id: { type: 'string' },
-        Name: { type: 'string' },
-        Img: { type: 'string' },
+        Id: { type: "number" },
+        Name: { type: "string" },
+        Img: { type: "string" },
       },
     },
   },
-} as const
+} as const;
 
-export type AuthUserResponse = JTDDataType<typeof loggedInUserSchema>
+export type AuthUserResponse = {
+  user: {
+    Id: number;
+    Name: string;
+    Img: string;
+  };
+};

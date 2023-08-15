@@ -2,7 +2,7 @@ package context
 
 import (
 	"context"
-	"strconv"
+	"fmt"
 
 	"golang.org/x/oauth2"
 )
@@ -36,10 +36,9 @@ func SetUserId(ctx context.Context, userId int) context.Context {
 
 func GetUser(ctx context.Context) (int, bool) {
 	v := ctx.Value(userIdKey)
-	userId, ok := v.(string)
+	userId, ok := v.(int)
 	if !ok {
 		return 0, ok
 	}
-	i, _ := strconv.Atoi(userId)
-	return i, ok
+	return userId, ok
 }

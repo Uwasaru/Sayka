@@ -41,6 +41,13 @@ down: ## dockerイメージを削除し、docker環境を閉じる
 	-f $(DOCKER_COMPOSE_LOCAL_SERVER) down \
 	--rmi all --volumes --remove-orphans
 
+.PHONY: logs
+logs: ## dockerのログを表示する
+	$(ENV_LOCAL) docker-compose \
+	-f $(DOCKER_COMPOSE_LOCAL) \
+	-f $(DOCKER_COMPOSE_LOCAL_DATABASE) \
+	-f $(DOCKER_COMPOSE_LOCAL_SERVER) logs -f
+	
 .PHONY: fclean
 fclean:down del-volumes ## マウントしたデータを削除、またdockerイメージも削除する
 

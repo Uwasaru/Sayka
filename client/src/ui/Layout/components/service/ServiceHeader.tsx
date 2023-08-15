@@ -8,20 +8,10 @@ import { LoginModal } from "@/app/(service)/(audience)/_components/LoginModal";
 import { modalState } from "@/store/atoms/modalAtom";
 import { SaykaLogo } from "@/ui/svg/SaykaLogo";
 import { ColorButton } from "@/ui/Button";
+import { TUser } from "@/types/User";
 
 type TProps = {
-  user?: {
-    id: number;
-    name: string;
-    icon: string;
-  };
-};
-
-const user_id = 1;
-const user = {
-  id: 1,
-  name: "39TO",
-  icon: "/icon.jpg",
+  user?: TUser;
 };
 
 export const ServiceHeader: FC<TProps> = ({ user }) => {
@@ -52,9 +42,9 @@ export const ServiceHeader: FC<TProps> = ({ user }) => {
         <SaykaLogo />
       </Link>
       <div className="flex items-center space-x-5">
-        <Link href={`/mypage/${user.id}`}>
+        <Link href={`/mypage/${user.Name}`}>
           <Image
-            src={user.icon}
+            src={user.Img}
             alt="user icon"
             width={35}
             height={35}

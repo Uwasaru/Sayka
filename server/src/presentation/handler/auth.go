@@ -7,7 +7,6 @@ import (
 	"time"
 
 	"github.com/Uwasaru/Sayka/usecase"
-	mycontext "github.com/Uwasaru/Sayka/utils/context"
 	jwt "github.com/form3tech-oss/jwt-go"
 	"github.com/gin-gonic/gin"
 )
@@ -100,98 +99,103 @@ func (u *AuthHandler) Callback(ctx *gin.Context) {
 	ctx.Redirect(http.StatusFound, redirectURL)
 }
 
-func (u *AuthHandler) User(ctx *gin.Context) {
-	// contextからuserIdを取得
-	userId, ok := mycontext.GetUser(ctx.Request.Context())
-	if !ok {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "User ID not found in context"})
-		return
-	}
-
-	user, err := u.userUC.GetUser(ctx, userId)
-	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-
-	ctx.JSON(http.StatusOK, gin.H{"user": user})
-}
-
 // func (u *AuthHandler) User(ctx *gin.Context) {
-// 	tokenString := ctx.Request.Header.Get("jwt")
-// 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
-// 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-// 			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
-// 		}
-// 		return []byte(os.Getenv("rawPrivKey")), nil
-// 	})
-// 	if err != nil {
-// 		ctx.JSON(
-// 			http.StatusBadRequest,
-// 			gin.H{"error": err.Error()},
-// 		)
-// 		return
-// 	}
-// 	str := ""
-// 	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
-// 		str, ok = claims["session"].(string)
-// 		if !ok {
-// 			ctx.JSON(
-// 				http.StatusBadRequest,
-// 				gin.H{"error": fmt.Errorf("kata asa-sion")},
-// 			)
-// 			return
-// 		}
-// 	} else {
-// 		ctx.JSON(
-// 			http.StatusBadRequest,
-// 			gin.H{"error": fmt.Errorf("token empty")},
-// 		)
-// 		return
-// 	}
-
-// 	// sessionの有効期限を確認
-// 	ok, err := u.authUC.CheckSessionExpiry(ctx, str)
-// 	if err != nil {
-// 		ctx.JSON(
-// 			http.StatusBadRequest,
-// 			gin.H{"error": err.Error()},
-// 		)
-// 		return
-// 	}
+// 	fmt.Println("User Usecase")
+// 	// contextからuserIdを取得
+// 	fmt.Println("ctx.Request.Context()", ctx.Request.Context())
+// 	userId, ok := mycontext.GetUser(ctx.Request.Context())
 // 	if !ok {
-// 		err := u.authUC.DeleteSession(ctx, str)
-// 		if err != nil {
-// 			ctx.JSON(
-// 				http.StatusBadRequest,
-// 				gin.H{"error": err.Error()},
-// 			)
-// 		}
-// 		ctx.JSON(
-// 			http.StatusBadRequest,
-// 			gin.H{"error": "session expiry err"},
-// 		)
+// 		fmt.Println("userId not found in context")
+// 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "User ID not found in context"})
 // 		return
 // 	}
-// 	// sessionからuserIdを取得
-// 	userId, err := u.authUC.GetUserIdFromSession(ctx, str)
-// 	if err != nil {
-// 		ctx.JSON(
-// 			http.StatusBadRequest,
-// 			gin.H{"error": err.Error()},
-// 		)
-// 		return
-// 	}
+// 	fmt.Println("userId", userId)
+
 // 	user, err := u.userUC.GetUser(ctx, userId)
 // 	if err != nil {
-// 		ctx.JSON(
-// 			http.StatusBadRequest,
-// 			gin.H{"error": err.Error()},
-// 		)
+// 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 // 		return
 // 	}
-// 	ctx.JSON(
-// 		http.StatusOK,
-// 		gin.H{"user": user},
-// 	)
+// 	fmt.Println("user", user)
+
+// 	ctx.JSON(http.StatusOK, gin.H{"user": user})
 // }
+
+func (u *AuthHandler) User(ctx *gin.Context) {
+	tokenString := ctx.Request.Header.Get("jwt")
+	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
+		}
+		return []byte(os.Getenv("rawPrivKey")), nil
+	})
+	if err != nil {
+		ctx.JSON(
+			http.StatusBadRequest,
+			gin.H{"error": err.Error()},
+		)
+		return
+	}
+	str := ""
+	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
+		str, ok = claims["session"].(string)
+		if !ok {
+			ctx.JSON(
+				http.StatusBadRequest,
+				gin.H{"error": fmt.Errorf("kata asa-sion")},
+			)
+			return
+		}
+	} else {
+		ctx.JSON(
+			http.StatusBadRequest,
+			gin.H{"error": fmt.Errorf("token empty")},
+		)
+		return
+	}
+
+	// sessionの有効期限を確認
+	ok, err := u.authUC.CheckSessionExpiry(ctx, str)
+	if err != nil {
+		ctx.JSON(
+			http.StatusBadRequest,
+			gin.H{"error": err.Error()},
+		)
+		return
+	}
+	if !ok {
+		err := u.authUC.DeleteSession(ctx, str)
+		if err != nil {
+			ctx.JSON(
+				http.StatusBadRequest,
+				gin.H{"error": err.Error()},
+			)
+		}
+		ctx.JSON(
+			http.StatusBadRequest,
+			gin.H{"error": "session expiry err"},
+		)
+		return
+	}
+	// sessionからuserIdを取得
+	userId, err := u.authUC.GetUserIdFromSession(ctx, str)
+	if err != nil {
+		ctx.JSON(
+			http.StatusBadRequest,
+			gin.H{"error": err.Error()},
+		)
+		return
+	}
+	user, err := u.userUC.GetUser(ctx, userId)
+	if err != nil {
+		ctx.JSON(
+			http.StatusBadRequest,
+			gin.H{"error": err.Error()},
+		)
+		return
+	}
+	ctx.JSON(
+		http.StatusOK,
+		gin.H{"user": user},
+	)
+}
