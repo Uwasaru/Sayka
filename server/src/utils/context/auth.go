@@ -2,7 +2,6 @@ package context
 
 import (
 	"context"
-	"fmt"
 
 	"golang.org/x/oauth2"
 )
