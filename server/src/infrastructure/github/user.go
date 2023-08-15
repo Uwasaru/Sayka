@@ -28,7 +28,7 @@ func (c *Client) GetMe(ctx context.Context) (*entity.User, error) {
 		return nil, fmt.Errorf("decode: %w", err)
 	}
 	user := &entity.User{
-		ID:   j.Name,
+		ID:   j.ID,
 		Name: j.Name,
 		Img:  j.AvatarUrl,
 	}
