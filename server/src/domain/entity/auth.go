@@ -16,7 +16,7 @@ type AuthStates struct {
 }
 
 type GithubAuth struct {
-	UserID       int
+	UserID       string
 	AccessToken  string
 	RefreshToken string
 	Expiry       time.Time
