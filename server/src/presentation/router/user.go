@@ -23,8 +23,8 @@ func (r Router) InitUserRouter(conn *database.Conn) {
 	h := handler.NewUserHandler(uc)
 
 	//認証middleware
-	g := r.Engine.Group("/user", m.Authenticate())
-	g.POST("/", h.CreateUser)
+	g := r.Engine.Group("/user")
+	g.POST("/", m.Authenticate(), h.CreateUser)
 	g.GET("/:id", h.GetUser)
-	g.DELETE("/:id", h.DeleteUser)
+	g.DELETE("/:id", m.Authenticate(), h.DeleteUser)
 }

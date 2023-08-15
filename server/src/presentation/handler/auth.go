@@ -6,6 +6,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/Uwasaru/Sayka/presentation/json"
 	"github.com/Uwasaru/Sayka/usecase"
 	jwt "github.com/form3tech-oss/jwt-go"
 	"github.com/gin-gonic/gin"
@@ -194,8 +195,10 @@ func (u *AuthHandler) User(ctx *gin.Context) {
 		)
 		return
 	}
+
+	userjson := json.UserEntityToJson(user)
 	ctx.JSON(
 		http.StatusOK,
-		gin.H{"user": user},
+		gin.H{"data": userjson},
 	)
 }
