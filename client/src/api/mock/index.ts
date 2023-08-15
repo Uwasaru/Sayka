@@ -3,8 +3,8 @@ import { TComment, TSayka, TTag, TUser } from "./type";
 // user
 export const mock_user_1: TUser = {
   id: 1,
-  name: "39TO",
-  icon: "/icon.jpg",
+  name: "hahaha",
+  icon: "/icon3.png",
   like_count: 10,
   sayka_count: 3,
 };

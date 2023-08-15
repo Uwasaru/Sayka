@@ -1,13 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { FC, useState } from "react";
 
 import { mock_saykas } from "@/api";
 
 import { SaykaList } from "./SaykaList";
 import { TagFilter } from "./TagFilter";
+import { TUser } from "@/types/User";
 
-export const SaykaListWithFilter = () => {
+type TProps = {
+  user?: TUser;
+};
+export const SaykaListWithFilter: FC<TProps> = ({ user }) => {
   const [tagState, setTagState] = useState<string>("ALL");
 
   const changeFilterTag = (tag: string) => {
@@ -32,7 +36,7 @@ export const SaykaListWithFilter = () => {
         changeFilterTag={changeFilterTag}
         onSubmit={handleSubmit}
       />
-      <SaykaList sayka={mock_saykas} changeFilterTag={clickTag} />
+      <SaykaList sayka={mock_saykas} changeFilterTag={clickTag} user={user} />
     </div>
   );
 };

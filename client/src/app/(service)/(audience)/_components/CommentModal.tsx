@@ -13,18 +13,14 @@ import { modalState } from "@/store/atoms/modalAtom";
 import { CodeBlock } from "@/ui/Text/components/CodeBlock";
 import { TComment } from "@/api/mock/type";
 import { BsSend } from "react-icons/bs";
+import { TUser } from "@/types/User";
 
 type TProps = {
   id: number;
+  user?: TUser;
 };
 
-export const CommentModal: FC<TProps> = ({ id }) => {
-  // const user = await (async () => {
-  //   const user = await getLoggedInUser(getToken() || '')
-  //   if (user.type === 'error') return undefined
-  //   return user.value.user
-  // })()
-  const user = null;
+export const CommentModal: FC<TProps> = ({ id, user }) => {
   const [_, setIsOpen] = useAtom(modalState);
   const [commentList, setCommentList] = useState<TComment[]>([]);
   const [comment, setComment] = useState("");

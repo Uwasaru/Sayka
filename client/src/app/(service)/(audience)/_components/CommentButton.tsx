@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { FC } from "react";
 import { LiaCommentAlt } from "react-icons/lia";

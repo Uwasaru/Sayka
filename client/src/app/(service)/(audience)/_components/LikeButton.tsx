@@ -4,19 +4,15 @@ import { VscHeartFilled } from "react-icons/vsc";
 import { VscHeart } from "react-icons/vsc";
 
 import { modalState } from "@/store/atoms/modalAtom";
+import { TUser } from "@/types/User";
 
 type TProps = {
   saykaId: number;
   likeCount: number;
+  user?: TUser;
 };
 
-export const LikeButton: FC<TProps> = ({ saykaId, likeCount }) => {
-  // const user = await (async () => {
-  //   const user = await getLoggedInUser(getToken() || '')
-  //   if (user.type === 'error') return undefined
-  //   return user.value.user
-  // })()
-  const user = null;
+export const LikeButton: FC<TProps> = ({ saykaId, likeCount, user }) => {
   const [liked, setLiked] = useState(false);
   const [likeCountState, setLikeCountState] = useState(likeCount);
 

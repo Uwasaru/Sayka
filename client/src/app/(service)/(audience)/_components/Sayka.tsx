@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { FC, useState } from "react";
+import { FC, useMemo, useState } from "react";
 import { AiFillGithub } from "react-icons/ai";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { TfiLayoutSlider } from "react-icons/tfi";
@@ -18,28 +18,31 @@ import { CommentButton } from "./CommentButton";
 import { FixModal } from "./FixModal";
 import { LikeButton } from "./LikeButton";
 import { ShareButton } from "./ShareButton";
+import { TUser } from "@/types/User";
 
 type TProps = {
   data: TSayka;
-};
-
-type TSaykaProps = {
-  data: TSayka;
   changeFilterTag?: (tag: string) => void;
+  user?: TUser;
 };
 
-export const Sayka: FC<TSaykaProps> = ({ data, changeFilterTag }) => {
+export const Sayka: FC<TProps> = ({ data, changeFilterTag, user }) => {
   return (
     <div className="space-y-5 rounded-md border-4 border-gray-200 p-5 shadow-lg transition-transform hover:-translate-y-1 hover:shadow-xl">
-      <SaykaHeader data={data} />
+      <SaykaHeader data={data} user={user} />
       <SaykaBody data={data} changeFilterTag={changeFilterTag} />
-      <SaykaFooter data={data} />
+      <SaykaFooter data={data} user={user} />
     </div>
   );
 };
 
-const SaykaHeader: FC<TProps> = ({ data }) => {
+const SaykaHeader: FC<TProps> = ({ data, user }) => {
   const [isModalVisible, setModalVisible] = useState(false);
+
+  const isMySayka = useMemo(() => {
+    if (!user) return false;
+    return user.Id === data.user.id;
+  }, [user, data]);
 
   return (
     <div className="relative flex items-center justify-between">
@@ -62,17 +65,16 @@ const SaykaHeader: FC<TProps> = ({ data }) => {
           @{data.user.name}
         </Link>
       </div>
-      <div>
+      {isMySayka && (
         <BsThreeDotsVertical
           size={24}
           onClick={() => setModalVisible(!isModalVisible)}
         />
-      </div>
+      )}
     </div>
   );
 };
-
-const SaykaBody: FC<TSaykaProps> = ({ data, changeFilterTag }) => {
+const SaykaBody: FC<TProps> = ({ data, changeFilterTag }) => {
   return (
     <div className="flex flex-col space-y-3">
       <div className="text-xl font-extrabold md:text-3xl">{data.title}</div>
@@ -88,12 +90,12 @@ const SaykaBody: FC<TSaykaProps> = ({ data, changeFilterTag }) => {
   );
 };
 
-const SaykaFooter: FC<TProps> = ({ data }) => {
+const SaykaFooter: FC<TProps> = ({ data, user }) => {
   return (
     <div className="flex flex-col-reverse md:flex-row">
       <div className="flex items-center justify-start gap-5 md:w-[50%] ">
         <CommentButton saykaId={data.id} commentCount={data.comment_count} />
-        <LikeButton saykaId={data.id} likeCount={data.like_count} />
+        <LikeButton saykaId={data.id} likeCount={data.like_count} user={user} />
         {/* <ShareButton saykaId={data.id} saykaTitle={data.title} /> */}
       </div>
       <div className="flex items-center justify-end gap-5 pb-5 md:w-[50%] md:pb-0">
