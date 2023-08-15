@@ -7,13 +7,10 @@ export default async function Layout({
 }: {
   children: React.ReactNode;
 }) {
-  console.log("token", getToken());
   const user = await (async () => {
     const user = await getLoggedInUser(getToken() || "");
-    console.log("user", user);
     if (user.type === "error") return undefined;
-    console.log("user", user.value.user);
-    return user.value.user;
+    return user.value.data;
   })();
 
   return (

@@ -42,9 +42,9 @@ export const ServiceHeader: FC<TProps> = ({ user }) => {
         <SaykaLogo />
       </Link>
       <div className="flex items-center space-x-5">
-        <Link href={`/mypage/${user.Name}`}>
+        <Link href={`/mypage/${user.id}`}>
           <Image
-            src={user.Img}
+            src={user.img}
             alt="user icon"
             width={35}
             height={35}

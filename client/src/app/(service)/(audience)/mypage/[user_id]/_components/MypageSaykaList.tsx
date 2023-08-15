@@ -3,9 +3,9 @@
 import { FC, useState } from "react";
 
 import { mock_saykas, mock_saykaNull } from "@/api";
+import { TUser } from "@/types/User";
 
 import { SaykaList } from "../../../_components/SaykaList";
-import { TUser } from "@/types/User";
 
 type list_kind = "MYSELF" | "FAVORITE" | "COMMENT";
 
@@ -30,7 +30,7 @@ const LISTS: list_type[] = [
 ];
 
 type TProps = {
-  userId: TUser["Id"];
+  userId: TUser["id"];
 };
 export const MypageSaykaList: FC<TProps> = ({ userId }) => {
   const [nowList, setList] = useState<list_kind>("MYSELF");
@@ -45,8 +45,8 @@ export const MypageSaykaList: FC<TProps> = ({ userId }) => {
               <button
                 className={
                   isActive
-                    ? "md:w-34 w-24 border-b-4 border-sc text-xs lg:w-32 lg:text-sm "
-                    : "md:w-34 w-24 text-xs hover:text-gray-900 lg:w-32 lg:text-sm "
+                    ? "w-24 border-b-4 border-sc text-xs md:w-36 lg:w-32 lg:text-sm "
+                    : "w-24 text-xs hover:text-gray-900 md:w-36 lg:w-32 lg:text-sm "
                 }
                 key={list.name}
                 onClick={() => setList(list.name)}>

@@ -15,7 +15,7 @@ const Page = async ({ searchParams }: TProps) => {
   const user = await (async () => {
     const user = await getLoggedInUser(getToken() || "");
     if (user.type === "error") return undefined;
-    return user.value.user;
+    return user.value.data;
   })();
 
   return (

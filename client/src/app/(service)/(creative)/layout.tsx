@@ -1,4 +1,3 @@
-// import { Auth } from "@/features";
 import { redirect } from "next/navigation";
 
 import { getLoggedInUser } from "@/api";
@@ -16,7 +15,7 @@ export default async function Layout({
   const user = await (async () => {
     const user = await getLoggedInUser(token || "");
     if (user.type === "error") return undefined;
-    return user.value.user;
+    return user.value.data;
   })();
   if (!user) return redirect("/");
 

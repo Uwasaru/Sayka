@@ -1,5 +1,5 @@
 export type TUser = {
-  Id: string;
-  Name: string;
-  Img: string;
+  id: string;
+  name: string;
+  img: string;
 };

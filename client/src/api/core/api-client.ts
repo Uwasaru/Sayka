@@ -48,7 +48,6 @@ export const apiClient = {
         ...(token && { jwt: token }),
       },
     });
-    console.log("data", data);
     return await resp2result<T>(data);
   },
   post: async <T extends AnySchema>(

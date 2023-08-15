@@ -6,7 +6,7 @@ import { useForm, SubmitHandler, FormProvider } from "react-hook-form";
 import { z } from "zod";
 
 const schema = z.object({
-  title: z.string().nonempty({ message: "Name is required" }),
+  title: z.string().nonempty({ message: "name is required" }),
 });
 
 type FormData = {

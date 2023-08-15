@@ -78,16 +78,16 @@ export const CommentModal: FC<TProps> = ({ id, user }) => {
           <div className="space-y-5">
             <div className="flex items-center space-x-3">
               <Image
-                src={sayka.user.Img}
+                src={sayka.user.img}
                 alt="user icon"
                 width={30}
                 height={30}
                 className="rounded-full"
               />
               <Link
-                href={`/mypage/${sayka.user.Id}`}
+                href={`/mypage/${sayka.user.id}`}
                 className="border-b-teal-400 hover:border-b-2">
-                @{sayka.user.Name}
+                @{sayka.user.name}
               </Link>
             </div>
             <div className="flex flex-col space-y-3">
@@ -106,16 +106,16 @@ export const CommentModal: FC<TProps> = ({ id, user }) => {
               className="flex flex-col gap-2 border-t border-gray-300 px-8 py-4">
               <div className="flex items-center space-x-3">
                 <Image
-                  src={comment.user.Img}
+                  src={comment.user.img}
                   alt="user icon"
                   width={30}
                   height={30}
                   className="rounded-full"
                 />
                 <Link
-                  href={`/mypage/${comment.user.Id}`}
+                  href={`/mypage/${comment.user.id}`}
                   className="border-b-teal-400 hover:border-b-2">
-                  @{comment.user.Name}
+                  @{comment.user.name}
                 </Link>
               </div>
               <div className="flex flex-col space-y-3">
@@ -139,7 +139,7 @@ export const CommentModal: FC<TProps> = ({ id, user }) => {
             <textarea
               value={comment}
               onChange={handleInputChange}
-              className="focus:shadow-outline w-full rounded-xl border px-5 py-2 text-sm transition-shadow focus:outline-none"
+              className=" w-full rounded-xl border px-5 py-2 text-sm transition-shadow focus:outline-none"
               placeholder="Aa"></textarea>
             <button className="rounded-full p-2 hover:bg-teal-400 ">
               <BsSend size={24} />

@@ -3,12 +3,12 @@ import { JTDDataType } from "ajv/dist/core";
 const loggedInUserSchema = {
   type: "object",
   properties: {
-    user: {
+    data: {
       type: "object",
       properties: {
-        Id: { type: "string" },
-        Name: { type: "string" },
-        Img: { type: "string" },
+        id: { type: "string" },
+        name: { type: "string" },
+        img: { type: "string" },
       },
     },
   },

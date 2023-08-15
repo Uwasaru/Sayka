@@ -1,30 +1,30 @@
-import { JTDDataType } from 'ajv/dist/core'
+import { JTDDataType } from "ajv/dist/core";
 
 const userSchema = {
-  type: 'object',
+  type: "object",
   properties: {
     data: {
-      type: 'object',
+      type: "object",
       properties: {
-        id: { type: 'string' },
-        name: { type: 'string' },
-        img: { type: 'string' },
+        id: { type: "string" },
+        name: { type: "string" },
+        img: { type: "string" },
       },
     },
   },
-} as const
+} as const;
 
-export type UserResponse = JTDDataType<typeof userSchema>
+export type UserResponse = JTDDataType<typeof userSchema>;
 
 export type UserCreate = {
-  name: string
-  img: string
-}
+  name: string;
+  img: string;
+};
 
 const userDeleteResponseSchema = {
   properties: {
-    data: { type: 'string' },
+    data: { type: "string" },
   },
-} as const
+} as const;
 
-export type GlyphDeleteResponse = JTDDataType<typeof userDeleteResponseSchema>
+export type GlyphDeleteResponse = JTDDataType<typeof userDeleteResponseSchema>;
