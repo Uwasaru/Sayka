@@ -1,20 +1,21 @@
-import { TComment, TSayka, TTag, TUser } from "./type";
+import { TComment, TSayka, TTag } from "./type";
+import { TUser } from "@/types/User";
 
 // user
 export const mock_user_1: TUser = {
-  id: 1,
-  name: "hahaha",
-  icon: "/icon3.png",
-  like_count: 10,
-  sayka_count: 3,
+  Id: "hahaha-1",
+  Name: "hahaha",
+  Img: "/icon3.png",
+  // like_count: 10,
+  // sayka_count: 3,
 };
 
 export const mock_user_2: TUser = {
-  id: 2,
-  name: "teyang",
-  icon: "/icon2.jpg",
-  like_count: 100,
-  sayka_count: 30,
+  Id: "teyang-1",
+  Name: "teyang",
+  Img: "/icon2.jpg",
+  // like_count: 100,
+  // sayka_count: 30,
 };
 
 export const mock_users: TUser[] = [mock_user_1, mock_user_2];

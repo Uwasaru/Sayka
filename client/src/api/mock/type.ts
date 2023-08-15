@@ -1,10 +1,4 @@
-export type TUser = {
-  id: number;
-  name: string;
-  icon: string;
-  like_count: number;
-  sayka_count: number;
-};
+import { TUser } from "@/types/User";
 
 export type TTag = {
   id: number;

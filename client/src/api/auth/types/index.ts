@@ -6,7 +6,7 @@ const loggedInUserSchema = {
     user: {
       type: "object",
       properties: {
-        Id: { type: "number" },
+        Id: { type: "string" },
         Name: { type: "string" },
         Img: { type: "string" },
       },
@@ -14,10 +14,4 @@ const loggedInUserSchema = {
   },
 } as const;
 
-export type AuthUserResponse = {
-  user: {
-    Id: number;
-    Name: string;
-    Img: string;
-  };
-};
+export type AuthUserResponse = JTDDataType<typeof loggedInUserSchema>;

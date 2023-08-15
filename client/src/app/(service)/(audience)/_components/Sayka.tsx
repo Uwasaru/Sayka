@@ -41,7 +41,7 @@ const SaykaHeader: FC<TProps> = ({ data, user }) => {
 
   const isMySayka = useMemo(() => {
     if (!user) return false;
-    return user.Id === data.user.id;
+    return user.Id === data.user.Id;
   }, [user, data]);
 
   return (
@@ -53,16 +53,16 @@ const SaykaHeader: FC<TProps> = ({ data, user }) => {
       />
       <div className="flex items-center">
         <Image
-          src={data.user.icon}
+          src={data.user.Img}
           alt="user icon"
           width={30}
           height={30}
           className="mr-2 rounded-full"
         />
         <Link
-          href={`/mypage/${data.user.id}`}
+          href={`/mypage/${data.user.Id}`}
           className="border-b-teal-400 hover:border-b-2">
-          @{data.user.name}
+          @{data.user.Name}
         </Link>
       </div>
       {isMySayka && (

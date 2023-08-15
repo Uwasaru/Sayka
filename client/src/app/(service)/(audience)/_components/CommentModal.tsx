@@ -78,16 +78,16 @@ export const CommentModal: FC<TProps> = ({ id, user }) => {
           <div className="space-y-5">
             <div className="flex items-center space-x-3">
               <Image
-                src={sayka.user.icon}
+                src={sayka.user.Img}
                 alt="user icon"
                 width={30}
                 height={30}
                 className="rounded-full"
               />
               <Link
-                href={`/mypage/${sayka.user.id}`}
+                href={`/mypage/${sayka.user.Id}`}
                 className="border-b-teal-400 hover:border-b-2">
-                @{sayka.user.name}
+                @{sayka.user.Name}
               </Link>
             </div>
             <div className="flex flex-col space-y-3">
@@ -106,16 +106,16 @@ export const CommentModal: FC<TProps> = ({ id, user }) => {
               className="flex flex-col gap-2 border-t border-gray-300 px-8 py-4">
               <div className="flex items-center space-x-3">
                 <Image
-                  src={comment.user.icon}
+                  src={comment.user.Img}
                   alt="user icon"
                   width={30}
                   height={30}
                   className="rounded-full"
                 />
                 <Link
-                  href={`/mypage/${comment.user.id}`}
+                  href={`/mypage/${comment.user.Id}`}
                   className="border-b-teal-400 hover:border-b-2">
-                  @{comment.user.name}
+                  @{comment.user.Name}
                 </Link>
               </div>
               <div className="flex flex-col space-y-3">

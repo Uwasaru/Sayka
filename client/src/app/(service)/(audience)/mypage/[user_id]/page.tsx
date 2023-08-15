@@ -13,7 +13,7 @@ type TProps = {
 
 const Page = ({ params }: TProps) => {
   const router = useRouter();
-  const user = mock_users.find((user) => user.id === Number(params.user_id));
+  const user = mock_users.find((user) => user.Id === params.user_id);
   if (!user) {
     router.push("/timeline");
     return null;
@@ -25,7 +25,7 @@ const Page = ({ params }: TProps) => {
         <Profile user={user} />
       </div>
       <div className="col-span-5 md:col-span-3">
-        <MypageSaykaList userId={user.id} />
+        <MypageSaykaList userId={user.Id} />
       </div>
     </div>
   );

@@ -5,6 +5,7 @@ import { FC, useState } from "react";
 import { mock_saykas, mock_saykaNull } from "@/api";
 
 import { SaykaList } from "../../../_components/SaykaList";
+import { TUser } from "@/types/User";
 
 type list_kind = "MYSELF" | "FAVORITE" | "COMMENT";
 
@@ -29,7 +30,7 @@ const LISTS: list_type[] = [
 ];
 
 type TProps = {
-  userId: number;
+  userId: TUser["Id"];
 };
 export const MypageSaykaList: FC<TProps> = ({ userId }) => {
   const [nowList, setList] = useState<list_kind>("MYSELF");
