@@ -35,7 +35,7 @@ func (ur *UserRepository) CreateUser(ctx context.Context, user *entity.User) (*e
 	return d.UserDtoToEntity(&dto), nil
 }
 
-func (ur *UserRepository) DeleteUser(ctx context.Context, id int) error {
+func (ur *UserRepository) DeleteUser(ctx context.Context, id string) error {
 	query := `
 	DELETE FROM users
 	WHERE id = :id
@@ -49,7 +49,7 @@ func (ur *UserRepository) DeleteUser(ctx context.Context, id int) error {
 	return nil
 }
 
-func (ur *UserRepository) GetUser(ctx context.Context, id int) (*entity.User, error) {
+func (ur *UserRepository) GetUser(ctx context.Context, id string) (*entity.User, error) {
 	query := `
 	SELECT *
 	FROM users

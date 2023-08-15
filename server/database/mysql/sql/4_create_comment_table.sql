@@ -1,6 +1,6 @@
 CREATE TABLE `comments` (
   `id`          varchar(255) COLLATE utf8mb4_bin NOT NULL,
-  `user_id`     int(8) COLLATE utf8mb4_bin NOT NULL,
+  `user_id`     varchar(255) COLLATE utf8mb4_bin NOT NULL,
   `post_id`     varchar(255) COLLATE utf8mb4_bin NOT NULL,
   `content`     text COLLATE utf8mb4_bin NOT NULL,
   `type`        int(3) NOT NULL DEFAULT '0',

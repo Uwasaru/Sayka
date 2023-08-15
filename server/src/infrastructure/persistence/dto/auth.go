@@ -8,7 +8,7 @@ import (
 
 type LoginSessionsDto struct {
 	ID     string    `db:"id"`
-	UserID int    `db:"user_id"`
+	UserID string    `db:"user_id"`
 	Expiry time.Time `db:"expiry"`
 }
 
@@ -18,7 +18,7 @@ type AuthStatesDto struct {
 }
 
 type GithubAuthDto struct {
-	UserID       int    `db:"user_id"`
+	UserID       string       `db:"user_id"`
 	AccessToken  string    `db:"access_token"`
 	RefreshToken string    `db:"refresh_token"`
 	Expiry       time.Time `db:"expiry"`

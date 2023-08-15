@@ -6,7 +6,7 @@ import (
 
 type LoginSessions struct {
 	ID     string
-	UserID int
+	UserID string
 	Expiry time.Time
 }
 

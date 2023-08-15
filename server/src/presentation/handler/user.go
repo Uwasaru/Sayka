@@ -6,7 +6,6 @@ import (
 	"github.com/Uwasaru/Sayka/presentation/json"
 	"github.com/Uwasaru/Sayka/usecase"
 	"github.com/gin-gonic/gin"
-	"strconv"
 )
 
 type UserHandler struct {
@@ -47,8 +46,7 @@ func (u *UserHandler) CreateUser(ctx *gin.Context) {
 
 func (u *UserHandler) DeleteUser(ctx *gin.Context) {
 	id := ctx.Param("id")
-	i, _ := strconv.Atoi(id)
-	err := u.uc.DeleteUser(ctx, i)
+	err := u.uc.DeleteUser(ctx, id)
 	if err != nil {
 		ctx.JSON(
 			http.StatusBadRequest,
@@ -65,8 +63,7 @@ func (u *UserHandler) DeleteUser(ctx *gin.Context) {
 
 func (u *UserHandler) GetUser(ctx *gin.Context) {
 	id := ctx.Param("id")
-	i, _ := strconv.Atoi(id)
-	user, err := u.uc.GetUser(ctx, i)
+	user, err := u.uc.GetUser(ctx, id)
 	if err != nil {
 		ctx.JSON(
 			http.StatusBadRequest,

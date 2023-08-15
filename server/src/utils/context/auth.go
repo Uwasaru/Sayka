@@ -26,18 +26,18 @@ func GetToken(ctx context.Context) (*oauth2.Token, bool) {
 	return token, ok
 }
 
-func SetUserId(ctx context.Context, userId int) context.Context {
-	if userId != 0 {
+func SetUserId(ctx context.Context, userId string) context.Context {
+	if userId != "" {
 		return context.WithValue(ctx, userIdKey, userId)
 	}
 	return ctx
 }
 
-func GetUser(ctx context.Context) (int, bool) {
+func GetUser(ctx context.Context) (string, bool) {
 	v := ctx.Value(userIdKey)
-	userId, ok := v.(int)
+	userId, ok := v.(string)
 	if !ok {
-		return 0, ok
+		return "", ok
 	}
 	return userId, ok
 }
