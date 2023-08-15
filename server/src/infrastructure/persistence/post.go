@@ -166,7 +166,7 @@ func (pr *PostRepository) CreatePost(ctx context.Context, post *entity.Post) err
 		`
 		dto1 := d.TagEntityToDto(&entity.Tag{
 			PostID: dto.ID,
-			Name:  tag,
+			Name:   tag,
 		})
 		_, err := pr.conn.DB.NamedExecContext(ctx, query, &dto1)
 		if err != nil {
