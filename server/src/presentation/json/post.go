@@ -13,6 +13,8 @@ type PostJson struct {
 	GithubUrl   string    `json:"github_url"`
 	AppUrl      string    `json:"app_url"`
 	SlideUrl    string    `json:"slide_url"`
+	ArticleUrl  string    `json:"article_url"`
+	FigmaUrl    string    `json:"figma_url"`
 	Description string    `json:"description"`
 	Tags        []string  `json:"tags"`
 	Favorites   int       `json:"favorites"`
@@ -34,6 +36,8 @@ func PostJsonToEntity(postJson *PostJson) *entity.Post {
 		GithubUrl:   postJson.GithubUrl,
 		AppUrl:      postJson.AppUrl,
 		SlideUrl:    postJson.SlideUrl,
+		ArticleUrl:  postJson.ArticleUrl,
+		FigmaUrl:    postJson.FigmaUrl,
 		Description: postJson.Description,
 		Tags:        postJson.Tags,
 		CreatedAt:   postJson.CreatedAt,
@@ -48,6 +52,8 @@ func PostEntityToJson(post *entity.Post) *PostJson {
 		GithubUrl:   post.GithubUrl,
 		AppUrl:      post.AppUrl,
 		SlideUrl:    post.SlideUrl,
+		ArticleUrl:  post.ArticleUrl,
+		FigmaUrl:    post.FigmaUrl,
 		Description: post.Description,
 		Tags:        post.Tags,
 		CreatedAt:   post.CreatedAt,

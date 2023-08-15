@@ -62,7 +62,7 @@ func (pu *PostUsecase) GetAll(ctx context.Context) (*entity.Posts, error) {
 		s := set.NewSet(fovorites...)
 		post.IsFavorite = s.Contains(post.UserID)
 		post.Favorites = len(fovorites)
-		post.Comments = len(comments)
+		post.Comments = len(*comments)
 	}
 	return posts, err
 }
@@ -76,7 +76,7 @@ func (pu *PostUsecase) GetTimeLine(ctx context.Context, lastPostID string, postA
 		s := set.NewSet(fovorites...)
 		post.IsFavorite = s.Contains(post.UserID)
 		post.Favorites = len(fovorites)
-		post.Comments = len(comments)
+		post.Comments = len(*comments)
 	}
 	return posts, err
 }

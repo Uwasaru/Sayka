@@ -12,6 +12,8 @@ type Post struct {
 	GithubUrl   string    `json:"github_url"`
 	AppUrl      string    `json:"app_url"`
 	SlideUrl    string    `json:"slide_url"`
+	ArticleUrl	string    `json:"article_url"`
+	FigmaUrl	  string    `json:"figma_url"`
 	Description string    `json:"description"`
 	Tags        []string  `json:"tags"`
 	Favorites   int       `json:"favorites"`

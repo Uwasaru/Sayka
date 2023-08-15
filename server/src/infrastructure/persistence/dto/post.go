@@ -12,6 +12,8 @@ type PostDto struct {
 	GithubUrl   string    `db:"github_url"`
 	AppUrl      string    `db:"app_url"`
 	SlideUrl    string    `db:"slide_url"`
+	ArticleUrl  string    `db:"article_url"`
+	FigmaUrl    string    `db:"figma_url"`
 	Description string    `db:"description"`
 	CreatedAt   time.Time `db:"created_at"`
 }
@@ -26,6 +28,8 @@ func PostDtoToEntity(dto *PostDto) *entity.Post {
 		GithubUrl:   dto.GithubUrl,
 		AppUrl:      dto.AppUrl,
 		SlideUrl:    dto.SlideUrl,
+		ArticleUrl:  dto.ArticleUrl,
+		FigmaUrl:    dto.FigmaUrl,
 		Description: dto.Description,
 		CreatedAt:   dto.CreatedAt,
 	}
@@ -39,6 +43,8 @@ func PostEntityToDto(p *entity.Post) PostDto {
 		GithubUrl:   p.GithubUrl,
 		AppUrl:      p.AppUrl,
 		SlideUrl:    p.SlideUrl,
+		ArticleUrl:  p.ArticleUrl,
+		FigmaUrl:    p.FigmaUrl,
 		Description: p.Description,
 		CreatedAt:   p.CreatedAt,
 	}

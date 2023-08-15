@@ -70,10 +70,10 @@ func (pr *PostRepository) GetByUserID(ctx context.Context, userID string) (*enti
 		return nil, err
 	}
 
-	var posts entity.Posts
+	var posts = entity.Posts{}
 	for rows.Next() {
 		var dto d.PostDto
-		err := rows.Scan(&dto.ID, &dto.Title, &dto.UserID, &dto.GithubUrl, &dto.AppUrl, &dto.SlideUrl, &dto.Description, &dto.CreatedAt)
+		err := rows.Scan(&dto.ID, &dto.Title, &dto.UserID, &dto.GithubUrl, &dto.AppUrl, &dto.SlideUrl, &dto.ArticleUrl, &dto.FigmaUrl, &dto.Description, &dto.CreatedAt)
 		if err != nil {
 			return nil, err
 		}
@@ -113,10 +113,10 @@ func (pr *PostRepository) GetAll(ctx context.Context) (*entity.Posts, error) {
 		return nil, err
 	}
 
-	var posts entity.Posts
+	var posts = entity.Posts{}
 	for rows.Next() {
 		var dto d.PostDto
-		err := rows.Scan(&dto.ID, &dto.Title, &dto.UserID, &dto.GithubUrl, &dto.AppUrl, &dto.SlideUrl, &dto.Description, &dto.CreatedAt)
+		err := rows.Scan(&dto.ID, &dto.Title, &dto.UserID, &dto.GithubUrl, &dto.AppUrl, &dto.SlideUrl, &dto.ArticleUrl, &dto.FigmaUrl, &dto.Description, &dto.CreatedAt)
 		if err != nil {
 			return nil, err
 		}
@@ -159,10 +159,10 @@ func (pr *PostRepository) GetTimeLine(ctx context.Context, lastPostID string, po
 		return nil, err
 	}
 
-	var posts entity.Posts
+	var posts = entity.Posts{}
 	for rows.Next() {
 		var dto d.PostDto
-		err := rows.Scan(&dto.ID, &dto.Title, &dto.UserID, &dto.GithubUrl, &dto.AppUrl, &dto.SlideUrl, &dto.Description, &dto.CreatedAt)
+		err := rows.Scan(&dto.ID, &dto.Title, &dto.UserID, &dto.GithubUrl, &dto.AppUrl, &dto.SlideUrl, &dto.ArticleUrl, &dto.FigmaUrl, &dto.Description, &dto.CreatedAt)
 		if err != nil {
 			return nil, err
 		}
@@ -194,8 +194,8 @@ func (pr *PostRepository) GetTimeLine(ctx context.Context, lastPostID string, po
 // CreatePostは投稿を作成します
 func (pr *PostRepository) CreatePost(ctx context.Context, post *entity.Post) error {
 	query := `
-	INSERT INTO posts (id, user_id, title, github_url, app_url, slide_url, description)
-	VALUES (:id,:user_id,:title,:github_url,:app_url,:slide_url,:description)
+	INSERT INTO posts (id, user_id, title, github_url, app_url, slide_url, article_url, figma_url, description)
+	VALUES (:id,:user_id,:title,:github_url,:app_url,:slide_url,:article_url,:figma_url,:description)
 	`
 	dto := d.PostEntityToDto(post)
 
