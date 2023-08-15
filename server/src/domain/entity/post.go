@@ -13,6 +13,7 @@ type Post struct {
 	AppUrl      string    `json:"app_url"`
 	SlideUrl    string    `json:"slide_url"`
 	Description string    `json:"description"`
+	Tags        []string  `json:"tags"`
 	CreatedAt   time.Time `json:"created_at"`
 }
 

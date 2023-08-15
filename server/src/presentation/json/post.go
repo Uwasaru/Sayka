@@ -1,8 +1,9 @@
 package json
 
 import (
-	"github.com/Uwasaru/Sayka/domain/entity"
 	"time"
+
+	"github.com/Uwasaru/Sayka/domain/entity"
 )
 
 type PostJson struct {
@@ -13,6 +14,7 @@ type PostJson struct {
 	AppUrl      string    `json:"app_url"`
 	SlideUrl    string    `json:"slide_url"`
 	Description string    `json:"description"`
+	Tags        []string  `json:"tags"`
 	CreatedAt   time.Time `json:"created_at"`
 }
 
@@ -25,6 +27,7 @@ func PostJsonToEntity(postJson *PostJson) *entity.Post {
 		AppUrl:      postJson.AppUrl,
 		SlideUrl:    postJson.SlideUrl,
 		Description: postJson.Description,
+		Tags:        postJson.Tags,
 		CreatedAt:   postJson.CreatedAt,
 	}
 }
@@ -38,6 +41,7 @@ func PostEntityToJson(post *entity.Post) *PostJson {
 		AppUrl:      post.AppUrl,
 		SlideUrl:    post.SlideUrl,
 		Description: post.Description,
+		Tags:        post.Tags,
 		CreatedAt:   post.CreatedAt,
 	}
 }

@@ -5,7 +5,6 @@ import (
 
 	"github.com/Uwasaru/Sayka/presentation/json"
 	"github.com/Uwasaru/Sayka/usecase"
-	"github.com/Uwasaru/Sayka/utils"
 	"github.com/gin-gonic/gin"
 )
 
@@ -56,7 +55,6 @@ func (th *TagHandler) GetAll(ctx *gin.Context) {
 // CreateTagは投稿を作成します
 func (th *TagHandler) CreateTag(ctx *gin.Context) {
 	tag_json := &json.TagJson{}
-	tag_json.ID = utils.Ulid()
 	if err := ctx.BindJSON(tag_json); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return

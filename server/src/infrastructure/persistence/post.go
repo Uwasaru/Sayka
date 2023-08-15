@@ -35,7 +35,27 @@ func (pr *PostRepository) GetByID(ctx context.Context, id string) (*entity.Post,
 	if err != nil {
 		return nil, err
 	}
-	return d.PostDtoToEntity(&dto), nil
+	query = `
+	SELECT name
+	FROM tags
+	WHERE post_id = ?
+	`
+	rows, err := pr.conn.DB.QueryContext(ctx, query, dto.ID)
+	if err != nil {
+		return nil, err
+	}
+	var tags []string
+	for rows.Next() {
+		var tag string
+		err := rows.Scan(&tag)
+		if err != nil {
+			return nil, err
+		}
+		tags = append(tags, tag)
+	}
+	post := d.PostDtoToEntity(&dto)
+	post.Tags = tags
+	return post, nil
 }
 
 // GetByUserIDはUserIDを指定して投稿を取得します
@@ -53,10 +73,30 @@ func (pr *PostRepository) GetByUserID(ctx context.Context, userID string) (*enti
 	var posts entity.Posts
 	for rows.Next() {
 		var dto d.PostDto
-		err := rows.Scan(&dto)
+		err := rows.Scan(&dto.ID, &dto.Title, &dto.UserID, &dto.GithubUrl, &dto.AppUrl, &dto.SlideUrl, &dto.Description, &dto.CreatedAt)
 		if err != nil {
 			return nil, err
 		}
+		query := `
+		SELECT name
+		FROM tags
+		WHERE post_id = ?
+		`
+		rows1, err := pr.conn.DB.QueryContext(ctx, query, dto.ID)
+		if err != nil {
+			return nil, err
+		}
+		var tags []string
+		for rows1.Next() {
+			var tag string
+			err := rows1.Scan(&tag)
+			if err != nil {
+				return nil, err
+			}
+			tags = append(tags, tag)
+		}
+		post := d.PostDtoToEntity(&dto)
+		post.Tags = tags
 		posts = append(posts, d.PostDtoToEntity(&dto))
 	}
 	return &posts, nil
@@ -76,11 +116,31 @@ func (pr *PostRepository) GetAll(ctx context.Context) (*entity.Posts, error) {
 	var posts entity.Posts
 	for rows.Next() {
 		var dto d.PostDto
-		err := rows.Scan(&dto)
+		err := rows.Scan(&dto.ID, &dto.Title, &dto.UserID, &dto.GithubUrl, &dto.AppUrl, &dto.SlideUrl, &dto.Description, &dto.CreatedAt)
 		if err != nil {
 			return nil, err
 		}
-		posts = append(posts, d.PostDtoToEntity(&dto))
+		query := `
+		SELECT name
+		FROM tags
+		WHERE post_id = ?
+		`
+		rows, err := pr.conn.DB.QueryContext(ctx, query, dto.ID)
+		if err != nil {
+			return nil, err
+		}
+		var tags []string
+		for rows.Next() {
+			var tag string
+			err := rows.Scan(&tag)
+			if err != nil {
+				return nil, err
+			}
+			tags = append(tags, tag)
+		}
+		post := d.PostDtoToEntity(&dto)
+		post.Tags = tags
+		posts = append(posts, post)
 	}
 	return &posts, nil
 }
@@ -96,6 +156,22 @@ func (pr *PostRepository) CreatePost(ctx context.Context, post *entity.Post) err
 	_, err := pr.conn.DB.NamedExecContext(ctx, query, &dto)
 	if err != nil {
 		return err
+	}
+
+	tags := post.Tags
+	for _, tag := range tags {
+		query := `
+		INSERT INTO tags (post_id, name)
+		VALUES (:post_id, :name)
+		`
+		dto1 := d.TagEntityToDto(&entity.Tag{
+			PostID: dto.ID,
+			Name:  tag,
+		})
+		_, err := pr.conn.DB.NamedExecContext(ctx, query, &dto1)
+		if err != nil {
+			return err
+		}
 	}
 	return nil
 }

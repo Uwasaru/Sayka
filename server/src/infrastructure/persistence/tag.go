@@ -69,7 +69,7 @@ func (tr *TagRepository) GetAll(ctx context.Context) (*entity.Tags, error) {
 	var tags entity.Tags
 	for rows.Next() {
 		var dto d.TagDto
-		err := rows.Scan(&dto.ID, &dto.Name)
+		err := rows.Scan(&dto.ID,&dto.PostID, &dto.Name)
 		if err != nil {
 			return nil, err
 		}
