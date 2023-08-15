@@ -145,6 +145,52 @@ func (pr *PostRepository) GetAll(ctx context.Context) (*entity.Posts, error) {
 	return &posts, nil
 }
 
+// GetTimeLineはタイムラインを取得します
+func (pr *PostRepository) GetTimeLine(ctx context.Context, lastPostID string, postAmount int) (*entity.Posts, error) {
+	query := `
+	SELECT *
+	FROM posts
+	WHERE id > ?
+	ORDER BY id DESC
+	LIMIT ?
+	`
+	rows, err := pr.conn.DB.QueryContext(ctx, query, lastPostID, postAmount)
+	if err != nil {
+		return nil, err
+	}
+
+	var posts entity.Posts
+	for rows.Next() {
+		var dto d.PostDto
+		err := rows.Scan(&dto.ID, &dto.Title, &dto.UserID, &dto.GithubUrl, &dto.AppUrl, &dto.SlideUrl, &dto.Description, &dto.CreatedAt)
+		if err != nil {
+			return nil, err
+		}
+		query := `
+		SELECT name
+		FROM tags
+		WHERE post_id = ?
+		`
+		rows, err := pr.conn.DB.QueryContext(ctx, query, dto.ID)
+		if err != nil {
+			return nil, err
+		}
+		var tags []string
+		for rows.Next() {
+			var tag string
+			err := rows.Scan(&tag)
+			if err != nil {
+				return nil, err
+			}
+			tags = append(tags, tag)
+		}
+		post := d.PostDtoToEntity(&dto)
+		post.Tags = tags
+		posts = append(posts, post)
+	}
+	return &posts, nil
+}
+
 // CreatePostは投稿を作成します
 func (pr *PostRepository) CreatePost(ctx context.Context, post *entity.Post) error {
 	query := `

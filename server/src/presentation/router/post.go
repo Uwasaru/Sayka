@@ -16,6 +16,7 @@ func (r Router) InitPostRouter(conn *database.Conn) {
 	g.GET("/:id", ph.GetByID)
 	g.GET("/user/:userID", ph.GetByUserID)
 	g.GET("/", ph.GetAll)
+	g.GET("/timeline", ph.GetTimeLine)
 	g.POST("/", ph.CreatePost)
 	g.PUT("/:id", ph.UpdatePost)
 	g.DELETE("/:id", ph.DeletePost)

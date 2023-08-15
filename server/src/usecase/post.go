@@ -21,6 +21,8 @@ type IPostUsecase interface {
 	GetByUserID(ctx context.Context, userID string) (*entity.Posts, error)
 	// GetAllは全ての投稿を取得します
 	GetAll(ctx context.Context) (*entity.Posts, error)
+	// GetTimeLineはタイムラインを取得します
+	GetTimeLine(ctx context.Context, lastPostID string, postAmount int) (*entity.Posts, error)
 	// Createは投稿を作成します
 	CreatePost(ctx context.Context, post *entity.Post) error
 	// UpdatePostは投稿を更新します
@@ -49,6 +51,11 @@ func (pu *PostUsecase) GetByUserID(ctx context.Context, userID string) (*entity.
 // GetAllは全ての投稿を取得します
 func (pu *PostUsecase) GetAll(ctx context.Context) (*entity.Posts, error) {
 	return pu.pr.GetAll(ctx)
+}
+
+// GetTimeLineはタイムラインを取得します
+func (pu *PostUsecase) GetTimeLine(ctx context.Context, lastPostID string, postAmount int) (*entity.Posts, error) {
+	return pu.pr.GetTimeLine(ctx, lastPostID, postAmount)
 }
 
 // Createは投稿を作成します

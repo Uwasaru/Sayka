@@ -76,3 +76,8 @@ func EncodeToken(token string) string {
 	encryptedBytes := hasher.Sum(nil)
 	return hex.EncodeToString(encryptedBytes)
 }
+
+func StringToInt(s string) int {
+	i, _ := strconv.Atoi(s)
+	return i
+}

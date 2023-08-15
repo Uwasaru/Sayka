@@ -53,6 +53,21 @@ func (ph *PostHandler) GetAll(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, posts)
 }
 
+// GetTimeLineはタイムラインを取得します
+func (ph *PostHandler) GetTimeLine(ctx *gin.Context) {
+	post_request := &json.PostRequestJson{}
+	if err := ctx.BindJSON(post_request); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	posts, err := ph.pu.GetTimeLine(ctx, post_request.LastPostID, post_request.PostAmount)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	ctx.JSON(http.StatusOK, posts)
+}
+
 // CreatePostは投稿を作成します
 func (ph *PostHandler) CreatePost(ctx *gin.Context) {
 	post_json := &json.PostJson{}

@@ -18,6 +18,11 @@ type PostJson struct {
 	CreatedAt   time.Time `json:"created_at"`
 }
 
+type PostRequestJson struct {
+	LastPostID string `json:"last_post_id"`
+	PostAmount int    `json:"post_amount"`
+}
+
 func PostJsonToEntity(postJson *PostJson) *entity.Post {
 	return &entity.Post{
 		ID:          postJson.ID,
