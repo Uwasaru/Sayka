@@ -94,7 +94,7 @@ func (cr *CommentRepository) GetAll(ctx context.Context) (*entity.Comments, erro
 	var comments = entity.Comments{}
 	for rows.Next() {
 		var dto d.CommentDto
-		err := rows.Scan(&dto)
+		err := rows.Scan(&dto.ID, &dto.UserID, &dto.PostID, &dto.Content, &dto.Type, &dto.CreatedAt)
 		if err != nil {
 			return nil, err
 		}
