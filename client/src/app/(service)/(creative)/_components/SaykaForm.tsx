@@ -15,6 +15,10 @@ import { Tag } from "@/ui/Tag";
 import { ContentSubTitle, Explanation } from "@/ui/Text";
 
 import { InputBlock } from "./InputBlock";
+import { createSayka } from "@/api/sayka";
+import { TUser } from "@/types/User";
+import { redirect } from "next/navigation";
+import { TSayka } from "@/types/Sayka";
 
 const schema = z.object({
   title: z
@@ -40,10 +44,20 @@ const schema = z.object({
 });
 
 type FormData = {
-  title: string;
+  title: TSayka["title"];
+  description: TSayka["description"];
+  github_url?: TSayka["github_url"];
+  figma_url?: TSayka["figma_url"];
+  slide_url?: TSayka["slide_url"];
+  article_url?: TSayka["article_url"];
+  app_url?: TSayka["app_url"];
 };
 
-export const SaykaForm: FC = () => {
+type TProps = {
+  user: TUser;
+};
+
+export const SaykaForm: FC<TProps> = ({ user }) => {
   const [tags, setTags] = useState<string[]>([]);
   const [tagError, setTagError] = useState<string | null>(null);
   const methods = useForm<FormData>({
@@ -55,7 +69,15 @@ export const SaykaForm: FC = () => {
       ...data,
       tags,
     };
-    console.log(submitData);
+    createSayka({
+      user_id: user.id,
+      ...submitData,
+    }).then((res) => {
+      console.log("res", res);
+      if (res.type === "error") return;
+      console.log(res.value.data);
+      redirect(`/shareSaykaInformation/${res.value.data.id}`);
+    });
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -81,9 +103,15 @@ export const SaykaForm: FC = () => {
     setTags(newTags);
   };
 
+  const preventFormSubmitOnEnter = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" && e.currentTarget === e.target) {
+      e.preventDefault();
+    }
+  };
+
   return (
     <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(onSubmit)}>
+      <form onKeyDown={preventFormSubmitOnEnter}>
         <InputBlock
           text="成果物のタイトル"
           subText="20字以内で入力してください。"
@@ -164,7 +192,8 @@ export const SaykaForm: FC = () => {
         />
         <div className="flex justify-center pt-5">
           <button
-            type="submit"
+            type="button"
+            onClick={methods.handleSubmit(onSubmit)}
             className="w-36 rounded bg-sc px-4 py-2 font-semibold text-white transition duration-300 hover:bg-hover-sc">
             投稿する
           </button>

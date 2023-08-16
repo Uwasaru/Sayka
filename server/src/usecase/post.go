@@ -2,9 +2,10 @@ package usecase
 
 import (
 	"context"
-	set "github.com/deckarep/golang-set/v2"
+
 	"github.com/Uwasaru/Sayka/domain/entity"
 	"github.com/Uwasaru/Sayka/domain/repository"
+	set "github.com/deckarep/golang-set/v2"
 )
 
 var _ IPostUsecase = &PostUsecase{}

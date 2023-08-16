@@ -12,16 +12,13 @@ type TProps = {
 
 const Page = async ({ params }: TProps) => {
   const readUserRes = await readUser(params.user_id);
-  console.log("readUserRes", readUserRes);
   if (readUserRes.type === "error") {
     redirect("/timeline");
   }
-  console.log("readUser", readUserRes.value.data);
   const loggedUserRes = await getLoggedInUser(getToken() || "");
   const loggedInUser = loggedUserRes.type === "ok" && loggedUserRes.value.data;
 
   const isMe = loggedInUser && loggedInUser.id === readUserRes.value.data.id;
-  // const isMe = true;
 
   return (
     <div className="grid grid-cols-5 space-y-5 md:p-5">

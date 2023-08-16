@@ -15,7 +15,8 @@ func (r *Router) cors() {
 	r.Engine.Use(cors.New(cors.Config{
 		// アクセスを許可したいアクセス元
 		AllowOrigins: []string{
-			"*",
+			"http://localhost:3000",
+			"https://sayka.vercel.app",
 		},
 		// アクセスを許可したいHTTPメソッド(以下の例だとPUTやDELETEはアクセスできません)
 		AllowMethods: []string{
@@ -29,10 +30,12 @@ func (r *Router) cors() {
 		AllowHeaders: []string{
 			"Access-Control-Allow-Credentials",
 			"Access-Control-Allow-Headers",
+			"Access-Control-Allow-Origin",
 			"Content-Type",
 			"Content-Length",
 			"Accept-Encoding",
 			"Authorization",
+			"jwt",
 		},
 		// cookieなどの情報を必要とするかどうか
 		AllowCredentials: true,
