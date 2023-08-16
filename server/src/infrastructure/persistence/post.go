@@ -148,14 +148,29 @@ func (pr *PostRepository) GetAll(ctx context.Context) (*entity.Posts, error) {
 // GetTimeLineはタイムラインを取得します
 func (pr *PostRepository) GetTimeLine(ctx context.Context, id string) (*entity.Posts, error) {
 	limit := 10
-	query := `
-	SELECT *
-	FROM posts
-	WHERE id > ?
-	ORDER BY id DESC
-	LIMIT ?
-	`
-	rows, err := pr.conn.DB.QueryContext(ctx, query, id, limit)
+	var query string
+	var args []interface{}
+
+	if id == "" {
+		query = `
+		SELECT *
+		FROM posts
+		ORDER BY id DESC
+		LIMIT ?
+		`
+		args = append(args, limit)
+	} else {
+		query = `
+		SELECT *
+		FROM posts
+		WHERE id > ?
+		ORDER BY id DESC
+		LIMIT ?
+		`
+		args = append(args, id, limit)
+	}
+
+	rows, err := pr.conn.DB.QueryContext(ctx, query, args...)
 	if err != nil {
 		return nil, err
 	}
@@ -167,28 +182,34 @@ func (pr *PostRepository) GetTimeLine(ctx context.Context, id string) (*entity.P
 		if err != nil {
 			return nil, err
 		}
-		query := `
-		SELECT name
-		FROM tags
-		WHERE post_id = ?
-		`
-		rows, err := pr.conn.DB.QueryContext(ctx, query, dto.ID)
+
+		tagQuery := `
+        SELECT name
+        FROM tags
+        WHERE post_id = ?
+        `
+		tagRows, err := pr.conn.DB.QueryContext(ctx, tagQuery, dto.ID)
 		if err != nil {
 			return nil, err
 		}
+
 		var tags []string
-		for rows.Next() {
+		for tagRows.Next() {
 			var tag string
-			err := rows.Scan(&tag)
+			err := tagRows.Scan(&tag)
 			if err != nil {
 				return nil, err
 			}
 			tags = append(tags, tag)
 		}
+		tagRows.Close()
+
 		post := d.PostDtoToEntity(&dto)
 		post.Tags = tags
 		posts = append(posts, post)
 	}
+	rows.Close()
+
 	return &posts, nil
 }
 
