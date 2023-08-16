@@ -26,7 +26,7 @@ type IPostUsecase interface {
 	// GetAllは全ての投稿を取得します
 	GetAll(ctx context.Context) (*entity.Posts, error)
 	// GetTimeLineはタイムラインを取得します
-	GetTimeLine(ctx context.Context, lastPostID string, postAmount int) (*entity.Posts, error)
+	GetTimeLine(ctx context.Context, id string) (*entity.Posts, error)
 	// Createは投稿を作成します
 	CreatePost(ctx context.Context, post *entity.Post) error
 	// UpdatePostは投稿を更新します
@@ -69,8 +69,8 @@ func (pu *PostUsecase) GetAll(ctx context.Context) (*entity.Posts, error) {
 }
 
 // GetTimeLineはタイムラインを取得します
-func (pu *PostUsecase) GetTimeLine(ctx context.Context, lastPostID string, postAmount int) (*entity.Posts, error) {
-	posts, err := pu.pr.GetTimeLine(ctx, lastPostID, postAmount)
+func (pu *PostUsecase) GetTimeLine(ctx context.Context, id string) (*entity.Posts, error) {
+	posts, err := pu.pr.GetTimeLine(ctx, id)
 	for _, post := range *posts {
 		fovorites, _ := pu.fr.GetByPostID(ctx, post.ID)
 		comments, _ := pu.cr.GetByPostID(ctx, post.ID)

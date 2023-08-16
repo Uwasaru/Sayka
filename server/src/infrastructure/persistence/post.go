@@ -146,7 +146,8 @@ func (pr *PostRepository) GetAll(ctx context.Context) (*entity.Posts, error) {
 }
 
 // GetTimeLineはタイムラインを取得します
-func (pr *PostRepository) GetTimeLine(ctx context.Context, lastPostID string, postAmount int) (*entity.Posts, error) {
+func (pr *PostRepository) GetTimeLine(ctx context.Context, id string) (*entity.Posts, error) {
+	limit := 10
 	query := `
 	SELECT *
 	FROM posts
@@ -154,7 +155,7 @@ func (pr *PostRepository) GetTimeLine(ctx context.Context, lastPostID string, po
 	ORDER BY id DESC
 	LIMIT ?
 	`
-	rows, err := pr.conn.DB.QueryContext(ctx, query, lastPostID, postAmount)
+	rows, err := pr.conn.DB.QueryContext(ctx, query, id, limit)
 	if err != nil {
 		return nil, err
 	}
