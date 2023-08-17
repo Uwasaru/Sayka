@@ -16,7 +16,7 @@ type PostDto struct {
 	FigmaUrl    string    `db:"figma_url"`
 	Description string    `db:"description"`
 	CreatedAt   time.Time `db:"created_at"`
-	UpdatedAt	 time.Time `db:"updated_at"`
+	UpdatedAt   time.Time `db:"updated_at"`
 }
 
 type PostsDto []*PostDto
