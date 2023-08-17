@@ -15,7 +15,7 @@ func (r Router) InitFavoriteRouter(conn *database.Conn) {
 	g := r.Engine.Group("/favorite")
 	g.GET("/:id", fh.GetByID)
 	g.GET("/user/:userID", fh.GetByUserID)
-	g.GET("/post/:postID", fh.GetByPostID)
+	g.GET("/sayka/:saykaID", fh.GetBySaykaID)
 	g.GET("/", fh.GetAll)
 	g.POST("/", fh.CreateFavorite)
 	g.DELETE("/:id", fh.DeleteFavorite)

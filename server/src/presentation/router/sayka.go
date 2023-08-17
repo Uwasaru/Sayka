@@ -7,21 +7,21 @@ import (
 	"github.com/Uwasaru/Sayka/usecase"
 )
 
-func (r Router) InitPostRouter(conn *database.Conn) {
-	pr := persistence.NewPostRepository(conn)
+func (r Router) InitSaykaRouter(conn *database.Conn) {
+	pr := persistence.NewSaykaRepository(conn)
 	fr := persistence.NewFavoriteRepository(conn)
 	cr := persistence.NewCommentRepository(conn)
 	ar := persistence.NewAuthRepository(conn)
-	pu := usecase.NewPostUsecase(pr, fr, cr)
+	pu := usecase.NewSaykaUsecase(pr, fr, cr)
 	ju := usecase.NewJwtUsecase(ar)
-	ph := handler.NewPostHandler(pu, ju)
+	ph := handler.NewSaykaHandler(pu, ju)
 
-	g := r.Engine.Group("/post")
+	g := r.Engine.Group("/sayka")
 	g.GET("/:id", ph.GetByID)
 	g.GET("/user/:userID", ph.GetByUserID)
 	g.GET("/", ph.GetAll)
 	g.GET("/timeline", ph.GetTimeLine)
-	g.POST("/", ph.CreatePost)
-	g.PUT("/:id", ph.UpdatePost)
-	g.DELETE("/:id", ph.DeletePost)
+	g.POST("/", ph.CreateSayka)
+	g.PUT("/:id", ph.UpdateSayka)
+	g.DELETE("/:id", ph.DeleteSayka)
 }

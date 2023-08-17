@@ -54,7 +54,7 @@ func (fr *FavoriteRepository) GetByUserID(ctx context.Context, userID string) (*
 	var favorites entity.Favorites
 	for rows.Next() {
 		var dto d.FavoriteDto
-		err := rows.Scan(&dto.ID, &dto.UserID, &dto.PostID)
+		err := rows.Scan(&dto.ID, &dto.UserID, &dto.SaykaID)
 		if err != nil {
 			return nil, err
 		}
@@ -63,14 +63,14 @@ func (fr *FavoriteRepository) GetByUserID(ctx context.Context, userID string) (*
 	return &favorites, nil
 }
 
-// GetByPostIDはPostIDを指定して投稿を取得します
-func (fr *FavoriteRepository) GetByPostID(ctx context.Context, postID string) (entity.FavoriteUsers, error) {
+// GetBySaykaIDはSaykaIDを指定して投稿を取得します
+func (fr *FavoriteRepository) GetBySaykaID(ctx context.Context, saykaID string) (entity.FavoriteUsers, error) {
 	query := `
 	SELECT user_id
 	FROM favorites
-	WHERE post_id = ?
+	WHERE sayka_id = ?
 	`
-	rows, err := fr.conn.DB.QueryContext(ctx, query, postID)
+	rows, err := fr.conn.DB.QueryContext(ctx, query, saykaID)
 	if err != nil {
 		return nil, err
 	}
@@ -101,7 +101,7 @@ func (fr *FavoriteRepository) GetAll(ctx context.Context) (*entity.Favorites, er
 	var favorites = entity.Favorites{}
 	for rows.Next() {
 		var dto d.FavoriteDto
-		err := rows.Scan(&dto.ID, &dto.UserID, &dto.PostID)
+		err := rows.Scan(&dto.ID, &dto.UserID, &dto.SaykaID)
 		if err != nil {
 			return nil, err
 		}
@@ -116,11 +116,11 @@ func (fr *FavoriteRepository) CreateFavorite(ctx context.Context, favorite *enti
 	INSERT INTO favorites (
 		id,
 		user_id,
-		post_id
+		sayka_id
 	) VALUES (
 		:id,
 		:user_id,
-		:post_id
+		:sayka_id
 	)
 	`
 

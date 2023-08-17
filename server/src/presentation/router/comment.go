@@ -15,7 +15,7 @@ func (r Router) InitCommentRouter(conn *database.Conn) {
 	g := r.Engine.Group("/comment")
 	g.GET("/:id", ch.GetByID)
 	g.GET("/user/:userID", ch.GetByUserID)
-	g.GET("/post/:postID", ch.GetByPostID)
+	g.GET("/sayka/:saykaID", ch.GetBySaykaID)
 	g.GET("/", ch.GetAll)
 	g.POST("/", ch.CreateComment)
 	g.DELETE("/:id", ch.DeleteComment)

@@ -9,28 +9,28 @@ import (
 	d "github.com/Uwasaru/Sayka/infrastructure/persistence/dto"
 )
 
-var _ repository.PostRepository = &PostRepository{}
+var _ repository.SaykaRepository = &SaykaRepository{}
 
-// PostRepositoryは投稿に関する永続化を担当します
-type PostRepository struct {
+// SaykaRepositoryは投稿に関する永続化を担当します
+type SaykaRepository struct {
 	conn *database.Conn
 }
 
-// NewPostRepositoryは新しいPostRepositoryを初期化し構造体のポインタを返します
-func NewPostRepository(conn *database.Conn) *PostRepository {
-	return &PostRepository{
+// NewSaykaRepositoryは新しいSaykaRepositoryを初期化し構造体のポインタを返します
+func NewSaykaRepository(conn *database.Conn) *SaykaRepository {
+	return &SaykaRepository{
 		conn: conn,
 	}
 }
 
 // GetByIDはIDを指定して投稿を取得します
-func (pr *PostRepository) GetByID(ctx context.Context, id string) (*entity.Post, error) {
+func (pr *SaykaRepository) GetByID(ctx context.Context, id string) (*entity.Sayka, error) {
 	query := `
 	SELECT *
-	FROM posts
+	FROM saykas
 	WHERE id = ?
 	`
-	var dto d.PostDto
+	var dto d.SaykaDto
 	err := pr.conn.DB.GetContext(ctx, &dto, query, id)
 	if err != nil {
 		return nil, err
@@ -38,7 +38,7 @@ func (pr *PostRepository) GetByID(ctx context.Context, id string) (*entity.Post,
 	query = `
 	SELECT name
 	FROM tags
-	WHERE post_id = ?
+	WHERE sayka_id = ?
 	`
 	rows, err := pr.conn.DB.QueryContext(ctx, query, dto.ID)
 	if err != nil {
@@ -53,16 +53,16 @@ func (pr *PostRepository) GetByID(ctx context.Context, id string) (*entity.Post,
 		}
 		tags = append(tags, tag)
 	}
-	post := d.PostDtoToEntity(&dto)
-	post.Tags = tags
-	return post, nil
+	sayka := d.SaykaDtoToEntity(&dto)
+	sayka.Tags = tags
+	return sayka, nil
 }
 
 // GetByUserIDはUserIDを指定して投稿を取得します
-func (pr *PostRepository) GetByUserID(ctx context.Context, userID string) (*entity.Posts, error) {
+func (pr *SaykaRepository) GetByUserID(ctx context.Context, userID string) (*entity.Saykas, error) {
 	query := `
 	SELECT *
-	FROM posts
+	FROM saykas
 	WHERE user_id = ?
 	`
 	rows, err := pr.conn.DB.QueryContext(ctx, query, userID)
@@ -70,9 +70,9 @@ func (pr *PostRepository) GetByUserID(ctx context.Context, userID string) (*enti
 		return nil, err
 	}
 
-	var posts = entity.Posts{}
+	var saykas = entity.Saykas{}
 	for rows.Next() {
-		var dto d.PostDto
+		var dto d.SaykaDto
 		err := rows.Scan(&dto.ID, &dto.Title, &dto.UserID, &dto.GithubUrl, &dto.AppUrl, &dto.SlideUrl, &dto.ArticleUrl, &dto.FigmaUrl, &dto.Description, &dto.CreatedAt, &dto.UpdatedAt)
 		if err != nil {
 			return nil, err
@@ -80,7 +80,7 @@ func (pr *PostRepository) GetByUserID(ctx context.Context, userID string) (*enti
 		query := `
 		SELECT name
 		FROM tags
-		WHERE post_id = ?
+		WHERE sayka_id = ?
 		`
 		rows1, err := pr.conn.DB.QueryContext(ctx, query, dto.ID)
 		if err != nil {
@@ -95,18 +95,18 @@ func (pr *PostRepository) GetByUserID(ctx context.Context, userID string) (*enti
 			}
 			tags = append(tags, tag)
 		}
-		post := d.PostDtoToEntity(&dto)
-		post.Tags = tags
-		posts = append(posts, d.PostDtoToEntity(&dto))
+		sayka := d.SaykaDtoToEntity(&dto)
+		sayka.Tags = tags
+		saykas = append(saykas, d.SaykaDtoToEntity(&dto))
 	}
-	return &posts, nil
+	return &saykas, nil
 }
 
 // GetAllは全ての投稿を取得します
-func (pr *PostRepository) GetAll(ctx context.Context) (*entity.Posts, error) {
+func (pr *SaykaRepository) GetAll(ctx context.Context) (*entity.Saykas, error) {
 	query := `
 	SELECT *
-	FROM posts
+	FROM saykas
 	ORDER BY id DESC
 	`
 	rows, err := pr.conn.DB.QueryContext(ctx, query)
@@ -114,9 +114,9 @@ func (pr *PostRepository) GetAll(ctx context.Context) (*entity.Posts, error) {
 		return nil, err
 	}
 
-	var posts = entity.Posts{}
+	var saykas = entity.Saykas{}
 	for rows.Next() {
-		var dto d.PostDto
+		var dto d.SaykaDto
 		err := rows.Scan(&dto.ID, &dto.Title, &dto.UserID, &dto.GithubUrl, &dto.AppUrl, &dto.SlideUrl, &dto.ArticleUrl, &dto.FigmaUrl, &dto.Description, &dto.CreatedAt, &dto.UpdatedAt)
 		if err != nil {
 			return nil, err
@@ -124,7 +124,7 @@ func (pr *PostRepository) GetAll(ctx context.Context) (*entity.Posts, error) {
 		query := `
 		SELECT name
 		FROM tags
-		WHERE post_id = ?
+		WHERE sayka_id = ?
 		`
 		rows, err := pr.conn.DB.QueryContext(ctx, query, dto.ID)
 		if err != nil {
@@ -139,15 +139,15 @@ func (pr *PostRepository) GetAll(ctx context.Context) (*entity.Posts, error) {
 			}
 			tags = append(tags, tag)
 		}
-		post := d.PostDtoToEntity(&dto)
-		post.Tags = tags
-		posts = append(posts, post)
+		sayka := d.SaykaDtoToEntity(&dto)
+		sayka.Tags = tags
+		saykas = append(saykas, sayka)
 	}
-	return &posts, nil
+	return &saykas, nil
 }
 
 // GetTimeLineはタイムラインを取得します
-func (pr *PostRepository) GetTimeLine(ctx context.Context, id string, tag string) (*entity.Posts, error) {
+func (pr *SaykaRepository) GetTimeLine(ctx context.Context, id string, tag string) (*entity.Saykas, error) {
 	limit := 10
 	var query string
 	var args []interface{}
@@ -155,8 +155,8 @@ func (pr *PostRepository) GetTimeLine(ctx context.Context, id string, tag string
 	if tag != "" {
 		query = `
 		SELECT p.*
-		FROM posts p
-		JOIN tags t ON p.id = t.post_id
+		FROM saykas p
+		JOIN tags t ON p.id = t.sayka_id
 		WHERE p.id < ? AND t.name LIKE ?
 		ORDER BY p.id DESC
 		LIMIT ?
@@ -165,7 +165,7 @@ func (pr *PostRepository) GetTimeLine(ctx context.Context, id string, tag string
 	} else {
 		query = `
 		SELECT *
-		FROM posts
+		FROM saykas
 		WHERE id < ?
 		ORDER BY id DESC
 		LIMIT ?
@@ -178,9 +178,9 @@ func (pr *PostRepository) GetTimeLine(ctx context.Context, id string, tag string
 		return nil, err
 	}
 
-	var posts = entity.Posts{}
+	var saykas = entity.Saykas{}
 	for rows.Next() {
-		var dto d.PostDto
+		var dto d.SaykaDto
 		err := rows.Scan(&dto.ID, &dto.Title, &dto.UserID, &dto.GithubUrl, &dto.AppUrl, &dto.SlideUrl, &dto.ArticleUrl, &dto.FigmaUrl, &dto.Description, &dto.CreatedAt, &dto.UpdatedAt)
 		if err != nil {
 			return nil, err
@@ -188,7 +188,7 @@ func (pr *PostRepository) GetTimeLine(ctx context.Context, id string, tag string
 		tagQuery := `
         SELECT name
         FROM tags
-        WHERE post_id = ?
+        WHERE sayka_id = ?
         `
 		tagRows, err := pr.conn.DB.QueryContext(ctx, tagQuery, dto.ID)
 		if err != nil {
@@ -206,37 +206,37 @@ func (pr *PostRepository) GetTimeLine(ctx context.Context, id string, tag string
 		}
 		tagRows.Close()
 
-		post := d.PostDtoToEntity(&dto)
-		post.Tags = tags
-		posts = append(posts, post)
+		sayka := d.SaykaDtoToEntity(&dto)
+		sayka.Tags = tags
+		saykas = append(saykas, sayka)
 	}
 	rows.Close()
 
-	return &posts, nil
+	return &saykas, nil
 }
 
-// CreatePostは投稿を作成します
-func (pr *PostRepository) CreatePost(ctx context.Context, post *entity.Post) error {
+// CreateSaykaは投稿を作成します
+func (pr *SaykaRepository) CreateSayka(ctx context.Context, sayka *entity.Sayka) error {
 	query := `
-	INSERT INTO posts (id, user_id, title, github_url, app_url, slide_url, article_url, figma_url, description)
+	INSERT INTO saykas (id, user_id, title, github_url, app_url, slide_url, article_url, figma_url, description)
 	VALUES (:id,:user_id,:title,:github_url,:app_url,:slide_url,:article_url,:figma_url,:description)
 	`
-	dto := d.PostEntityToDto(post)
+	dto := d.SaykaEntityToDto(sayka)
 
 	_, err := pr.conn.DB.NamedExecContext(ctx, query, &dto)
 	if err != nil {
 		return err
 	}
 
-	tags := post.Tags
+	tags := sayka.Tags
 	for _, tag := range tags {
 		query := `
-		INSERT INTO tags (post_id, name)
-		VALUES (:post_id, :name)
+		INSERT INTO tags (sayka_id, name)
+		VALUES (:sayka_id, :name)
 		`
 		dto1 := d.TagEntityToDto(&entity.Tag{
-			PostID: dto.ID,
-			Name:   tag,
+			SaykaID: dto.ID,
+			Name:    tag,
 		})
 		_, err := pr.conn.DB.NamedExecContext(ctx, query, &dto1)
 		if err != nil {
@@ -246,14 +246,14 @@ func (pr *PostRepository) CreatePost(ctx context.Context, post *entity.Post) err
 	return nil
 }
 
-// UpdatePostは投稿を更新します
-func (pr *PostRepository) UpdatePost(ctx context.Context, post *entity.Post) error {
+// UpdateSaykaは投稿を更新します
+func (pr *SaykaRepository) UpdateSayka(ctx context.Context, sayka *entity.Sayka) error {
 	query := `
-	UPDATE posts
+	UPDATE saykas
 	SET title = :title, github_url = :github_url, app_url = :app_url, slide_url = :slide_url, description = :description
 	WHERE id = :id
 	`
-	dto := d.PostEntityToDto(post)
+	dto := d.SaykaEntityToDto(sayka)
 
 	_, err := pr.conn.DB.NamedExecContext(ctx, query, &dto)
 	if err != nil {
@@ -262,10 +262,10 @@ func (pr *PostRepository) UpdatePost(ctx context.Context, post *entity.Post) err
 	return nil
 }
 
-// DeletePostは投稿を削除します
-func (pr *PostRepository) DeletePost(ctx context.Context, id string) error {
+// DeleteSaykaは投稿を削除します
+func (pr *SaykaRepository) DeleteSayka(ctx context.Context, id string) error {
 	query := `
-	DELETE FROM posts
+	DELETE FROM saykas
 	WHERE id = :id
 	`
 

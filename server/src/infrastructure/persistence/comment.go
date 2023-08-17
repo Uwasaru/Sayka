@@ -58,13 +58,13 @@ func (cr *CommentRepository) GetByUserID(ctx context.Context, userID string) (*e
 	return &comments, nil
 }
 
-func (cr *CommentRepository) GetByPostID(ctx context.Context, postID string) (*entity.Comments, error) {
+func (cr *CommentRepository) GetBySaykaID(ctx context.Context, saykaID string) (*entity.Comments, error) {
 	query := `
 	SELECT *
 	FROM comments
-	WHERE post_id = ?
+	WHERE sayka_id = ?
 	`
-	rows, err := cr.conn.DB.QueryContext(ctx, query, postID)
+	rows, err := cr.conn.DB.QueryContext(ctx, query, saykaID)
 	if err != nil {
 		return nil, err
 	}
@@ -72,7 +72,7 @@ func (cr *CommentRepository) GetByPostID(ctx context.Context, postID string) (*e
 	var comments = entity.Comments{}
 	for rows.Next() {
 		var dto d.CommentDto
-		err := rows.Scan(&dto.ID, &dto.UserID, &dto.PostID, &dto.Content, &dto.Type, &dto.CreatedAt)
+		err := rows.Scan(&dto.ID, &dto.UserID, &dto.SaykaID, &dto.Content, &dto.Type, &dto.CreatedAt)
 		if err != nil {
 			return nil, err
 		}
@@ -94,7 +94,7 @@ func (cr *CommentRepository) GetAll(ctx context.Context) (*entity.Comments, erro
 	var comments = entity.Comments{}
 	for rows.Next() {
 		var dto d.CommentDto
-		err := rows.Scan(&dto.ID, &dto.UserID, &dto.PostID, &dto.Content, &dto.Type, &dto.CreatedAt)
+		err := rows.Scan(&dto.ID, &dto.UserID, &dto.SaykaID, &dto.Content, &dto.Type, &dto.CreatedAt)
 		if err != nil {
 			return nil, err
 		}
@@ -105,8 +105,8 @@ func (cr *CommentRepository) GetAll(ctx context.Context) (*entity.Comments, erro
 
 func (cr *CommentRepository) CreateComment(ctx context.Context, comment *entity.Comment) error {
 	query := `
-	INSERT INTO comments (id, user_id, post_id, content, type, created_at)
-	VALUES (:id, :user_id, :post_id, :content, :type, :created_at)
+	INSERT INTO comments (id, user_id, sayka_id, content, type, created_at)
+	VALUES (:id, :user_id, :sayka_id, :content, :type, :created_at)
 	`
 	dto := d.CommentEntityToDto(comment)
 

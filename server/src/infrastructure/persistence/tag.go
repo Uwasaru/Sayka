@@ -69,7 +69,7 @@ func (tr *TagRepository) GetAll(ctx context.Context) (*entity.Tags, error) {
 	var tags entity.Tags
 	for rows.Next() {
 		var dto d.TagDto
-		err := rows.Scan(&dto.ID, &dto.PostID, &dto.Name)
+		err := rows.Scan(&dto.ID, &dto.SaykaID, &dto.Name)
 		if err != nil {
 			return nil, err
 		}
@@ -78,14 +78,14 @@ func (tr *TagRepository) GetAll(ctx context.Context) (*entity.Tags, error) {
 	return &tags, nil
 }
 
-// GetByPostIDはPostIDを指定してタグを取得します
-func (tr *TagRepository) GetByPostID(ctx context.Context, postID string) (*entity.Tags, error) {
+// GetBySaykaIDはSaykaIDを指定してタグを取得します
+func (tr *TagRepository) GetBySaykaID(ctx context.Context, saykaID string) (*entity.Tags, error) {
 	query := `
 	SELECT *
 	FROM tags
-	WHERE post_id = ?
+	WHERE sayka_id = ?
 	`
-	rows, err := tr.conn.DB.Query(query, postID)
+	rows, err := tr.conn.DB.Query(query, saykaID)
 	if err != nil {
 		return nil, err
 	}
@@ -93,7 +93,7 @@ func (tr *TagRepository) GetByPostID(ctx context.Context, postID string) (*entit
 	var tags entity.Tags
 	for rows.Next() {
 		var dto d.TagDto
-		err := rows.Scan(&dto.ID, &dto.PostID, &dto.Name)
+		err := rows.Scan(&dto.ID, &dto.SaykaID, &dto.Name)
 		if err != nil {
 			return nil, err
 		}

@@ -5,9 +5,9 @@ import (
 )
 
 type FavoriteDto struct {
-	ID     string `db:"id"`
-	UserID string `db:"user_id"`
-	PostID string `db:"post_id"`
+	ID      string `db:"id"`
+	UserID  string `db:"user_id"`
+	SaykaID string `db:"sayka_id"`
 }
 
 type FavoriteUserDto struct {
@@ -18,9 +18,9 @@ type FavoritesDto []*FavoriteDto
 
 func FavoriteDtoToEntity(dto *FavoriteDto) *entity.Favorite {
 	return &entity.Favorite{
-		ID:     dto.ID,
-		UserID: dto.UserID,
-		PostID: dto.PostID,
+		ID:      dto.ID,
+		UserID:  dto.UserID,
+		SaykaID: dto.SaykaID,
 	}
 }
 
@@ -30,9 +30,9 @@ func FavoriteUserDtoToEntity(dto *FavoriteUserDto) string {
 
 func FavoriteEntityToDto(f *entity.Favorite) FavoriteDto {
 	return FavoriteDto{
-		ID:     f.ID,
-		UserID: f.UserID,
-		PostID: f.PostID,
+		ID:      f.ID,
+		UserID:  f.UserID,
+		SaykaID: f.SaykaID,
 	}
 }
 

@@ -1,11 +1,12 @@
 package dto
 
 import (
-	"github.com/Uwasaru/Sayka/domain/entity"
 	"time"
+
+	"github.com/Uwasaru/Sayka/domain/entity"
 )
 
-type PostDto struct {
+type SaykaDto struct {
 	ID          string    `db:"id"`
 	UserID      string    `db:"user_id"`
 	Title       string    `db:"title"`
@@ -19,10 +20,10 @@ type PostDto struct {
 	UpdatedAt   time.Time `db:"updated_at"`
 }
 
-type PostsDto []*PostDto
+type SaykasDto []*SaykaDto
 
-func PostDtoToEntity(dto *PostDto) *entity.Post {
-	return &entity.Post{
+func SaykaDtoToEntity(dto *SaykaDto) *entity.Sayka {
+	return &entity.Sayka{
 		ID:          dto.ID,
 		UserID:      dto.UserID,
 		Title:       dto.Title,
@@ -36,8 +37,8 @@ func PostDtoToEntity(dto *PostDto) *entity.Post {
 	}
 }
 
-func PostEntityToDto(p *entity.Post) PostDto {
-	return PostDto{
+func SaykaEntityToDto(p *entity.Sayka) SaykaDto {
+	return SaykaDto{
 		ID:          p.ID,
 		UserID:      p.UserID,
 		Title:       p.Title,
@@ -51,11 +52,11 @@ func PostEntityToDto(p *entity.Post) PostDto {
 	}
 }
 
-func PostsDtoToEntity(dtos *PostsDto) *entity.Posts {
-	posts := &entity.Posts{}
+func SaykasDtoToEntity(dtos *SaykasDto) *entity.Saykas {
+	saykas := &entity.Saykas{}
 	for _, dto := range *dtos {
-		post := PostDtoToEntity(dto)
-		*posts = append(*posts, post)
+		sayka := SaykaDtoToEntity(dto)
+		*saykas = append(*saykas, sayka)
 	}
-	return posts
+	return saykas
 }

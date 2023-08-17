@@ -13,7 +13,7 @@ func main() {
 
 	r := router.NewRouter()
 	r.InitUserRouter(conn)
-	r.InitPostRouter(conn)
+	r.InitSaykaRouter(conn)
 	r.InitFavoriteRouter(conn)
 	r.InitCommentRouter(conn)
 	r.InitTagRouter(conn)

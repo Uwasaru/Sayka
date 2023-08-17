@@ -4,8 +4,8 @@ import (
 	"time"
 )
 
-// Postは投稿を表します
-type Post struct {
+// Saykaは投稿を表します
+type Sayka struct {
 	ID          string    `json:"id"`
 	UserID      string    `json:"user_id"`
 	Title       string    `json:"title"`
@@ -22,4 +22,4 @@ type Post struct {
 	CreatedAt   time.Time `json:"created_at"`
 }
 
-type Posts []*Post
+type Saykas []*Sayka

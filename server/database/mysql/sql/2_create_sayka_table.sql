@@ -1,4 +1,4 @@
-CREATE TABLE `posts` (
+CREATE TABLE `saykas` (
   `id`          varchar(255) COLLATE utf8mb4_bin NOT NULL,
   `title`       varchar(255) COLLATE utf8mb4_bin NOT NULL,
   `user_id`     varchar(255) COLLATE utf8mb4_bin NOT NULL,

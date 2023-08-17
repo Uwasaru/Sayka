@@ -6,7 +6,7 @@ import "time"
 type Comment struct {
 	ID        string    `json:"id"`
 	UserID    string    `json:"user_id"`
-	PostID    string    `json:"post_id"`
+	SaykaID   string    `json:"sayka_id"`
 	Content   string    `json:"content"`
 	Type      int       `json:"type"`
 	CreatedAt time.Time `json:"created_at"`
@@ -14,4 +14,4 @@ type Comment struct {
 
 type Comments []*Comment
 
-type CommentPosts []string
+type CommentSaykas []string

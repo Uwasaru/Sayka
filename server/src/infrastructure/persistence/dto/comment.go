@@ -1,21 +1,22 @@
 package dto
 
 import (
-	"github.com/Uwasaru/Sayka/domain/entity"
 	"time"
+
+	"github.com/Uwasaru/Sayka/domain/entity"
 )
 
 type CommentDto struct {
 	ID        string    `db:"id"`
 	UserID    string    `db:"user_id"`
-	PostID    string    `db:"post_id"`
+	SaykaID   string    `db:"sayka_id"`
 	Content   string    `db:"content"`
 	Type      int       `db:"type"`
 	CreatedAt time.Time `db:"created_at"`
 }
 
-type CommentPostDto struct {
-	PostID string `db:"post_id"`
+type CommentSaykaDto struct {
+	SaykaID string `db:"sayka_id"`
 }
 
 type CommentsDto []*CommentDto
@@ -24,22 +25,22 @@ func CommentDtoToEntity(dto *CommentDto) *entity.Comment {
 	return &entity.Comment{
 		ID:        dto.ID,
 		UserID:    dto.UserID,
-		PostID:    dto.PostID,
+		SaykaID:   dto.SaykaID,
 		Content:   dto.Content,
 		Type:      dto.Type,
 		CreatedAt: dto.CreatedAt,
 	}
 }
 
-func CommentPostDtoToEntity(dto *CommentPostDto) string {
-	return dto.PostID
+func CommentSaykaDtoToEntity(dto *CommentSaykaDto) string {
+	return dto.SaykaID
 }
 
 func CommentEntityToDto(c *entity.Comment) CommentDto {
 	return CommentDto{
 		ID:        c.ID,
 		UserID:    c.UserID,
-		PostID:    c.PostID,
+		SaykaID:   c.SaykaID,
 		Content:   c.Content,
 		Type:      c.Type,
 		CreatedAt: c.CreatedAt,

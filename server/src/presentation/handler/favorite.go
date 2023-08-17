@@ -43,10 +43,10 @@ func (fh *FavoriteHandler) GetByUserID(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, favorites)
 }
 
-// GetByPostIDはPostIDを指定して投稿を取得します
-func (fh *FavoriteHandler) GetByPostID(ctx *gin.Context) {
-	postID := ctx.Param("postID")
-	favorites, err := fh.fu.GetByPostID(ctx, postID)
+// GetBySaykaIDはSaykaIDを指定して投稿を取得します
+func (fh *FavoriteHandler) GetBySaykaID(ctx *gin.Context) {
+	saykaID := ctx.Param("saykaID")
+	favorites, err := fh.fu.GetBySaykaID(ctx, saykaID)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return

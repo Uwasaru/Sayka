@@ -43,10 +43,10 @@ func (ch *CommentHandler) GetByUserID(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, comments)
 }
 
-// GetByPostIDはPostIDを指定して投稿を取得します
-func (ch *CommentHandler) GetByPostID(ctx *gin.Context) {
-	postID := ctx.Param("postID")
-	comments, err := ch.cu.GetByPostID(ctx, postID)
+// GetBySaykaIDはSaykaIDを指定して投稿を取得します
+func (ch *CommentHandler) GetBySaykaID(ctx *gin.Context) {
+	saykaID := ctx.Param("saykaID")
+	comments, err := ch.cu.GetBySaykaID(ctx, saykaID)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
