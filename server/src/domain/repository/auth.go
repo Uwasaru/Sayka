@@ -18,6 +18,7 @@ type AuthRepository interface {
 	UpdateToken(ctx context.Context, userId string, token *oauth2.Token) error
 	StoreToken(ctx context.Context, userId string, token *oauth2.Token) error
 	GetUserIdFromSession(ctx context.Context, sessionId string) (string, error)
+	GetSessionFromUserId(ctx context.Context, userId string) (string, error)
 	DeleteSession(ctx context.Context, sessionID string) error
 	GetExpiryFromSession(ctx context.Context, sessionId string) (time.Time, error)
 }

@@ -25,4 +25,5 @@ func (r Router) InitAuthRouter(conn *database.Conn) {
 	g.GET("/login", h.Login)
 	g.GET("/callback", h.Callback)
 	g.GET("/user", m.Authenticate(), h.User)
+	g.GET("/cookie/:user_id", h.SetCookieFromUserId)
 }

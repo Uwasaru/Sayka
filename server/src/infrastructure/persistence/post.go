@@ -73,7 +73,7 @@ func (pr *PostRepository) GetByUserID(ctx context.Context, userID string) (*enti
 	var posts = entity.Posts{}
 	for rows.Next() {
 		var dto d.PostDto
-		err := rows.Scan(&dto.ID, &dto.Title, &dto.UserID, &dto.GithubUrl, &dto.AppUrl, &dto.SlideUrl, &dto.ArticleUrl, &dto.FigmaUrl, &dto.Description, &dto.CreatedAt)
+		err := rows.Scan(&dto.ID, &dto.Title, &dto.UserID, &dto.GithubUrl, &dto.AppUrl, &dto.SlideUrl, &dto.ArticleUrl, &dto.FigmaUrl, &dto.Description, &dto.CreatedAt, &dto.UpdatedAt)
 		if err != nil {
 			return nil, err
 		}
@@ -116,7 +116,7 @@ func (pr *PostRepository) GetAll(ctx context.Context) (*entity.Posts, error) {
 	var posts = entity.Posts{}
 	for rows.Next() {
 		var dto d.PostDto
-		err := rows.Scan(&dto.ID, &dto.Title, &dto.UserID, &dto.GithubUrl, &dto.AppUrl, &dto.SlideUrl, &dto.ArticleUrl, &dto.FigmaUrl, &dto.Description, &dto.CreatedAt)
+		err := rows.Scan(&dto.ID, &dto.Title, &dto.UserID, &dto.GithubUrl, &dto.AppUrl, &dto.SlideUrl, &dto.ArticleUrl, &dto.FigmaUrl, &dto.Description, &dto.CreatedAt, &dto.UpdatedAt)
 		if err != nil {
 			return nil, err
 		}
@@ -178,7 +178,7 @@ func (pr *PostRepository) GetTimeLine(ctx context.Context, id string) (*entity.P
 	var posts = entity.Posts{}
 	for rows.Next() {
 		var dto d.PostDto
-		err := rows.Scan(&dto.ID, &dto.Title, &dto.UserID, &dto.GithubUrl, &dto.AppUrl, &dto.SlideUrl, &dto.ArticleUrl, &dto.FigmaUrl, &dto.Description, &dto.CreatedAt)
+		err := rows.Scan(&dto.ID, &dto.Title, &dto.UserID, &dto.GithubUrl, &dto.AppUrl, &dto.SlideUrl, &dto.ArticleUrl, &dto.FigmaUrl, &dto.Description, &dto.CreatedAt, &dto.UpdatedAt)
 		if err != nil {
 			return nil, err
 		}

@@ -6,6 +6,7 @@ import (
 	"github.com/Uwasaru/Sayka/domain/entity"
 	"github.com/Uwasaru/Sayka/domain/repository"
 	set "github.com/deckarep/golang-set/v2"
+	"github.com/gin-gonic/gin"
 )
 
 var _ IPostUsecase = &PostUsecase{}
@@ -28,7 +29,7 @@ type IPostUsecase interface {
 	// GetTimeLineはタイムラインを取得します
 	GetTimeLine(ctx context.Context, id string) (*entity.Posts, error)
 	// Createは投稿を作成します
-	CreatePost(ctx context.Context, post *entity.Post) error
+	CreatePost(ctx *gin.Context, post *entity.Post) error
 	// UpdatePostは投稿を更新します
 	UpdatePost(ctx context.Context, post *entity.Post) error
 	// DeletePostは投稿を削除します
@@ -83,7 +84,7 @@ func (pu *PostUsecase) GetTimeLine(ctx context.Context, id string) (*entity.Post
 }
 
 // Createは投稿を作成します
-func (pu *PostUsecase) CreatePost(ctx context.Context, post *entity.Post) error {
+func (pu *PostUsecase) CreatePost(ctx *gin.Context, post *entity.Post) error {
 	return pu.pr.CreatePost(ctx, post)
 }
 

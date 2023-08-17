@@ -11,8 +11,10 @@ func (r Router) InitPostRouter(conn *database.Conn) {
 	pr := persistence.NewPostRepository(conn)
 	fr := persistence.NewFavoriteRepository(conn)
 	cr := persistence.NewCommentRepository(conn)
+	ar := persistence.NewAuthRepository(conn)
 	pu := usecase.NewPostUsecase(pr, fr, cr)
-	ph := handler.NewPostHandler(pu)
+	ju := usecase.NewJwtUsecase(ar)
+	ph := handler.NewPostHandler(pu, ju)
 
 	g := r.Engine.Group("/post")
 	g.GET("/:id", ph.GetByID)

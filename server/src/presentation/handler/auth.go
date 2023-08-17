@@ -202,3 +202,35 @@ func (u *AuthHandler) User(ctx *gin.Context) {
 		gin.H{"data": userjson},
 	)
 }
+
+func (u *AuthHandler) SetCookieFromUserId(ctx *gin.Context) {
+	userId := ctx.Param("user_id")
+	session, err := u.authUC.GetSessionFromUserId(ctx, userId)
+	if err != nil {
+		ctx.JSON(
+			http.StatusBadRequest,
+			gin.H{"error": err.Error()},
+		)
+		return
+	}
+	// jwtの生成
+	claims := jwt.MapClaims{
+		"session": session,
+		"exp":     time.Now().Add(time.Hour * 72).Unix(), // 72時間が有効期限
+	}
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+
+	accessToken, _ := token.SignedString([]byte(os.Getenv("rawPrivKey")))
+	ctx.SetSameSite(http.SameSiteLaxMode)
+	if os.Getenv("ENVIRONMENT") == "dev" {
+		ctx.SetCookie("token", accessToken, oneWeek, "", "", true, true)
+	} else {
+		// フロントデプロイ次第、domainを登録
+		ctx.SetCookie("token", accessToken, oneWeek, "", "", true, true)
+	}
+	ctx.Header("Access-Control-Allow-Credentials", "true")
+	ctx.JSON(
+		http.StatusOK,
+		gin.H{"data": "ok"},
+	)
+}

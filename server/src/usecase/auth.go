@@ -25,6 +25,7 @@ type IAuthUsecase interface {
 	DeleteSession(ctx context.Context, sessionID string) error
 	CheckSessionExpiry(ctx context.Context, sessionID string) (bool, error)
 	GetUserIdFromSession(ctx context.Context, sessionId string) (string, error)
+	GetSessionFromUserId(ctx context.Context, userId string) (string, error)
 	GetTokenByUserId(ctx context.Context, userId string) (*oauth2.Token, error)
 	RefreshAccessToken(ctx context.Context, userId string, token *oauth2.Token) (*oauth2.Token, error)
 }
@@ -123,6 +124,14 @@ func (uc *Auth) GetUserIdFromSession(ctx context.Context, sessionId string) (str
 		return "", fmt.Errorf("getUserIDFromSession: %w", err)
 	}
 	return userId, nil
+}
+
+func (uc *Auth) GetSessionFromUserId(ctx context.Context, userId string) (string, error) {
+	sessionId, err := uc.authRepo.GetSessionFromUserId(ctx, userId)
+	if err != nil {
+		return "", fmt.Errorf("getSessionFromUserID: %w", err)
+	}
+	return sessionId, nil
 }
 
 func (uc *Auth) GetTokenByUserId(ctx context.Context, userId string) (*oauth2.Token, error) {

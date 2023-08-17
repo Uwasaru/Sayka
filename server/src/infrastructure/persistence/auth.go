@@ -173,6 +173,22 @@ func (repo *AuthRepository) GetUserIdFromSession(ctx context.Context, sessionId 
 	return dto.UserID, nil
 }
 
+func (repo *AuthRepository) GetSessionFromUserId(ctx context.Context, userId string) (string, error) {
+	var dto d.LoginSessionsDto
+
+	query := `
+	SELECT *
+	FROM login_sessions
+	WHERE user_id = ?
+	LIMIT 1
+	`
+	err := repo.conn.DB.GetContext(ctx, &dto, query, userId)
+	if err != nil {
+		return "", err
+	}
+	return dto.ID, nil
+}
+
 func (repo *AuthRepository) GetExpiryFromSession(ctx context.Context, sessionId string) (time.Time, error) {
 	var dto d.LoginSessionsDto
 

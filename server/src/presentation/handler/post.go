@@ -12,12 +12,14 @@ import (
 // Handlerはハンドラーを表します
 type PostHandler struct {
 	pu usecase.IPostUsecase
+	ju usecase.IJwtUsecase
 }
 
 // NewPostHandlerは新しいPostHandlerを初期化し構造体のポインタを返します
-func NewPostHandler(pu usecase.IPostUsecase) *PostHandler {
+func NewPostHandler(pu usecase.IPostUsecase, ju usecase.IJwtUsecase) *PostHandler {
 	return &PostHandler{
 		pu: pu,
+		ju: ju,
 	}
 }
 
@@ -73,7 +75,12 @@ func (ph *PostHandler) CreatePost(ctx *gin.Context) {
 	}
 	post := json.PostJsonToEntity(post_json)
 	post.ID = utils.Ulid()
-	post.CreatedAt = utils.GetCurrentTimeStamps()
+	userID, err := ph.ju.GetUserIdFromJwtToken(ctx)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	post.UserID = userID
 	if err := ph.pu.CreatePost(ctx, post); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
