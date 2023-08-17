@@ -107,6 +107,7 @@ func (pr *PostRepository) GetAll(ctx context.Context) (*entity.Posts, error) {
 	query := `
 	SELECT *
 	FROM posts
+	ORDER BY id DESC
 	`
 	rows, err := pr.conn.DB.QueryContext(ctx, query)
 	if err != nil {
@@ -146,24 +147,26 @@ func (pr *PostRepository) GetAll(ctx context.Context) (*entity.Posts, error) {
 }
 
 // GetTimeLineはタイムラインを取得します
-func (pr *PostRepository) GetTimeLine(ctx context.Context, id string) (*entity.Posts, error) {
+func (pr *PostRepository) GetTimeLine(ctx context.Context, id string, tag string) (*entity.Posts, error) {
 	limit := 10
 	var query string
 	var args []interface{}
 
-	if id == "init" {
+	if tag != "" {
 		query = `
-		SELECT *
-		FROM posts
-		ORDER BY id DESC
+		SELECT p.*
+		FROM posts p
+		JOIN tags t ON p.id = t.post_id
+		WHERE p.id < ? AND t.name LIKE ?
+		ORDER BY p.id DESC
 		LIMIT ?
 		`
-		args = append(args, limit)
+		args = append(args, id, tag, limit)
 	} else {
 		query = `
 		SELECT *
 		FROM posts
-		WHERE id > ?
+		WHERE id < ?
 		ORDER BY id DESC
 		LIMIT ?
 		`
@@ -182,7 +185,6 @@ func (pr *PostRepository) GetTimeLine(ctx context.Context, id string) (*entity.P
 		if err != nil {
 			return nil, err
 		}
-
 		tagQuery := `
         SELECT name
         FROM tags
