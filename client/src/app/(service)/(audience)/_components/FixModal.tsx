@@ -6,7 +6,7 @@ import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
 type TProps = {
   isVisible: boolean;
   onClose: () => void;
-  id: number;
+  id: string;
 };
 
 export const FixModal: FC<TProps> = ({ isVisible, onClose, id }) => {

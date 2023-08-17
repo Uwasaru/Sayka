@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"context"
+
 	"github.com/Uwasaru/Sayka/domain/entity"
 	"github.com/Uwasaru/Sayka/domain/repository"
 )

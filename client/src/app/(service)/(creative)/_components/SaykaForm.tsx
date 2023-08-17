@@ -73,9 +73,8 @@ export const SaykaForm: FC<TProps> = ({ user }) => {
       user_id: user.id,
       ...submitData,
     }).then((res) => {
-      console.log("res", res);
       if (res.type === "error") return;
-      console.log(res.value.data);
+      console.log(res.value.data.id);
       redirect(`/shareSaykaInformation/${res.value.data.id}`);
     });
   };

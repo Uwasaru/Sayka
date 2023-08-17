@@ -15,7 +15,6 @@ export const TagFilter: FC<TProps> = ({ tag, changeFilterTag, onSubmit }) => {
       changeFilterTag("ALL");
     }
     onSubmit(tag);
-    console.log(tag?.length);
   };
 
   return (

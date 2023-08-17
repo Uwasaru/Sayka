@@ -5,7 +5,7 @@ import { FC } from "react";
 import { LiaCommentAlt } from "react-icons/lia";
 
 type TProps = {
-  saykaId: number;
+  saykaId: string;
   commentCount: number;
 };
 

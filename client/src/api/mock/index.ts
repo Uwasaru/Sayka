@@ -1,13 +1,14 @@
+import { TSayka } from "@/types/Sayka";
 import { TUser } from "@/types/User";
 
-import { TComment, TSayka, TTag } from "./type";
+import { TComment, TTag } from "./type";
 
 // user
 export const mock_user_1: TUser = {
   id: "hahaha-1",
   name: "hahaha",
   img: "/icon3.png",
-  // like_count: 10,
+  // favorites: 10,
   // sayka_count: 3,
 };
 
@@ -15,32 +16,20 @@ export const mock_user_2: TUser = {
   id: "teyang-1",
   name: "teyang",
   img: "/icon2.jpg",
-  // like_count: 100,
+  // favorites: 100,
   // sayka_count: 30,
 };
 
 export const mock_users: TUser[] = [mock_user_1, mock_user_2];
 
 // tag
-export const mock_tag_1: TTag = {
-  id: 1,
-  name: "react",
-};
+export const mock_tag_1: TTag = "react";
 
-export const mock_tag_2: TTag = {
-  id: 2,
-  name: "next.js",
-};
+export const mock_tag_2: TTag = "typescript";
 
-export const mock_tag_3: TTag = {
-  id: 3,
-  name: "javascript初心者",
-};
+export const mock_tag_3: TTag = "プロダクトを作りたい";
 
-export const mock_tag_4: TTag = {
-  id: 4,
-  name: "プロダクトを伸ばしたい",
-};
+export const mock_tag_4: TTag = "designを作りたい";
 
 export const mock_tags: TTag[] = [
   mock_tag_1,
@@ -52,56 +41,64 @@ export const mock_tags: TTag[] = [
 // sayka
 export const mock_saykas: TSayka[] = [
   {
-    id: 1,
+    id: "1",
     title: "成果物共有アプリ『Sayka』",
     description:
       "このアプリは、成果物を多くの人に共有することで、より良い成果物を作ることを目的としたアプリです。",
-    like_count: 13,
-    comment_count: 3,
+    favorites: 13,
+    comments: 3,
     github_url: "https://github.com/39TO",
     slide_url:
       "https://docs.google.com/presentation/d/1DsnKwxItsMPsA7-WeWLvDOIMLbApLPPFBtJD5WLemy4/edit?usp=sharing",
-    application_url: "https://nextjs.org/docs",
+    app_url: "https://nextjs.org/docs",
     figma_url:
       "https://www.figma.com/file/1DsnKwxItsMPsA7-WeWLvDOIMLbApLPPFBtJD5WLemy4/edit",
     article_url: "https://qiita.com/39_to",
-    user: mock_user_1,
+    user_id: mock_user_1.id,
     tags: [mock_tag_1, mock_tag_2, mock_tag_3, mock_tag_4],
+    is_favorite: false,
+    created_at: "2021-10-10",
   },
   {
-    id: 2,
+    id: "2",
     title:
       "最強のアプリ-最強のアプリ-最強のアプリ-最強のアプリ-最強のアプリ-最強のアプリ-最強のアプリ-",
     description:
       "testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest",
-    like_count: 1,
-    comment_count: 5,
+    favorites: 1,
+    comments: 5,
     github_url: "https://github.com/39TO",
     slide_url:
       "https://docs.google.com/presentation/d/1DsnKwxItsMPsA7-WeWLvDOIMLbApLPPFBtJD5WLemy4/edit?usp=sharing",
-    user: mock_user_1,
+    user_id: mock_user_1.id,
     tags: [mock_tag_1],
+    is_favorite: true,
+    created_at: "2021-10-10",
   },
   {
-    id: 3,
+    id: "3",
     title: "Sayka 2",
     description: "console.log('Hello World')",
-    like_count: 1,
-    comment_count: 5,
+    favorites: 1,
+    comments: 5,
     slide_url:
       "https://docs.google.com/presentation/d/1DsnKwxItsMPsA7-WeWLvDOIMLbApLPPFBtJD5WLemy4/edit?usp=sharing",
-    application_url: "https://nextjs.org/docs",
-    user: mock_user_2,
+    app_url: "https://nextjs.org/docs",
+    user_id: mock_user_2.id,
     tags: [],
+    is_favorite: true,
+    created_at: "2021-10-10",
   },
   {
-    id: 4,
+    id: "4",
     title: "Sayka 2",
     description: "Sayka 2 description",
-    like_count: 1,
-    comment_count: 5,
-    user: mock_user_2,
+    favorites: 1,
+    comments: 5,
+    user_id: mock_user_2.id,
     tags: [mock_tag_1, mock_tag_2, mock_tag_3],
+    is_favorite: false,
+    created_at: "2021-10-10",
   },
 ];
 

@@ -29,7 +29,7 @@ export const ServiceHeader: FC<TProps> = ({ user }) => {
           </Link>
           <div className="flex items-center space-x-5 ">
             <LiaUserCircleSolid size={34} className="hidden md:block" />
-            <ColorButton label="ログイン" onClick={handleOpen} />
+            <ColorButton onClick={handleOpen}>ログイン</ColorButton>
           </div>
         </header>
         {isOpen && <LoginModal />}

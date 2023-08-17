@@ -28,6 +28,8 @@ type PostRequestJson struct {
 	PostAmount int    `json:"post_amount"`
 }
 
+type PostsJson []PostJson
+
 func PostJsonToEntity(postJson *PostJson) *entity.Post {
 	return &entity.Post{
 		ID:          postJson.ID,
@@ -42,6 +44,15 @@ func PostJsonToEntity(postJson *PostJson) *entity.Post {
 		Tags:        postJson.Tags,
 		CreatedAt:   postJson.CreatedAt,
 	}
+}
+
+func PostsEntityToJson(c entity.Posts) *PostsJson {
+	var PostsJson PostsJson
+	for _, glyph := range c {
+		PostsJson = append(PostsJson, *PostEntityToJson(glyph))
+	}
+
+	return &PostsJson
 }
 
 func PostEntityToJson(post *entity.Post) *PostJson {

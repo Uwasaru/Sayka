@@ -66,13 +66,13 @@ export const MypageSaykaList: FC<TProps> = ({ userId }) => {
 };
 
 const MyselfSaykaList: FC<TProps> = ({ userId }) => {
-  return <SaykaList sayka={mock_saykas} />;
+  return <SaykaList saykas={mock_saykas} />;
 };
 
 const FavoriteSaykaList: FC<TProps> = ({ userId }) => {
-  return <SaykaList sayka={mock_saykas} />;
+  return <SaykaList saykas={mock_saykas} />;
 };
 
 const CommentSaykaList: FC<TProps> = ({ userId }) => {
-  return <SaykaList sayka={mock_saykaNull} />;
+  return <SaykaList saykas={mock_saykaNull} />;
 };

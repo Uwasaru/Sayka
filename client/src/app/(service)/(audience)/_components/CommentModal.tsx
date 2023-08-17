@@ -17,10 +17,10 @@ import { CodeBlock } from "@/ui/Text/components/CodeBlock";
 
 type TProps = {
   id: number;
-  user?: TUser;
+  loginUser?: TUser;
 };
 
-export const CommentModal: FC<TProps> = ({ id, user }) => {
+export const CommentModal: FC<TProps> = ({ id, loginUser }) => {
   const [_, setIsOpen] = useAtom(modalState);
   const [commentList, setCommentList] = useState<TComment[]>([]);
   const [comment, setComment] = useState("");

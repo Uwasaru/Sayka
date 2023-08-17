@@ -11,8 +11,6 @@ type TProps = {
   isMe: boolean;
 };
 export const Profile: FC<TProps> = ({ user, isMe }) => {
-  console.log("pro", user);
-  console.log("isMe", isMe);
   return (
     <div className="rounded-lg border border-gray-800 p-4">
       <div className="flex flex-col items-center justify-center space-y-5 p-5">
@@ -41,7 +39,7 @@ export const Profile: FC<TProps> = ({ user, isMe }) => {
             </div>
           </div>
         </div>
-        {isMe && <ColorButton label="編集する" />}
+        {isMe && <ColorButton>編集する</ColorButton>}
       </div>
     </div>
   );

@@ -6,7 +6,6 @@ import { getEnv } from "@/utils/env";
 const { serverURL, clientURL } = getEnv();
 export const ServiceLink = () => {
   const authUrl = `${serverURL}/auth/login?redirect_url=${clientURL}/timeline`;
-  console.log("authUrl", authUrl);
   return (
     <div className="space-y-10">
       <a

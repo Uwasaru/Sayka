@@ -10,7 +10,6 @@ import { PiFigmaLogoDuotone } from "react-icons/pi";
 import { TfiLayoutSlider } from "react-icons/tfi";
 import { TfiWorld } from "react-icons/tfi";
 
-import { TSayka } from "@/api/mock/type";
 import { TUser } from "@/types/User";
 import { TagInItem } from "@/ui/Tag";
 import { TooltipUI } from "@/ui/Tooltip";
@@ -19,50 +18,57 @@ import { CommentButton } from "./CommentButton";
 import { FixModal } from "./FixModal";
 import { LikeButton } from "./LikeButton";
 import { ShareButton } from "./ShareButton";
+import { TSayka } from "@/types/Sayka";
 
 type TProps = {
-  data: TSayka;
+  sayka: TSayka;
+  user: TUser;
+  loginUser?: TUser;
   changeFilterTag?: (tag: string) => void;
-  user?: TUser;
 };
 
-export const Sayka: FC<TProps> = ({ data, changeFilterTag, user }) => {
+export const Sayka: FC<TProps> = ({
+  sayka,
+  changeFilterTag,
+  loginUser,
+  user,
+}) => {
   return (
     <div className="space-y-5 rounded-md border-4 border-gray-200 p-5 shadow-lg transition-transform hover:-translate-y-1 hover:shadow-xl">
-      <SaykaHeader data={data} user={user} />
-      <SaykaBody data={data} changeFilterTag={changeFilterTag} />
-      <SaykaFooter data={data} user={user} />
+      <SaykaHeader sayka={sayka} loginUser={loginUser} user={user} />
+      <SaykaBody sayka={sayka} changeFilterTag={changeFilterTag} user={user} />
+      <SaykaFooter sayka={sayka} loginUser={loginUser} user={user} />
     </div>
   );
 };
 
-const SaykaHeader: FC<TProps> = ({ data, user }) => {
+const SaykaHeader: FC<TProps> = ({ sayka, loginUser, user }) => {
   const [isModalVisible, setModalVisible] = useState(false);
 
   const isMySayka = useMemo(() => {
-    if (!user) return false;
-    return user.id === data.user.id;
-  }, [user, data]);
+    if (!loginUser) return false;
+    return loginUser.id === sayka.user_id;
+  }, [loginUser, sayka]);
 
   return (
     <div className="relative flex items-center justify-between">
       <FixModal
         isVisible={isModalVisible}
         onClose={() => setModalVisible(false)}
-        id={data.id}
+        id={sayka.id}
       />
       <div className="flex items-center">
         <Image
-          src={data.user.img}
+          src={user.img}
           alt="user icon"
           width={30}
           height={30}
           className="mr-2 rounded-full"
         />
         <Link
-          href={`/mypage/${data.user.id}`}
+          href={`/mypage/${user.id}`}
           className="border-b-teal-400 hover:border-b-2">
-          @{data.user.name}
+          @{user.id}
         </Link>
       </div>
       {isMySayka && (
@@ -74,14 +80,14 @@ const SaykaHeader: FC<TProps> = ({ data, user }) => {
     </div>
   );
 };
-const SaykaBody: FC<TProps> = ({ data, changeFilterTag }) => {
+const SaykaBody: FC<TProps> = ({ sayka, changeFilterTag }) => {
   return (
     <div className="flex flex-col space-y-3">
-      <div className="text-xl font-extrabold md:text-3xl">{data.title}</div>
-      <div className="text-xs md:text-base">{data.description}</div>
+      <div className="text-xl font-extrabold md:text-3xl">{sayka.title}</div>
+      <div className="text-xs md:text-base">{sayka.description}</div>
       <div className="flex flex-wrap">
-        {data.tags?.map((tag) => (
-          <div className="mr-2 py-1" key={tag.id}>
+        {sayka.tags?.map((tag, i) => (
+          <div className="mr-2 py-1" key={i}>
             <TagInItem tag={tag} changeFilterTag={changeFilterTag} />
           </div>
         ))}
@@ -90,48 +96,50 @@ const SaykaBody: FC<TProps> = ({ data, changeFilterTag }) => {
   );
 };
 
-const SaykaFooter: FC<TProps> = ({ data, user }) => {
+const SaykaFooter: FC<TProps> = ({ sayka, loginUser }) => {
   return (
     <div className="flex flex-col-reverse md:flex-row">
       <div className="flex items-center justify-start gap-5 md:w-[50%] ">
-        <CommentButton saykaId={data.id} commentCount={data.comment_count} />
-        <LikeButton saykaId={data.id} likeCount={data.like_count} user={user} />
-        {/* <ShareButton saykaId={data.id} saykaTitle={data.title} /> */}
+        <CommentButton saykaId={sayka.id} commentCount={sayka.comments} />
+        <LikeButton
+          saykaId={sayka.id}
+          likeCount={sayka.favorites}
+          loginUser={loginUser}
+        />
+        {/* <ShareButton saykaId={sayka.id} saykaTitle={sayka.title} /> */}
       </div>
       <div className="flex items-center justify-end gap-5 pb-5 md:w-[50%] md:pb-0">
-        {data.github_url && (
+        {sayka.github_url && (
           <TooltipUI label="ソースコードへ">
-            <Link href={data.github_url} className="flex items-center gap-1">
+            <Link href={sayka.github_url} className="flex items-center gap-1">
               <AiFillGithub size={27} />
             </Link>
           </TooltipUI>
         )}
-        {data.figma_url && (
+        {sayka.figma_url && (
           <TooltipUI label="Figmaへ">
-            <Link href={data.figma_url} className="flex items-center gap-1">
+            <Link href={sayka.figma_url} className="flex items-center gap-1">
               <PiFigmaLogoDuotone size={24} />
             </Link>
           </TooltipUI>
         )}
-        {data.slide_url && (
+        {sayka.slide_url && (
           <TooltipUI label="プレゼンテーションへ">
-            <Link href={data.slide_url} className="flex items-center gap-1">
+            <Link href={sayka.slide_url} className="flex items-center gap-1">
               <TfiLayoutSlider size={24} />
             </Link>
           </TooltipUI>
         )}
-        {data.article_url && (
+        {sayka.article_url && (
           <TooltipUI label="記事へ">
-            <Link href={data.article_url} className="flex items-center gap-1">
+            <Link href={sayka.article_url} className="flex items-center gap-1">
               <MdOutlineArticle size={24} />
             </Link>
           </TooltipUI>
         )}
-        {data.application_url && (
+        {sayka.app_url && (
           <TooltipUI label="アプリケーションへ">
-            <Link
-              href={data.application_url}
-              className="flex items-center gap-1">
+            <Link href={sayka.app_url} className="flex items-center gap-1">
               <TfiWorld size={24} />
             </Link>
           </TooltipUI>

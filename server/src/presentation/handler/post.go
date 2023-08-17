@@ -63,7 +63,12 @@ func (ph *PostHandler) GetTimeLine(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	ctx.JSON(http.StatusOK, posts)
+
+	postsJson := json.PostsEntityToJson(*posts)
+	ctx.JSON(
+		http.StatusOK,
+		gin.H{"data": postsJson},
+	)
 }
 
 // CreatePostは投稿を作成します
@@ -85,7 +90,8 @@ func (ph *PostHandler) CreatePost(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	ctx.JSON(http.StatusOK, post)
+	postJson := json.PostEntityToJson(post)
+	ctx.JSON(http.StatusOK, gin.H{"data": postJson})
 }
 
 // UpdatePostは投稿を更新します

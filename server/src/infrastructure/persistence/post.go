@@ -151,7 +151,7 @@ func (pr *PostRepository) GetTimeLine(ctx context.Context, id string) (*entity.P
 	var query string
 	var args []interface{}
 
-	if id == "" {
+	if id == "init" {
 		query = `
 		SELECT *
 		FROM posts

@@ -1,9 +1,6 @@
 import { TUser } from "@/types/User";
 
-export type TTag = {
-  id: number;
-  name: string;
-};
+export type TTag = string;
 
 export type TSayka = {
   id: number;

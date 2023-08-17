@@ -7,12 +7,12 @@ import { modalState } from "@/store/atoms/modalAtom";
 import { TUser } from "@/types/User";
 
 type TProps = {
-  saykaId: number;
+  saykaId: string;
   likeCount: number;
-  user?: TUser;
+  loginUser?: TUser;
 };
 
-export const LikeButton: FC<TProps> = ({ saykaId, likeCount, user }) => {
+export const LikeButton: FC<TProps> = ({ saykaId, likeCount, loginUser }) => {
   const [liked, setLiked] = useState(false);
   const [likeCountState, setLikeCountState] = useState(likeCount);
 
@@ -32,7 +32,7 @@ export const LikeButton: FC<TProps> = ({ saykaId, likeCount, user }) => {
     setIsOpen(true);
   };
 
-  if (!user) {
+  if (!loginUser) {
     return (
       <div className="flex items-center gap-x-1">
         <VscHeart size={24} onClick={handleHeartClickByGuest} />

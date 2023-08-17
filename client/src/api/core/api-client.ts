@@ -17,9 +17,8 @@ const resp2result = async <T extends AnySchema>(
   resp: Response
 ): Promise<Result<T, ResponseError>> => {
   const data = (await resp.json()) as T;
-  console.log("data", data);
   const validate = ajv.compile<JTDDataType<T>>(data);
-  console.log("validate", validate);
+  console.log("-");
   if (!resp.ok) {
     return {
       type: "error",

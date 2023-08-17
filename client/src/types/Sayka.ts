@@ -8,7 +8,7 @@ export type TSayka = {
   figma_url?: string;
   article_url?: string;
   app_url?: string;
-  tags: string[];
+  tags?: string[];
   favorites: number;
   comments: number;
   is_favorite: boolean;
