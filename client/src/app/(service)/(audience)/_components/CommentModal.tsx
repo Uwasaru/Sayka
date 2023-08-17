@@ -9,18 +9,20 @@ import { BsSend } from "react-icons/bs";
 import { GrClose } from "react-icons/gr";
 import ReactMarkdown from "react-markdown";
 
-import { mock_saykaComments_saykaId1, mock_saykas } from "@/api";
+import { mock_saykaComments_saykaId1 } from "@/api";
 import { TComment } from "@/api/mock/type";
 import { modalState } from "@/store/atoms/modalAtom";
 import { TUser } from "@/types/User";
 import { CodeBlock } from "@/ui/Text/components/CodeBlock";
+import { TSayka } from "@/types/Sayka";
 
 type TProps = {
-  id: number;
+  sayka: TSayka;
+  user: TUser;
   loginUser?: TUser;
 };
 
-export const CommentModal: FC<TProps> = ({ id, loginUser }) => {
+export const CommentModal: FC<TProps> = ({ sayka, user, loginUser }) => {
   const [_, setIsOpen] = useAtom(modalState);
   const [commentList, setCommentList] = useState<TComment[]>([]);
   const [comment, setComment] = useState("");
@@ -32,11 +34,6 @@ export const CommentModal: FC<TProps> = ({ id, loginUser }) => {
   }, []);
 
   const router = useRouter();
-
-  // SaykaMockDataのidが{id}と一致するものを取得
-  const sayka = mock_saykas.find((sayka) => sayka.id === id);
-
-  if (!sayka) return null;
 
   const handleClose = () => {
     router.back();
@@ -78,16 +75,16 @@ export const CommentModal: FC<TProps> = ({ id, loginUser }) => {
           <div className="space-y-5">
             <div className="flex items-center space-x-3">
               <Image
-                src={sayka.user.img}
+                src={user.img}
                 alt="user icon"
                 width={30}
                 height={30}
                 className="rounded-full"
               />
               <Link
-                href={`/mypage/${sayka.user.id}`}
+                href={`/mypage/${user.id}`}
                 className="border-b-teal-400 hover:border-b-2">
-                @{sayka.user.name}
+                @{user.id}
               </Link>
             </div>
             <div className="flex flex-col space-y-3">

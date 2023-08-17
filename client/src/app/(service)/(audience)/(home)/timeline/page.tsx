@@ -1,5 +1,5 @@
 import { getLoggedInUser, readUser } from "@/api";
-import { readSaykaTimeline } from "@/api/sayka";
+import { readSayka, readSaykaTimeline } from "@/api/sayka";
 import { getToken } from "@/features";
 
 import { CommentModal } from "../../_components/CommentModal";
@@ -20,17 +20,41 @@ const Page = async ({ searchParams }: TProps) => {
     return loginUser.value.data;
   })();
 
-  const saykaRes = await readSaykaTimeline();
-  if (saykaRes.type === "error") {
+  const saykasRes = await readSaykaTimeline();
+  if (saykasRes.type === "error") {
     throw new Error("データが取得できませんでした。");
   }
-  const saykas = saykaRes.value.data;
+  const saykas = saykasRes.value.data;
+
+  if (!saykas) {
+    throw new Error("投稿がありません");
+  }
+
+  let targetSayka;
+  let targetSaykaUser;
+
+  if (saykaId) {
+    const saykaRes = await readSayka(saykaId);
+    if (saykaRes.type === "error") {
+      throw new Error("データが取得できませんでした。");
+    }
+    targetSayka = saykaRes.value.data;
+    const userRes = await readUser(targetSayka.user_id);
+    if (userRes.type === "error") {
+      throw new Error("データが取得できませんでした。");
+    }
+    targetSaykaUser = userRes.value.data;
+  }
 
   return (
     <div className="mt-5 md:mx-16">
       <SaykaTimelineList loginUser={loginUser} saykas={saykas} />
-      {isOpenModal && saykaId && (
-        <CommentModal id={Number(saykaId)} loginUser={loginUser} />
+      {isOpenModal && targetSayka && targetSaykaUser && (
+        <CommentModal
+          sayka={targetSayka}
+          loginUser={loginUser}
+          user={targetSaykaUser}
+        />
       )}
     </div>
   );

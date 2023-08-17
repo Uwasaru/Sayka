@@ -72,6 +72,9 @@ func (pu *SaykaUsecase) GetAll(ctx context.Context) (*entity.Saykas, error) {
 // GetTimeLineはタイムラインを取得します
 func (pu *SaykaUsecase) GetTimeLine(ctx context.Context, id string, tag string) (*entity.Saykas, error) {
 	saykas, err := pu.pr.GetTimeLine(ctx, id, tag)
+	if err != nil {
+		return nil, err
+	}
 	for _, sayka := range *saykas {
 		fovorites, _ := pu.fr.GetBySaykaID(ctx, sayka.ID)
 		comments, _ := pu.cr.GetBySaykaID(ctx, sayka.ID)

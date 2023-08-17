@@ -55,9 +55,10 @@ type FormData = {
 
 type TProps = {
   user: TUser;
+  token: string;
 };
 
-export const SaykaForm: FC<TProps> = ({ user }) => {
+export const SaykaForm: FC<TProps> = ({ user, token }) => {
   const [tags, setTags] = useState<string[]>([]);
   const [tagError, setTagError] = useState<string | null>(null);
   const methods = useForm<FormData>({
@@ -69,10 +70,13 @@ export const SaykaForm: FC<TProps> = ({ user }) => {
       ...data,
       tags,
     };
-    createSayka({
-      user_id: user.id,
-      ...submitData,
-    }).then((res) => {
+    createSayka(
+      {
+        user_id: user.id,
+        ...submitData,
+      },
+      token
+    ).then((res) => {
       if (res.type === "error") return;
       console.log(res.value.data.id);
       redirect(`/shareSaykaInformation/${res.value.data.id}`);

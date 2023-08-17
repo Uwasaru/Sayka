@@ -6,14 +6,16 @@ import { redirect } from "next/navigation";
 import { SaykaForm } from "../_components/SaykaForm";
 
 const Page = async () => {
-  const userRes = await getLoggedInUser(getToken() || "");
+  const token = getToken();
+  if (!token) return redirect("/timeline");
+  const userRes = await getLoggedInUser(token || "");
   if (userRes.type === "error") return redirect("/timeline");
   const user = userRes.value.data;
   return (
     <div>
       <ContentTitle text="成果の投稿" />
       <div className="px-2 md:px-0">
-        <SaykaForm user={user} />
+        <SaykaForm user={user} token={token} />
       </div>
     </div>
   );

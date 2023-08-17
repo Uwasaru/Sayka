@@ -31,7 +31,9 @@ func (ph *SaykaHandler) GetByID(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	ctx.JSON(http.StatusOK, sayka)
+
+	saykaJson := json.SaykaEntityToJson(sayka)
+	ctx.JSON(http.StatusOK, gin.H{"data": saykaJson})
 }
 
 // GetByUserIDはUserIDを指定して投稿を取得します

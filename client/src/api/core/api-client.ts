@@ -17,6 +17,7 @@ const resp2result = async <T extends AnySchema>(
   resp: Response
 ): Promise<Result<T, ResponseError>> => {
   const data = (await resp.json()) as T;
+  console.log("data", data);
   const validate = ajv.compile<JTDDataType<T>>(data);
   console.log("-");
   if (!resp.ok) {
@@ -42,7 +43,7 @@ const resp2result = async <T extends AnySchema>(
 export const apiClient = {
   get: async <T extends AnySchema>(url: string, token?: string) => {
     const data = await fetch(url, {
-      cache: "no-store",
+      // cache: "no-store",
       credentials: "include",
       method: "GET",
       headers: {
