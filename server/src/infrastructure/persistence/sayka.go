@@ -215,6 +215,55 @@ func (pr *SaykaRepository) GetTimeLine(ctx context.Context, id string, tag strin
 	return &saykas, nil
 }
 
+// GetAllFavoritedSaykaはいいねした全ての投稿を取得します
+func (pr *SaykaRepository) GetAllFavoritedSayka(ctx context.Context, myId string) (*entity.Saykas, error) {
+	limit := 10
+	query := `
+	SELECT s.*
+	FROM saykas s
+	JOIN favorites f ON s.id = f.sayka_id
+	WHERE f.user_id = ?
+	ORDER BY s.id DESC
+	LIMIT ?
+	`
+	rows, err := pr.conn.DB.QueryContext(ctx, query, myId, limit)
+	if err != nil {
+		return nil, err
+	}
+
+
+	var saykas = entity.Saykas{}
+	for rows.Next() {
+		var dto d.SaykaDto
+		err := rows.Scan(&dto.ID, &dto.Title, &dto.UserID, &dto.GithubUrl, &dto.AppUrl, &dto.SlideUrl, &dto.ArticleUrl, &dto.FigmaUrl, &dto.Description, &dto.CreatedAt, &dto.UpdatedAt)
+		if err != nil {
+			return nil, err
+		}
+		query := `
+		SELECT name
+		FROM tags
+		WHERE sayka_id = ?
+		`
+		rows, err := pr.conn.DB.QueryContext(ctx, query, dto.ID)
+		if err != nil {
+			return nil, err
+		}
+		var tags []string
+		for rows.Next() {
+			var tag string
+			err := rows.Scan(&tag)
+			if err != nil {
+				return nil, err
+			}
+			tags = append(tags, tag)
+		}
+		sayka := d.SaykaDtoToEntity(&dto)
+		sayka.Tags = tags
+		saykas = append(saykas, sayka)
+	}
+	return &saykas, nil
+}
+
 // CreateSaykaは投稿を作成します
 func (pr *SaykaRepository) CreateSayka(ctx context.Context, sayka *entity.Sayka) error {
 	query := `

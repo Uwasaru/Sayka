@@ -12,6 +12,7 @@ type SaykaRepository interface {
 	GetByUserID(ctx context.Context, userID string) (*entity.Saykas, error)
 	GetAll(ctx context.Context) (*entity.Saykas, error)
 	GetTimeLine(ctx context.Context, id string, tag string) (*entity.Saykas, error)
+	GetAllFavoritedSayka(ctx context.Context, myId string) (*entity.Saykas, error)
 	CreateSayka(ctx context.Context, sayka *entity.Sayka) error
 	UpdateSayka(ctx context.Context, sayka *entity.Sayka) error
 	DeleteSayka(ctx context.Context, id string) error
