@@ -72,6 +72,17 @@ const saykasResponseSchema = {
 
 export type SaykasResponse = JTDDataType<typeof saykasResponseSchema>;
 
+const deleteSaykaResponseSchema = {
+  type: "object",
+  properties: {
+    data: {
+      type: "boolean",
+    },
+  },
+} as const;
+
+export type DeleteSaykaResponse = JTDDataType<typeof deleteSaykaResponseSchema>;
+
 export type SaykaBase = TSayka;
 
 export type SaykaCreate = Omit<

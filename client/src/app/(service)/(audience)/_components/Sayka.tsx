@@ -31,14 +31,14 @@ type TProps = {
 export const Sayka: FC<TProps> = ({ sayka, changeFilterTag, token }) => {
   return (
     <div className="space-y-5 rounded-md border-4 border-gray-200 p-5 shadow-lg transition-transform hover:-translate-y-1 hover:shadow-xl">
-      <SaykaHeader sayka={sayka} />
+      <SaykaHeader sayka={sayka} token={token} />
       <SaykaBody sayka={sayka} changeFilterTag={changeFilterTag} />
       <SaykaFooter sayka={sayka} token={token} />
     </div>
   );
 };
 
-const SaykaHeader: FC<TProps> = ({ sayka }) => {
+const SaykaHeader: FC<TProps> = ({ sayka, token }) => {
   const [isModalVisible, setModalVisible] = useState(false);
 
   return (
@@ -47,6 +47,8 @@ const SaykaHeader: FC<TProps> = ({ sayka }) => {
         isVisible={isModalVisible}
         onClose={() => setModalVisible(false)}
         id={sayka.id}
+        token={token}
+        userId={sayka.user.id}
       />
       <div className="flex items-center">
         <Image

@@ -1,5 +1,4 @@
 import { TSayka } from "@/types/Sayka";
-import { TUser } from "@/types/User";
 
 import { Sayka } from "./Sayka";
 

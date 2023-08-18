@@ -2,7 +2,12 @@ import { getEnv } from "@/utils/env";
 
 import { apiClient } from "../core";
 
-import { SaykaCreate, SaykaResponse, SaykasResponse } from "./types";
+import {
+  DeleteSaykaResponse,
+  SaykaCreate,
+  SaykaResponse,
+  SaykasResponse,
+} from "./types";
 
 const { serverURL } = getEnv();
 export const createSayka = async (sayka: SaykaCreate, token: string) =>
@@ -24,3 +29,10 @@ export const readSaykaTimeline = async (
 
 export const readSayka = async (sayka_id: string) =>
   await apiClient.get<SaykaResponse>(`${serverURL}/sayka/${sayka_id}`);
+
+export const deleteSayka = async (sayka_id: string, token: string) =>
+  await apiClient.delete<DeleteSaykaResponse>(
+    `${serverURL}/sayka/${sayka_id}`,
+    undefined,
+    token
+  );

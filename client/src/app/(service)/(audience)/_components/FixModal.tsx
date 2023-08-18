@@ -1,17 +1,31 @@
-// Modal.tsx
+"use client";
+
+import { deleteSayka } from "@/api";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { FC, useRef, useEffect, useState } from "react";
 import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
+import { useToast } from "@chakra-ui/react";
 
 type TProps = {
   isVisible: boolean;
   onClose: () => void;
   id: string;
+  token?: string;
+  userId: string;
 };
 
-export const FixModal: FC<TProps> = ({ isVisible, onClose, id }) => {
+export const FixModal: FC<TProps> = ({
+  isVisible,
+  onClose,
+  id,
+  token,
+  userId,
+}) => {
   const [isConfirmDeleteVisible, setConfirmDeleteVisible] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
+  const r = useRouter();
+  const toast = useToast();
 
   const handleCloseModal = (e: MouseEvent) => {
     if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
@@ -27,10 +41,19 @@ export const FixModal: FC<TProps> = ({ isVisible, onClose, id }) => {
     };
   });
 
-  const handleDelete = () => {
-    console.log("削除されました");
+  const handleDelete = async () => {
+    if (!token) return;
+    await deleteSayka(id, token);
     setConfirmDeleteVisible(false); // 確認モーダルを閉じる
     onClose(); // メインモーダルも閉じる
+    r.push(`mypage/${userId}`);
+    r.refresh();
+    toast({
+      position: "bottom-left",
+      render: () => (
+        <div className="p-3 text-white bg-gray-800">Saykaを削除しました。</div>
+      ),
+    });
   };
 
   const handleCancel = () => {
