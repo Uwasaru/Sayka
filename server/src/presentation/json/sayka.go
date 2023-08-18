@@ -35,7 +35,6 @@ func SaykaJsonToEntity(saykaJson *SaykaJson) *entity.Sayka {
 	return &entity.Sayka{
 		ID:          saykaJson.ID,
 		UserID:      saykaJson.UserID,
-		User:        UserJsonToEntity(saykaJson.User),
 		Title:       saykaJson.Title,
 		GithubUrl:   saykaJson.GithubUrl,
 		AppUrl:      saykaJson.AppUrl,

@@ -141,7 +141,16 @@ func (pu *SaykaUsecase) GetTimeLine(ctx context.Context, id string, tag string) 
 
 // Createは投稿を作成します
 func (pu *SaykaUsecase) CreateSayka(ctx *gin.Context, sayka *entity.Sayka) error {
-	return pu.pr.CreateSayka(ctx, sayka)
+	err := pu.pr.CreateSayka(ctx, sayka)
+	if err != nil {
+		return err
+	}
+	user, err := pu.ur.GetUser(ctx, sayka.UserID)
+	if err != nil {
+		return err
+	}
+	sayka.User = user
+	return nil
 }
 
 // UpdateSaykaは投稿を更新します
