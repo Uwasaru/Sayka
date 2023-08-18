@@ -1,4 +1,3 @@
-import { getLoggedInUser, readUser } from "@/api";
 import { readSayka, readSaykaTimeline } from "@/api/sayka";
 import { getToken } from "@/features";
 

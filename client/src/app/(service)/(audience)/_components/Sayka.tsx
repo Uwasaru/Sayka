@@ -29,7 +29,6 @@ type TProps = {
 };
 
 export const Sayka: FC<TProps> = ({ sayka, changeFilterTag, token }) => {
-  console.log("sayka", sayka);
   return (
     <div className="space-y-5 rounded-md border-4 border-gray-200 p-5 shadow-lg transition-transform hover:-translate-y-1 hover:shadow-xl">
       <SaykaHeader sayka={sayka} />

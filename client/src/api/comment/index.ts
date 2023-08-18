@@ -1,9 +1,8 @@
-import { getToken } from "@/features";
 import { getEnv } from "@/utils/env";
 
 import { apiClient } from "../core";
 
-import { CommentCreate, CommentResponse } from "./types";
+import { CommentCreate, CommentResponse, CommentsResponse } from "./types";
 
 const { serverURL } = getEnv();
 
@@ -12,6 +11,6 @@ export const createComment = async (comment: CommentCreate, token: string) => {
 };
 
 export const readCommentBySayka = async (sayka_id: string) =>
-  await apiClient.get<CommentResponse[]>(
+  await apiClient.get<CommentsResponse>(
     `${serverURL}/comment/sayka/${sayka_id}`
   );

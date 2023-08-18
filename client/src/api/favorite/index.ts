@@ -1,4 +1,3 @@
-import { getToken } from "@/features";
 import { getEnv } from "@/utils/env";
 
 import { apiClient } from "../core";

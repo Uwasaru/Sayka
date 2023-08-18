@@ -12,7 +12,6 @@ type TProps = {
 
 const Page = async ({ params }: TProps) => {
   const readUserRes = await readUser(params.user_id);
-  console.log(readUserRes);
   if (readUserRes.type === "error") {
     redirect("/timeline");
   }

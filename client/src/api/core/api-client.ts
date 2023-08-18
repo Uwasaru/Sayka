@@ -18,7 +18,6 @@ const resp2result = async <T extends AnySchema>(
 ): Promise<Result<T, ResponseError>> => {
   const data = (await resp.json()) as T;
   const validate = ajv.compile<JTDDataType<T>>(data);
-  console.log("-");
   if (!resp.ok) {
     return {
       type: "error",
@@ -42,14 +41,13 @@ const resp2result = async <T extends AnySchema>(
 export const apiClient = {
   get: async <T extends AnySchema>(url: string, token?: string) => {
     const data = await fetch(url, {
-      // cache: "no-store",
+      cache: "no-store",
       credentials: "include",
       method: "GET",
       headers: {
         ...(token && { jwt: token }),
       },
     });
-    console.log("s", data);
     return await resp2result<T>(data);
   },
   post: async <T extends AnySchema>(

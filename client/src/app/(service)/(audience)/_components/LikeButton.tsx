@@ -1,10 +1,9 @@
 "use client";
 
+import { fixFavorite } from "@/api";
 import React, { FC } from "react";
 import { VscHeartFilled } from "react-icons/vsc";
 import { VscHeart } from "react-icons/vsc";
-
-import { fixFavorite } from "@/api/favorite";
 
 type TProps = {
   saykaId: string;

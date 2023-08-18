@@ -9,26 +9,22 @@ import { BsSend } from "react-icons/bs";
 import { GrClose } from "react-icons/gr";
 import ReactMarkdown from "react-markdown";
 
-import { createComment, readCommentBySayka } from "@/api/comment";
 import { modalState } from "@/store/atoms/modalAtom";
 import { TSayka } from "@/types/Sayka";
 import { CodeBlock } from "@/ui/Text/components/CodeBlock";
 import { TComment } from "@/types/Comment";
+import { createComment, readCommentBySayka } from "@/api";
 
 type TProps = {
   sayka: TSayka;
   token?: string;
 };
 
-type TRes = {
-  data: TComment;
-};
-
 export const CommentModal: FC<TProps> = ({ sayka, token }) => {
   const [_, setIsOpen] = useAtom(modalState);
   const [message, setMessage] = useState("");
 
-  const [comments, setComments] = useState<TRes[] | undefined>();
+  const [comments, setComments] = useState<TComment[] | undefined>();
   const [error, setError] = useState<string | undefined>();
 
   useEffect(() => {
@@ -38,7 +34,7 @@ export const CommentModal: FC<TProps> = ({ sayka, token }) => {
         setError("コメントの取得に失敗しました。");
         return;
       }
-      setComments(res.value);
+      setComments(res.value.data);
     };
 
     fetchComments();
@@ -126,7 +122,7 @@ export const CommentModal: FC<TProps> = ({ sayka, token }) => {
             ) : (
               comments.map((c) => (
                 <div
-                  key={c.data.id}
+                  key={c.id}
                   className="flex flex-col gap-2 border-t border-gray-300 px-8 py-4">
                   <div className="flex items-center space-x-3">
                     {/* <Image
@@ -137,19 +133,19 @@ export const CommentModal: FC<TProps> = ({ sayka, token }) => {
                       className="rounded-full"
                     /> */}
                     <Link
-                      href={`/mypage/${c.data.user_id}`}
+                      href={`/mypage/${c.user_id}`}
                       className="border-b-teal-400 hover:border-b-2">
-                      @{c.data.user_id}
+                      @{c.user_id}
                     </Link>
                   </div>
                   <div className="flex flex-col space-y-3">
                     <div className="text-gray-700">
                       <ReactMarkdown className="m-auto" components={CodeBlock}>
-                        {c.data.content}
+                        {c.content}
                       </ReactMarkdown>
                     </div>
                     <div className="text-sm font-medium text-gray-500">
-                      {c.data.created_at}
+                      {c.created_at}
                     </div>
                   </div>
                 </div>

@@ -1,7 +1,7 @@
 import { readSayka } from "@/api";
-import { ContentTitle } from "@/ui/Text";
-
-import { SaykaEditForm } from "../../_components/SaykaEditForm";
+import { ColorButton } from "@/ui/Button";
+import { redirect } from "next/navigation";
+import { Sayka } from "../../_components/Sayka";
 
 type TProps = {
   params: { sayka_id: string };
@@ -13,12 +13,13 @@ const Page = async ({ params }: TProps) => {
     throw new Error("データが取得できませんでした。");
   const sayka = saykaRes.value.data;
   if (!sayka) throw new Error("投稿がありません");
+
   return (
-    <div>
-      <ContentTitle text="成果の編集" />
-      <div className="px-2 md:px-0">
-        <SaykaEditForm sayka={sayka} />
+    <div className="mt-40 space-y-5">
+      <div className="flex justify-center text-lg font-bold">
+        投稿が完了しました。
       </div>
+      <Sayka sayka={sayka} />
     </div>
   );
 };

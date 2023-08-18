@@ -13,14 +13,13 @@ import { TfiLayoutSlider } from "react-icons/tfi";
 import { TfiWorld } from "react-icons/tfi";
 import { z } from "zod";
 
-import { createSayka } from "@/api/sayka";
 import { TSayka } from "@/types/Sayka";
 import { TUser } from "@/types/User";
 import { Tag } from "@/ui/Tag";
 import { ContentSubTitle, Explanation } from "@/ui/Text";
 
 import { InputBlock } from "./InputBlock";
-
+import { createSayka } from "@/api";
 
 const schema = z.object({
   title: z
@@ -81,8 +80,7 @@ export const SaykaForm: FC<TProps> = ({ user, token }) => {
       token
     ).then((res) => {
       if (res.type === "error") return;
-      console.log(res.value.data.id);
-      router.push(`/shareSaykaInformation/${res.value.data.id}`);
+      router.push(`/postCompletion/${res.value.data.id}`);
     });
   };
 
