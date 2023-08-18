@@ -8,6 +8,14 @@ const commentBaseSchema = {
     user_id: { type: "string" },
     content: { type: "string" },
     created_at: { type: "string" },
+    user: {
+      type: "object",
+      properties: {
+        id: { type: "string" },
+        name: { type: "string" },
+        img: { type: "string" },
+      },
+    },
   },
 } as const;
 

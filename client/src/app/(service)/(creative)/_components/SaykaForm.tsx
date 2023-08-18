@@ -20,6 +20,7 @@ import { ContentSubTitle, Explanation } from "@/ui/Text";
 
 import { InputBlock } from "./InputBlock";
 import { createSayka } from "@/api";
+import { Button, useToast } from "@chakra-ui/react";
 
 const schema = z.object({
   title: z
@@ -68,28 +69,43 @@ type TProps = {
 };
 
 export const SaykaForm: FC<TProps> = ({ user, token }) => {
+  const [isLoading, setIsLoading] = useState(false);
   const [tags, setTags] = useState<string[]>([]);
   const [tagError, setTagError] = useState<string | null>(null);
   const methods = useForm<FormData>({
     resolver: zodResolver(schema),
   });
   const router = useRouter();
+  const toast = useToast();
 
-  const onSubmit: SubmitHandler<FormData> = (data) => {
+  const onSubmit: SubmitHandler<FormData> = async (data) => {
+    setIsLoading(true);
     const submitData = {
       ...data,
       tags,
     };
-    createSayka(
+
+    const res = await createSayka(
       {
         user_id: user.id,
         ...submitData,
       },
       token
-    ).then((res) => {
-      if (res.type === "error") return;
-      router.push(`/postCompletion/${res.value.data.id}`);
-    });
+    );
+
+    setIsLoading(false);
+    if (res.type === "error") {
+      toast({
+        position: "bottom-left",
+        render: () => (
+          <div className="p-3 text-white bg-red-500">
+            成果物の投稿に失敗しました。
+          </div>
+        ),
+      });
+      return;
+    }
+    router.push(`/postCompletion/${res.value.data.id}`);
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -203,12 +219,13 @@ export const SaykaForm: FC<TProps> = ({ user, token }) => {
           icon={<TfiWorld size={18} />}
         />
         <div className="flex justify-center pt-5">
-          <button
+          <Button
+            isLoading={isLoading}
             type="button"
             onClick={methods.handleSubmit(onSubmit)}
             className="w-36 rounded bg-sc px-4 py-2 font-semibold text-white transition duration-300 hover:bg-hover-sc">
             投稿する
-          </button>
+          </Button>
         </div>
       </form>
     </FormProvider>

@@ -14,6 +14,7 @@ import { TSayka } from "@/types/Sayka";
 import { CodeBlock } from "@/ui/Text/components/CodeBlock";
 import { TComment } from "@/types/Comment";
 import { createComment, readCommentBySayka } from "@/api";
+import { formatDateToJapanese } from "@/utils/formatDateToJapanese";
 
 type TProps = {
   sayka: TSayka;
@@ -27,18 +28,18 @@ export const CommentModal: FC<TProps> = ({ sayka, token }) => {
   const [comments, setComments] = useState<TComment[] | undefined>();
   const [error, setError] = useState<string | undefined>();
 
-  useEffect(() => {
-    const fetchComments = async () => {
-      const res = await readCommentBySayka(sayka.id);
-      if (res.type === "error") {
-        setError("コメントの取得に失敗しました。");
-        return;
-      }
-      setComments(res.value.data);
-    };
+  const fetchComments = async () => {
+    const res = await readCommentBySayka(sayka.id);
+    if (res.type === "error") {
+      setError("コメントの取得に失敗しました。");
+      return;
+    }
+    setComments(res.value.data);
+  };
 
+  useEffect(() => {
     fetchComments();
-  }, [sayka]);
+  }, []);
 
   const router = useRouter();
 
@@ -65,6 +66,7 @@ export const CommentModal: FC<TProps> = ({ sayka, token }) => {
       token
     ).then(() => {
       setMessage("");
+      fetchComments();
     });
   };
 
@@ -125,13 +127,13 @@ export const CommentModal: FC<TProps> = ({ sayka, token }) => {
                   key={c.id}
                   className="flex flex-col gap-2 border-t border-gray-300 px-8 py-4">
                   <div className="flex items-center space-x-3">
-                    {/* <Image
-                      src={c.data.user.img}
+                    <Image
+                      src={c.user.img}
                       alt="user icon"
                       width={30}
                       height={30}
                       className="rounded-full"
-                    /> */}
+                    />
                     <Link
                       href={`/mypage/${c.user_id}`}
                       className="border-b-teal-400 hover:border-b-2">
@@ -145,7 +147,7 @@ export const CommentModal: FC<TProps> = ({ sayka, token }) => {
                       </ReactMarkdown>
                     </div>
                     <div className="text-sm font-medium text-gray-500">
-                      {c.created_at}
+                      {formatDateToJapanese(c.created_at)}
                     </div>
                   </div>
                 </div>
