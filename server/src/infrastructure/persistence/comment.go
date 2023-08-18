@@ -105,8 +105,8 @@ func (cr *CommentRepository) GetAll(ctx context.Context) (*entity.Comments, erro
 
 func (cr *CommentRepository) CreateComment(ctx context.Context, comment *entity.Comment) error {
 	query := `
-	INSERT INTO comments (id, user_id, sayka_id, content, type, created_at)
-	VALUES (:id, :user_id, :sayka_id, :content, :type, :created_at)
+	INSERT INTO comments (id, user_id, sayka_id, content, type)
+	VALUES (:id, :user_id, :sayka_id, :content, :type)
 	`
 	dto := d.CommentEntityToDto(comment)
 
