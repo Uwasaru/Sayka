@@ -9,34 +9,40 @@ import { BsSend } from "react-icons/bs";
 import { GrClose } from "react-icons/gr";
 import ReactMarkdown from "react-markdown";
 
-import { createComment } from "@/api/comment";
+import { createComment, readCommentBySayka } from "@/api/comment";
 import { modalState } from "@/store/atoms/modalAtom";
 import { TSayka } from "@/types/Sayka";
-import { TUser } from "@/types/User";
 import { CodeBlock } from "@/ui/Text/components/CodeBlock";
+import { TComment } from "@/types/Comment";
 
 type TProps = {
   sayka: TSayka;
   token?: string;
 };
 
+type TRes = {
+  data: TComment;
+};
+
 export const CommentModal: FC<TProps> = ({ sayka, token }) => {
   const [_, setIsOpen] = useAtom(modalState);
-  const [comment, setComment] = useState("");
+  const [message, setMessage] = useState("");
 
-  const commentList = [
-    {
-      id: 1,
-      contents:
-        "面白いですね！！！これからも頑張ってください！面白いですね！！！これからも頑張ってください！面白いですね！！！これからも頑張ってください！面白いですね！！！これからも頑張ってください！面白いですね！！！これからも頑張ってください！面白いですね！！！これからも頑張ってください！面白いですね！！！これからも頑張ってください！面白いですね！！！これからも頑張ってください！",
-      created_at: "2021-10-10",
-      user: {
-        id: "user1",
-        name: "user1",
-        img: "/icon3.png",
-      },
-    },
-  ];
+  const [comments, setComments] = useState<TRes[] | undefined>();
+  const [error, setError] = useState<string | undefined>();
+
+  useEffect(() => {
+    const fetchComments = async () => {
+      const res = await readCommentBySayka(sayka.id);
+      if (res.type === "error") {
+        setError("コメントの取得に失敗しました。");
+        return;
+      }
+      setComments(res.value);
+    };
+
+    fetchComments();
+  }, [sayka]);
 
   const router = useRouter();
 
@@ -49,7 +55,7 @@ export const CommentModal: FC<TProps> = ({ sayka, token }) => {
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setComment(e.target.value);
+    setMessage(e.target.value);
   };
 
   const handleSend = (e: React.FormEvent<HTMLFormElement>) => {
@@ -58,15 +64,14 @@ export const CommentModal: FC<TProps> = ({ sayka, token }) => {
     createComment(
       {
         sayka_id: sayka.id,
-        content: comment,
+        content: message,
       },
       token
     ).then(() => {
-      setComment("");
+      setMessage("");
     });
   };
 
-  // commentを取得
   return (
     <div className="fixed inset-0 z-10 flex justify-end">
       <div
@@ -110,37 +115,41 @@ export const CommentModal: FC<TProps> = ({ sayka, token }) => {
 
         <div className="grow flex-col overflow-y-scroll bg-gray-50">
           <>
-            {!commentList ? (
+            {error ? (
+              <div className="flex h-full items-center justify-center">
+                <div className="text-red-500">{error}</div>
+              </div>
+            ) : !comments ? (
               <div className="flex h-full items-center justify-center">
                 <div className="text-gray-500">コメントはありません。</div>
               </div>
             ) : (
-              commentList.map((comment) => (
+              comments.map((c) => (
                 <div
-                  key={comment.id}
+                  key={c.data.id}
                   className="flex flex-col gap-2 border-t border-gray-300 px-8 py-4">
                   <div className="flex items-center space-x-3">
-                    <Image
-                      src={comment.user.img}
+                    {/* <Image
+                      src={c.data.user.img}
                       alt="user icon"
                       width={30}
                       height={30}
                       className="rounded-full"
-                    />
+                    /> */}
                     <Link
-                      href={`/mypage/${comment.user.id}`}
+                      href={`/mypage/${c.data.user_id}`}
                       className="border-b-teal-400 hover:border-b-2">
-                      @{comment.user.name}
+                      @{c.data.user_id}
                     </Link>
                   </div>
                   <div className="flex flex-col space-y-3">
                     <div className="text-gray-700">
                       <ReactMarkdown className="m-auto" components={CodeBlock}>
-                        {comment.contents}
+                        {c.data.content}
                       </ReactMarkdown>
                     </div>
                     <div className="text-sm font-medium text-gray-500">
-                      {comment.created_at}
+                      {c.data.created_at}
                     </div>
                   </div>
                 </div>
@@ -154,7 +163,7 @@ export const CommentModal: FC<TProps> = ({ sayka, token }) => {
             onSubmit={handleSend}
             className="flex items-center gap-5 border-t border-gray-200 bg-white p-5">
             <textarea
-              value={comment}
+              value={message}
               onChange={handleInputChange}
               className=" w-full rounded-xl border px-5 py-2 text-sm transition-shadow focus:outline-none"
               placeholder="Aa"></textarea>

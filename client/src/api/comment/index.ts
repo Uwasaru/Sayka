@@ -10,3 +10,8 @@ const { serverURL } = getEnv();
 export const createComment = async (comment: CommentCreate, token: string) => {
   await apiClient.post<CommentResponse>(`${serverURL}/comment`, comment, token);
 };
+
+export const readCommentBySayka = async (sayka_id: string) =>
+  await apiClient.get<CommentResponse[]>(
+    `${serverURL}/comment/sayka/${sayka_id}`
+  );
