@@ -31,6 +31,8 @@ type ISaykaUsecase interface {
 	GetTimeLine(ctx context.Context, id string, tag string, myId string) (*entity.Saykas, error)
 	// GetAllFavoritedSaykaはいいねした全ての投稿を取得します
 	GetAllFavoritedSayka(ctx context.Context, myId string) (*entity.Saykas, error)
+	// GetAllCommentedSaykaはコメントした全ての投稿を取得します
+	GetAllCommentedSayka(ctx context.Context, myId string) (*entity.Saykas, error)
 	// Createは投稿を作成します
 	CreateSayka(ctx *gin.Context, sayka *entity.Sayka) error
 	// UpdateSaykaは投稿を更新します
@@ -166,6 +168,34 @@ func (pu *SaykaUsecase) GetTimeLine(ctx context.Context, id string, tag string, 
 // GetAllFavoritedSaykaはいいねした全ての投稿を取得します
 func (pu *SaykaUsecase) GetAllFavoritedSayka(ctx context.Context, myId string) (*entity.Saykas, error) {
 	saykas, err := pu.pr.GetAllFavoritedSayka(ctx, myId)
+	if err != nil {
+		return nil, err
+	}
+	for _, sayka := range *saykas {
+		fovorites, err := pu.fr.GetBySaykaID(ctx, sayka.ID)
+		if err != nil {
+			return nil, err
+		}
+		comments, err := pu.cr.GetBySaykaID(ctx, sayka.ID)
+		if err != nil {
+			return nil, err
+		}
+		s := set.NewSet(fovorites...)
+		sayka.IsFavorite = s.Contains(sayka.UserID)
+		sayka.Favorites = len(fovorites)
+		sayka.Comments = len(*comments)
+		user, err := pu.ur.GetUser(ctx, sayka.UserID)
+		if err != nil {
+			return nil, err
+		}
+		sayka.User = user
+	}
+	return saykas, err
+}
+
+// GetAllCommentedSaykaはコメントした全ての投稿を取得します
+func (pu *SaykaUsecase) GetAllCommentedSayka(ctx context.Context, myId string) (*entity.Saykas, error) {
+	saykas, err := pu.pr.GetAllCommentedSayka(ctx, myId)
 	if err != nil {
 		return nil, err
 	}

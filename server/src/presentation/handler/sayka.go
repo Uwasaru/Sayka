@@ -101,6 +101,21 @@ func (sh *SaykaHandler) GetAllFavoritedSayka(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"data": saykasJson})
 }
 
+func (sh *SaykaHandler) GetAllCommentedSayka(ctx *gin.Context) {
+	myId, err := sh.ju.GetUserIdFromJwtToken(ctx)
+	if err != nil {
+		myId = ""
+	}
+	saykas, err := sh.pu.GetAllCommentedSayka(ctx, myId)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	saykasJson := json.SaykasEntityToJson(*saykas)
+	ctx.JSON(http.StatusOK, gin.H{"data": saykasJson})
+}
+
 // CreateSaykaは投稿を作成します
 func (ph *SaykaHandler) CreateSayka(ctx *gin.Context) {
 	sayka_json := &json.SaykaJson{}
