@@ -2,7 +2,6 @@
 
 import { FC, useState } from "react";
 
-import { mock_saykas, mock_saykaNull } from "@/api";
 import { TUser } from "@/types/User";
 
 import { SaykaList } from "../../../_components/SaykaList";
@@ -66,13 +65,19 @@ export const MypageSaykaList: FC<TProps> = ({ userId }) => {
 };
 
 const MyselfSaykaList: FC<TProps> = ({ userId }) => {
-  return <SaykaList saykas={mock_saykas} />;
+  const saykas = null;
+  if (!saykas) return null;
+  return <SaykaList saykas={saykas} />;
 };
 
 const FavoriteSaykaList: FC<TProps> = ({ userId }) => {
-  return <SaykaList saykas={mock_saykas} />;
+  const saykas = null;
+  if (!saykas) return null;
+  return <SaykaList saykas={saykas} />;
 };
 
 const CommentSaykaList: FC<TProps> = ({ userId }) => {
-  return <SaykaList saykas={mock_saykaNull} />;
+  const saykas = null;
+  if (!saykas) return null;
+  return <SaykaList saykas={saykas} />;
 };

@@ -9,8 +9,6 @@ import { BsSend } from "react-icons/bs";
 import { GrClose } from "react-icons/gr";
 import ReactMarkdown from "react-markdown";
 
-import { mock_saykaComments_saykaId1 } from "@/api";
-import { TComment } from "@/api/mock/type";
 import { modalState } from "@/store/atoms/modalAtom";
 import { TUser } from "@/types/User";
 import { CodeBlock } from "@/ui/Text/components/CodeBlock";
@@ -18,20 +16,26 @@ import { TSayka } from "@/types/Sayka";
 
 type TProps = {
   sayka: TSayka;
-  user: TUser;
   loginUser?: TUser;
 };
 
-export const CommentModal: FC<TProps> = ({ sayka, user, loginUser }) => {
+export const CommentModal: FC<TProps> = ({ sayka, loginUser }) => {
   const [_, setIsOpen] = useAtom(modalState);
-  const [commentList, setCommentList] = useState<TComment[]>([]);
   const [comment, setComment] = useState("");
 
-  // commentを取得
-  useEffect(() => {
-    const comments = mock_saykaComments_saykaId1;
-    setCommentList(comments);
-  }, []);
+  const commentList = [
+    {
+      id: 1,
+      contents:
+        "面白いですね！！！これからも頑張ってください！面白いですね！！！これからも頑張ってください！面白いですね！！！これからも頑張ってください！面白いですね！！！これからも頑張ってください！面白いですね！！！これからも頑張ってください！面白いですね！！！これからも頑張ってください！面白いですね！！！これからも頑張ってください！面白いですね！！！これからも頑張ってください！",
+      created_at: "2021-10-10",
+      user: {
+        id: "user1",
+        name: "user1",
+        img: "/icon3.png",
+      },
+    },
+  ];
 
   const router = useRouter();
 
@@ -75,16 +79,16 @@ export const CommentModal: FC<TProps> = ({ sayka, user, loginUser }) => {
           <div className="space-y-5">
             <div className="flex items-center space-x-3">
               <Image
-                src={user.img}
+                src={sayka.user.img}
                 alt="user icon"
                 width={30}
                 height={30}
                 className="rounded-full"
               />
               <Link
-                href={`/mypage/${user.id}`}
+                href={`/mypage/${sayka.user.id}`}
                 className="border-b-teal-400 hover:border-b-2">
-                @{user.id}
+                @{sayka.user.id}
               </Link>
             </div>
             <div className="flex flex-col space-y-3">
@@ -129,7 +133,7 @@ export const CommentModal: FC<TProps> = ({ sayka, user, loginUser }) => {
           ))}
         </div>
 
-        {user ? (
+        {loginUser ? (
           <form
             onSubmit={handleSend}
             className="flex items-center gap-5 border-t border-gray-200 bg-white p-5">

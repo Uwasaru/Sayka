@@ -17,8 +17,7 @@ type TProps = {
 export const SaykaTimelineList: FC<TProps> = ({ loginUser, saykas }) => {
   const [showMore, setShowMore] = useState(false);
 
-  const lastSaykaId = saykas[saykas.length - 1].id;
-  console.log("lastSaykaId", lastSaykaId);
+  const lastSaykaId = saykas ? saykas[saykas.length - 1].id : undefined;
 
   const handleClick = () => {
     setShowMore(true);
@@ -27,13 +26,13 @@ export const SaykaTimelineList: FC<TProps> = ({ loginUser, saykas }) => {
   return (
     <div>
       <SaykaList saykas={saykas} loginUser={loginUser} />
-      {!showMore && (
+      {!showMore && lastSaykaId && (
         <div className="flex justify-center mt-10">
           <ColorButton onClick={handleClick}>もっと見る</ColorButton>
         </div>
       )}
       {showMore && (
-        // {/* @ts-expect-error Server Component */}
+        // @ts-expect-error Server Component
         <MoreReadSayka lastSaykaId={lastSaykaId} loginUser={loginUser} />
       )}
     </div>

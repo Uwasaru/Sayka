@@ -5,7 +5,7 @@ import { SaykaTimelineList } from "./SaykaTimelineList";
 
 type TProps = {
   lastSaykaId: string;
-  loginUser: TUser;
+  loginUser?: TUser;
 };
 
 export const MoreReadSayka = async ({ lastSaykaId, loginUser }: TProps) => {
@@ -14,6 +14,8 @@ export const MoreReadSayka = async ({ lastSaykaId, loginUser }: TProps) => {
   if (saykasRes.type === "error") return;
 
   const saykas = saykasRes.value.data;
+
+  if (!saykas) return;
 
   return <SaykaTimelineList loginUser={loginUser} saykas={saykas} />;
 };

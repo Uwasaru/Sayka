@@ -3,7 +3,6 @@ import { readSayka, readSaykaTimeline } from "@/api/sayka";
 import { getToken } from "@/features";
 
 import { CommentModal } from "../../_components/CommentModal";
-import { SaykaListWithFilter } from "../../_components/SaykaListWithFilter";
 import { SaykaTimelineList } from "../../_components/SaykaTimelineList";
 
 type TProps = {
@@ -39,22 +38,13 @@ const Page = async ({ searchParams }: TProps) => {
       throw new Error("データが取得できませんでした。");
     }
     targetSayka = saykaRes.value.data;
-    const userRes = await readUser(targetSayka.user_id);
-    if (userRes.type === "error") {
-      throw new Error("データが取得できませんでした。");
-    }
-    targetSaykaUser = userRes.value.data;
   }
 
   return (
     <div className="mt-5 md:mx-16">
       <SaykaTimelineList loginUser={loginUser} saykas={saykas} />
       {isOpenModal && targetSayka && targetSaykaUser && (
-        <CommentModal
-          sayka={targetSayka}
-          loginUser={loginUser}
-          user={targetSaykaUser}
-        />
+        <CommentModal sayka={targetSayka} loginUser={loginUser} />
       )}
     </div>
   );

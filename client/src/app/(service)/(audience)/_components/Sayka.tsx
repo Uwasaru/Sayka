@@ -22,27 +22,21 @@ import { TSayka } from "@/types/Sayka";
 
 type TProps = {
   sayka: TSayka;
-  user: TUser;
   loginUser?: TUser;
   changeFilterTag?: (tag: string) => void;
 };
 
-export const Sayka: FC<TProps> = ({
-  sayka,
-  changeFilterTag,
-  loginUser,
-  user,
-}) => {
+export const Sayka: FC<TProps> = ({ sayka, changeFilterTag, loginUser }) => {
   return (
     <div className="space-y-5 rounded-md border-4 border-gray-200 p-5 shadow-lg transition-transform hover:-translate-y-1 hover:shadow-xl">
-      <SaykaHeader sayka={sayka} loginUser={loginUser} user={user} />
-      <SaykaBody sayka={sayka} changeFilterTag={changeFilterTag} user={user} />
-      <SaykaFooter sayka={sayka} loginUser={loginUser} user={user} />
+      <SaykaHeader sayka={sayka} loginUser={loginUser} />
+      <SaykaBody sayka={sayka} changeFilterTag={changeFilterTag} />
+      <SaykaFooter sayka={sayka} loginUser={loginUser} />
     </div>
   );
 };
 
-const SaykaHeader: FC<TProps> = ({ sayka, loginUser, user }) => {
+const SaykaHeader: FC<TProps> = ({ sayka, loginUser }) => {
   const [isModalVisible, setModalVisible] = useState(false);
 
   const isMySayka = useMemo(() => {
@@ -59,16 +53,16 @@ const SaykaHeader: FC<TProps> = ({ sayka, loginUser, user }) => {
       />
       <div className="flex items-center">
         <Image
-          src={user.img}
+          src={sayka.user.img}
           alt="user icon"
           width={30}
           height={30}
           className="mr-2 rounded-full"
         />
         <Link
-          href={`/mypage/${user.id}`}
+          href={`/mypage/${sayka.user.id}`}
           className="border-b-teal-400 hover:border-b-2">
-          @{user.id}
+          @{sayka.user.id}
         </Link>
       </div>
       {isMySayka && (

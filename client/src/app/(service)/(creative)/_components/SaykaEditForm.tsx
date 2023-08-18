@@ -11,12 +11,11 @@ import { TfiLayoutSlider } from "react-icons/tfi";
 import { TfiWorld } from "react-icons/tfi";
 import { z } from "zod";
 
-import { mock_saykas } from "@/api";
 import { Tag } from "@/ui/Tag";
 import { ContentSubTitle, Explanation } from "@/ui/Text";
 
 import { InputBlock } from "./InputBlock";
-
+import { TSayka } from "@/types/Sayka";
 
 const schema = z.object({
   title: z
@@ -46,27 +45,15 @@ type FormData = {
 };
 
 type TProps = {
-  saykaId: number;
+  sayka: TSayka;
 };
 
-export const SaykaEditForm: FC<TProps> = ({ saykaId }) => {
-  const [tags, setTags] = useState<string[]>([]);
+export const SaykaEditForm: FC<TProps> = ({ sayka }) => {
+  const [tags, setTags] = useState<string[]>(sayka.tags || []);
   const [tagError, setTagError] = useState<string | null>(null);
   const methods = useForm<FormData>({
     resolver: zodResolver(schema),
   });
-
-  // TODO
-  const sayka = mock_saykas.find((sayka) => sayka.id === saykaId);
-
-  useEffect(() => {
-    if (!sayka) return;
-    if (!sayka.tags) return;
-    const currentTags = sayka.tags.map((t) => t.name);
-    setTags(currentTags);
-  }, [sayka]);
-
-  if (!sayka) return null;
 
   const onSubmit: SubmitHandler<FormData> = (data) => {
     const submitData = {
@@ -183,7 +170,7 @@ export const SaykaEditForm: FC<TProps> = ({ saykaId }) => {
         <InputBlock
           text="作成したアプリケーションのURL"
           name="application_url"
-          defaultValue={sayka?.application_url}
+          defaultValue={sayka?.app_url}
           placeholder="https://sayka.vercel.app"
           icon={<TfiWorld size={18} />}
         />

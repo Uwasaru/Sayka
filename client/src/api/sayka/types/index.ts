@@ -22,6 +22,14 @@ const saykaResponseBaseSchema = {
         type: "string",
       },
     },
+    user: {
+      type: "object",
+      properties: {
+        id: { type: "string" },
+        name: { type: "string" },
+        img: { type: "string" },
+      },
+    },
   },
   required: [
     "id",
@@ -37,6 +45,7 @@ const saykaResponseBaseSchema = {
     "comments",
     "is_favorite",
     "created_at",
+    "user",
   ],
   additionalProperties: false,
 } as const;
@@ -65,5 +74,5 @@ export type SaykaBase = TSayka;
 
 export type SaykaCreate = Omit<
   SaykaBase,
-  "id" | "created_at" | "favorites" | "comments" | "is_favorite"
+  "id" | "created_at" | "favorites" | "comments" | "is_favorite" | "user"
 >;

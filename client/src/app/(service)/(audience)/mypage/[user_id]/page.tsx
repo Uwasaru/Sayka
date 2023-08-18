@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 
-import { getLoggedInUser, mock_users, readUser } from "@/api";
+import { getLoggedInUser, readUser } from "@/api";
 import { getToken } from "@/features";
 
 import { MypageSaykaList } from "./_components/MypageSaykaList";
@@ -12,6 +12,7 @@ type TProps = {
 
 const Page = async ({ params }: TProps) => {
   const readUserRes = await readUser(params.user_id);
+  console.log(readUserRes);
   if (readUserRes.type === "error") {
     redirect("/timeline");
   }

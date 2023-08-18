@@ -20,6 +20,8 @@ import { TUser } from "@/types/User";
 import { redirect } from "next/navigation";
 import { TSayka } from "@/types/Sayka";
 
+import { useRouter } from "next/navigation";
+
 const schema = z.object({
   title: z
     .string()
@@ -64,6 +66,7 @@ export const SaykaForm: FC<TProps> = ({ user, token }) => {
   const methods = useForm<FormData>({
     resolver: zodResolver(schema),
   });
+  const router = useRouter();
 
   const onSubmit: SubmitHandler<FormData> = (data) => {
     const submitData = {
@@ -79,7 +82,7 @@ export const SaykaForm: FC<TProps> = ({ user, token }) => {
     ).then((res) => {
       if (res.type === "error") return;
       console.log(res.value.data.id);
-      redirect(`/shareSaykaInformation/${res.value.data.id}`);
+      router.push(`/shareSaykaInformation/${res.value.data.id}`);
     });
   };
 
