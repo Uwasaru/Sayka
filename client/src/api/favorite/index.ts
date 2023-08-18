@@ -8,7 +8,7 @@ const { serverURL } = getEnv();
 
 export const fixFavorite = async (favorite: FavoriteCreate, token: string) => {
   await apiClient.post<FavoriteResponse>(
-    `${serverURL}/favorite`,
+    `${serverURL}/favorite/`,
     favorite,
     token
   );

@@ -88,7 +88,7 @@ const SaykaBody: FC<TProps> = ({ sayka, changeFilterTag }) => {
 };
 
 const SaykaFooter: FC<TProps> = ({ sayka, token }) => {
-  const [liked, setLiked] = useState(false);
+  const [liked, setLiked] = useState(sayka.is_favorite);
   const [likeCountState, setLikeCountState] = useState(sayka.favorite_count);
   const [_, setIsOpen] = useAtom(modalState);
 
