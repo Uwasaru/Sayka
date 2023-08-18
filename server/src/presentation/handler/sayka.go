@@ -28,8 +28,7 @@ func (ph *SaykaHandler) GetByID(ctx *gin.Context) {
 	id := ctx.Param("id")
 	userId, err := ph.ju.GetUserIdFromJwtToken(ctx)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
+		userId = ""
 	}
 	sayka, err := ph.pu.GetByID(ctx, id, userId)
 	if err != nil {
@@ -55,6 +54,9 @@ func (ph *SaykaHandler) GetByUserID(ctx *gin.Context) {
 // GetAllは全ての投稿を取得します
 func (ph *SaykaHandler) GetAll(ctx *gin.Context) {
 	myId, err := ph.ju.GetUserIdFromJwtToken(ctx)
+	if err != nil {
+		myId = ""
+	}
 	saykas, err := ph.pu.GetAll(ctx, myId)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -68,6 +70,9 @@ func (ph *SaykaHandler) GetTimeLine(ctx *gin.Context) {
 	id := ctx.Query("id")
 	tag := ctx.Query("tag")
 	myId, err := ph.ju.GetUserIdFromJwtToken(ctx)
+	if err != nil {
+		myId = ""
+	}
 	saykas, err := ph.pu.GetTimeLine(ctx, id, tag, myId)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
