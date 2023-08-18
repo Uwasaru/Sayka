@@ -26,7 +26,12 @@ func NewSaykaHandler(pu usecase.ISaykaUsecase, ju usecase.IJwtUsecase) *SaykaHan
 // GetByIDはIDを指定して投稿を取得します
 func (ph *SaykaHandler) GetByID(ctx *gin.Context) {
 	id := ctx.Param("id")
-	sayka, err := ph.pu.GetByID(ctx, id)
+	userId, err := ph.ju.GetUserIdFromJwtToken(ctx)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	sayka, err := ph.pu.GetByID(ctx, id, userId)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -102,7 +107,12 @@ func (ph *SaykaHandler) CreateSayka(ctx *gin.Context) {
 // UpdateSaykaは投稿を更新します
 func (ph *SaykaHandler) UpdateSayka(ctx *gin.Context) {
 	id := ctx.Param("id")
-	sayka, err := ph.pu.GetByID(ctx, id)
+	userId, err := ph.ju.GetUserIdFromJwtToken(ctx)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	sayka, err := ph.pu.GetByID(ctx, id, userId)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return

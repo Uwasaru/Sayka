@@ -22,7 +22,7 @@ type SaykaUsecase struct {
 // ISaykaUsecaseは投稿に関するユースケースを担当します
 type ISaykaUsecase interface {
 	// GetByIDはIDを指定して投稿を取得します
-	GetByID(ctx context.Context, id string) (*entity.Sayka, error)
+	GetByID(ctx context.Context, id string, userId string) (*entity.Sayka, error)
 	// GetByUserIDはUserIDを指定して投稿を取得します
 	GetByUserID(ctx context.Context, userID string) (*entity.Saykas, error)
 	// GetAllは全ての投稿を取得します
@@ -48,8 +48,30 @@ func NewSaykaUsecase(pr repository.SaykaRepository, fr repository.FavoriteReposi
 }
 
 // GetByIDはIDを指定して投稿を取得します
-func (pu *SaykaUsecase) GetByID(ctx context.Context, id string) (*entity.Sayka, error) {
-	return pu.pr.GetByID(ctx, id)
+func (pu *SaykaUsecase) GetByID(ctx context.Context, id string, userId string) (*entity.Sayka, error) {
+	sayka, err := pu.pr.GetByID(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+	fovorites, err := pu.fr.GetBySaykaID(ctx, sayka.ID)
+	if err != nil {
+		return nil, err
+	}
+	comments, err := pu.cr.GetBySaykaID(ctx, sayka.ID)
+	if err != nil {
+		return nil, err
+	}
+	s := set.NewSet(fovorites...)
+	sayka.IsFavorite = s.Contains(userId)
+	sayka.Favorites = len(fovorites)
+	sayka.Comments = len(*comments)
+	user, err := pu.ur.GetUser(ctx, sayka.UserID)
+	if err != nil {
+		return nil, err
+	}
+	sayka.User = user
+	sayka.IsMe = sayka.UserID == userId
+	return sayka, err
 }
 
 // GetByUserIDはUserIDを指定して投稿を取得します
