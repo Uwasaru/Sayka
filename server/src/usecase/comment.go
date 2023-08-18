@@ -12,6 +12,7 @@ var _ ICommentUsecase = &CommentUsecase{}
 // CommentUsecaseはコメントに関するユースケースを担当します
 type CommentUsecase struct {
 	cr repository.CommentRepository
+	ur repository.UserRepository
 }
 
 // ICommentUsecaseはコメントに関するユースケースを担当します
@@ -25,9 +26,10 @@ type ICommentUsecase interface {
 }
 
 // NewCommentUsecaseは新しいCommentUsecaseを初期化し構造体のポインタを返します
-func NewCommentUsecase(cr repository.CommentRepository) ICommentUsecase {
+func NewCommentUsecase(cr repository.CommentRepository, ur repository.UserRepository) ICommentUsecase {
 	return &CommentUsecase{
 		cr: cr,
+		ur: ur,
 	}
 }
 
@@ -38,22 +40,61 @@ func (cu *CommentUsecase) GetByID(ctx context.Context, id string) (*entity.Comme
 
 // GetByUserIDはUserIDを指定してコメントを取得します
 func (cu *CommentUsecase) GetByUserID(ctx context.Context, userID string) (*entity.Comments, error) {
-	return cu.cr.GetByUserID(ctx, userID)
+	comments, err := cu.cr.GetByUserID(ctx, userID)
+	if err != nil {
+		return nil, err
+	}
+	for _, comment := range *comments {
+		user, err := cu.ur.GetUser(ctx, comment.UserID)
+		if err != nil {
+			return nil, err
+		}
+		comment.User = user
+	}
+	return comments, nil
 }
 
 // GetBySaykaIDはSaykaIDを指定してコメントを取得します
 func (cu *CommentUsecase) GetBySaykaID(ctx context.Context, saykaID string) (*entity.Comments, error) {
-	return cu.cr.GetBySaykaID(ctx, saykaID)
+	comments, err := cu.cr.GetBySaykaID(ctx, saykaID)
+	if err != nil {
+		return nil, err
+	}
+	for _, comment := range *comments {
+		user, err := cu.ur.GetUser(ctx, comment.UserID)
+		if err != nil {
+			return nil, err
+		}
+		comment.User = user
+	}
+	return comments, nil
 }
 
 // GetAllは全てのコメントを取得します
 func (cu *CommentUsecase) GetAll(ctx context.Context) (*entity.Comments, error) {
-	return cu.cr.GetAll(ctx)
+	comments, err := cu.cr.GetAll(ctx)
+	if err != nil {
+		return nil, err
+	}
+	for _, comment := range *comments {
+		user, err := cu.ur.GetUser(ctx, comment.UserID)
+		if err != nil {
+			return nil, err
+		}
+		comment.User = user
+	}
+	return comments, nil
 }
 
 // Createはコメントを作成します
 func (cu *CommentUsecase) CreateComment(ctx context.Context, comment *entity.Comment) error {
-	return cu.cr.CreateComment(ctx, comment)
+	err := cu.cr.CreateComment(ctx, comment)
+	user, err := cu.ur.GetUser(ctx, comment.UserID)
+	if err != nil {
+		return err
+	}
+	comment.User = user
+	return err
 }
 
 // DeleteCommentはコメントを削除します

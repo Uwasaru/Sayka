@@ -9,8 +9,11 @@ import (
 
 func (r Router) InitCommentRouter(conn *database.Conn) {
 	cr := persistence.NewCommentRepository(conn)
-	cu := usecase.NewCommentUsecase(cr)
-	ch := handler.NewCommentHandler(cu)
+	ur := persistence.NewUserRepository(conn)
+	ar := persistence.NewAuthRepository(conn)
+	cu := usecase.NewCommentUsecase(cr, ur)
+	ju := usecase.NewJwtUsecase(ar)
+	ch := handler.NewCommentHandler(cu, ju)
 
 	g := r.Engine.Group("/comment")
 	g.GET("/:id", ch.GetByID)

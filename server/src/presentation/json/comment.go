@@ -9,6 +9,7 @@ import (
 type CommentJson struct {
 	ID        string    `json:"id"`
 	UserID    string    `json:"user_id"`
+	User        *UserJson `json:"user"`
 	SaykaID   string    `json:"sayka_id"`
 	Content   string    `json:"content"`
 	CreatedAt time.Time `json:"created_at"`
@@ -30,6 +31,7 @@ func CommentEntityToJson(comment *entity.Comment) *CommentJson {
 	return &CommentJson{
 		ID:        comment.ID,
 		UserID:    comment.UserID,
+		User:      UserEntityToJson(comment.User),
 		SaykaID:   comment.SaykaID,
 		Content:   comment.Content,
 		CreatedAt: comment.CreatedAt,

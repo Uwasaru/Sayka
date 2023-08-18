@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/Uwasaru/Sayka/presentation/json"
@@ -12,12 +13,14 @@ import (
 // Handlerはハンドラーを表します
 type CommentHandler struct {
 	cu usecase.ICommentUsecase
+	ju usecase.IJwtUsecase
 }
 
 // NewCommentHandlerは新しいCommentHandlerを初期化し構造体のポインタを返します
-func NewCommentHandler(cu usecase.ICommentUsecase) *CommentHandler {
+func NewCommentHandler(cu usecase.ICommentUsecase, ju usecase.IJwtUsecase) *CommentHandler {
 	return &CommentHandler{
 		cu: cu,
+		ju: ju,
 	}
 }
 
@@ -76,11 +79,17 @@ func (ch *CommentHandler) GetAll(ctx *gin.Context) {
 func (ch *CommentHandler) CreateComment(ctx *gin.Context) {
 	comment_json := &json.CommentJson{}
 	comment_json.ID = utils.Ulid()
-	comment_json.CreatedAt = utils.GetCurrentTimeStamps()
 	if err := ctx.BindJSON(comment_json); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
+	userId, err := ch.ju.GetUserIdFromJwtToken(ctx)
+	fmt.Println(userId)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	comment_json.UserID = userId
 	comment := json.CommentJsonToEntity(comment_json)
 	if err := ch.cu.CreateComment(ctx, comment); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
