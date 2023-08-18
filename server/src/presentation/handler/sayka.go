@@ -49,7 +49,8 @@ func (ph *SaykaHandler) GetByUserID(ctx *gin.Context) {
 
 // GetAllは全ての投稿を取得します
 func (ph *SaykaHandler) GetAll(ctx *gin.Context) {
-	saykas, err := ph.pu.GetAll(ctx)
+	myId, err := ph.ju.GetUserIdFromJwtToken(ctx)
+	saykas, err := ph.pu.GetAll(ctx, myId)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -61,7 +62,8 @@ func (ph *SaykaHandler) GetAll(ctx *gin.Context) {
 func (ph *SaykaHandler) GetTimeLine(ctx *gin.Context) {
 	id := ctx.Query("id")
 	tag := ctx.Query("tag")
-	saykas, err := ph.pu.GetTimeLine(ctx, id, tag)
+	myId, err := ph.ju.GetUserIdFromJwtToken(ctx)
+	saykas, err := ph.pu.GetTimeLine(ctx, id, tag, myId)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return

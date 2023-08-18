@@ -20,6 +20,7 @@ type Sayka struct {
 	Favorites   int       `json:"favorites"`
 	Comments    int       `json:"comments"`
 	IsFavorite  bool      `json:"is_favorite"`
+	IsMe 				bool      	`json:"is_me"`
 	CreatedAt   time.Time `json:"created_at"`
 }
 

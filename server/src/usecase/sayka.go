@@ -26,9 +26,9 @@ type ISaykaUsecase interface {
 	// GetByUserIDはUserIDを指定して投稿を取得します
 	GetByUserID(ctx context.Context, userID string) (*entity.Saykas, error)
 	// GetAllは全ての投稿を取得します
-	GetAll(ctx context.Context) (*entity.Saykas, error)
+	GetAll(ctx context.Context, mysId string) (*entity.Saykas, error)
 	// GetTimeLineはタイムラインを取得します
-	GetTimeLine(ctx context.Context, id string, tag string) (*entity.Saykas, error)
+	GetTimeLine(ctx context.Context, id string, tag string, myId string) (*entity.Saykas, error)
 	// Createは投稿を作成します
 	CreateSayka(ctx *gin.Context, sayka *entity.Sayka) error
 	// UpdateSaykaは投稿を更新します
@@ -76,12 +76,13 @@ func (pu *SaykaUsecase) GetByUserID(ctx context.Context, userID string) (*entity
 			return nil, err
 		}
 		sayka.User = user
+		sayka.IsMe = sayka.UserID == userID
 	}
 	return saykas, err
 }
 
 // GetAllは全ての投稿を取得します
-func (pu *SaykaUsecase) GetAll(ctx context.Context) (*entity.Saykas, error) {
+func (pu *SaykaUsecase) GetAll(ctx context.Context, myId string) (*entity.Saykas, error) {
 	saykas, err := pu.pr.GetAll(ctx)
 	if err != nil {
 		return nil, err
@@ -104,16 +105,14 @@ func (pu *SaykaUsecase) GetAll(ctx context.Context) (*entity.Saykas, error) {
 			return nil, err
 		}
 		sayka.User = user
+		sayka.IsMe = sayka.UserID == myId
 	}
 	return saykas, err
 }
 
 // GetTimeLineはタイムラインを取得します
-func (pu *SaykaUsecase) GetTimeLine(ctx context.Context, id string, tag string) (*entity.Saykas, error) {
+func (pu *SaykaUsecase) GetTimeLine(ctx context.Context, id string, tag string, myId string) (*entity.Saykas, error) {
 	saykas, err := pu.pr.GetTimeLine(ctx, id, tag)
-	if err != nil {
-		return nil, err
-	}
 	if err != nil {
 		return nil, err
 	}
@@ -135,6 +134,7 @@ func (pu *SaykaUsecase) GetTimeLine(ctx context.Context, id string, tag string) 
 			return nil, err
 		}
 		sayka.User = user
+		sayka.IsMe = sayka.UserID == myId
 	}
 	return saykas, err
 }

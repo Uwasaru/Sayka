@@ -21,6 +21,7 @@ type SaykaJson struct {
 	Favorites   int       `json:"favorite_count"`
 	Comments    int       `json:"comment_count"`
 	IsFavorite  bool      `json:"is_favorite"`
+	IsMe 				bool      	`json:"is_me"`
 	CreatedAt   time.Time `json:"created_at"`
 }
 
@@ -43,6 +44,10 @@ func SaykaJsonToEntity(saykaJson *SaykaJson) *entity.Sayka {
 		FigmaUrl:    saykaJson.FigmaUrl,
 		Description: saykaJson.Description,
 		Tags:        saykaJson.Tags,
+		Favorites:   saykaJson.Favorites,
+		Comments:    saykaJson.Comments,
+		IsFavorite:  saykaJson.IsFavorite,
+		IsMe: 				saykaJson.IsMe,
 		CreatedAt:   saykaJson.CreatedAt,
 	}
 }
@@ -69,6 +74,10 @@ func SaykaEntityToJson(sayka *entity.Sayka) *SaykaJson {
 		FigmaUrl:    sayka.FigmaUrl,
 		Description: sayka.Description,
 		Tags:        sayka.Tags,
+		Favorites:   sayka.Favorites,
+		Comments:    sayka.Comments,
+		IsFavorite:  sayka.IsFavorite,
+		IsMe: 				sayka.IsMe,
 		CreatedAt:   sayka.CreatedAt,
 	}
 }
