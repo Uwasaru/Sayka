@@ -2,11 +2,11 @@
 
 import { FC, useState } from "react";
 
+import { TSayka } from "@/types/Sayka";
 import { TUser } from "@/types/User";
 
 import { SaykaList } from "./SaykaList";
 import { TagFilter } from "./TagFilter";
-import { TSayka } from "@/types/Sayka";
 
 type TProps = {
   user?: TUser;
@@ -38,7 +38,7 @@ export const SaykaListWithFilter: FC<TProps> = ({ user, saykas }) => {
         changeFilterTag={changeFilterTag}
         onSubmit={handleSubmit}
       /> */}
-      <SaykaList saykas={saykas} user={user} />
+      {/* <SaykaList saykas={saykas} user={user} /> */}
       <button>もっと見る</button>
     </div>
   );

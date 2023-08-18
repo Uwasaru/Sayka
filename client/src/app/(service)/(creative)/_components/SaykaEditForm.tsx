@@ -11,11 +11,11 @@ import { TfiLayoutSlider } from "react-icons/tfi";
 import { TfiWorld } from "react-icons/tfi";
 import { z } from "zod";
 
+import { TSayka } from "@/types/Sayka";
 import { Tag } from "@/ui/Tag";
 import { ContentSubTitle, Explanation } from "@/ui/Text";
 
 import { InputBlock } from "./InputBlock";
-import { TSayka } from "@/types/Sayka";
 
 const schema = z.object({
   title: z

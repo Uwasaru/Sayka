@@ -1,5 +1,6 @@
 "use client";
 
+import { useAtom } from "jotai";
 import Image from "next/image";
 import Link from "next/link";
 import { FC, useMemo, useState } from "react";
@@ -10,6 +11,8 @@ import { PiFigmaLogoDuotone } from "react-icons/pi";
 import { TfiLayoutSlider } from "react-icons/tfi";
 import { TfiWorld } from "react-icons/tfi";
 
+import { modalState } from "@/store/atoms/modalAtom";
+import { TSayka } from "@/types/Sayka";
 import { TUser } from "@/types/User";
 import { TagInItem } from "@/ui/Tag";
 import { TooltipUI } from "@/ui/Tooltip";
@@ -18,31 +21,26 @@ import { CommentButton } from "./CommentButton";
 import { FixModal } from "./FixModal";
 import { LikeButton } from "./LikeButton";
 import { ShareButton } from "./ShareButton";
-import { TSayka } from "@/types/Sayka";
 
 type TProps = {
   sayka: TSayka;
-  loginUser?: TUser;
   changeFilterTag?: (tag: string) => void;
+  token?: string;
 };
 
-export const Sayka: FC<TProps> = ({ sayka, changeFilterTag, loginUser }) => {
+export const Sayka: FC<TProps> = ({ sayka, changeFilterTag, token }) => {
+  console.log("sayka", sayka);
   return (
     <div className="space-y-5 rounded-md border-4 border-gray-200 p-5 shadow-lg transition-transform hover:-translate-y-1 hover:shadow-xl">
-      <SaykaHeader sayka={sayka} loginUser={loginUser} />
+      <SaykaHeader sayka={sayka} />
       <SaykaBody sayka={sayka} changeFilterTag={changeFilterTag} />
-      <SaykaFooter sayka={sayka} loginUser={loginUser} />
+      <SaykaFooter sayka={sayka} token={token} />
     </div>
   );
 };
 
-const SaykaHeader: FC<TProps> = ({ sayka, loginUser }) => {
+const SaykaHeader: FC<TProps> = ({ sayka }) => {
   const [isModalVisible, setModalVisible] = useState(false);
-
-  const isMySayka = useMemo(() => {
-    if (!loginUser) return false;
-    return loginUser.id === sayka.user_id;
-  }, [loginUser, sayka]);
 
   return (
     <div className="relative flex items-center justify-between">
@@ -65,7 +63,7 @@ const SaykaHeader: FC<TProps> = ({ sayka, loginUser }) => {
           @{sayka.user.id}
         </Link>
       </div>
-      {isMySayka && (
+      {sayka.is_me && (
         <BsThreeDotsVertical
           size={24}
           onClick={() => setModalVisible(!isModalVisible)}
@@ -90,15 +88,35 @@ const SaykaBody: FC<TProps> = ({ sayka, changeFilterTag }) => {
   );
 };
 
-const SaykaFooter: FC<TProps> = ({ sayka, loginUser }) => {
+const SaykaFooter: FC<TProps> = ({ sayka, token }) => {
+  const [liked, setLiked] = useState(false);
+  const [likeCountState, setLikeCountState] = useState(sayka.favorite_count);
+  const [_, setIsOpen] = useAtom(modalState);
+
+  const handleHeartClickByGuest = () => {
+    setIsOpen(true);
+  };
+
+  const handleHeartClick = () => {
+    setLiked(!liked);
+    if (liked) {
+      setLikeCountState(likeCountState - 1);
+    } else {
+      setLikeCountState(likeCountState + 1);
+    }
+  };
+
   return (
     <div className="flex flex-col-reverse md:flex-row">
       <div className="flex items-center justify-start gap-5 md:w-[50%] ">
-        <CommentButton saykaId={sayka.id} commentCount={sayka.comments} />
+        <CommentButton saykaId={sayka.id} commentCount={sayka.comment_count} />
         <LikeButton
           saykaId={sayka.id}
-          likeCount={sayka.favorites}
-          loginUser={loginUser}
+          liked={liked}
+          likeCount={likeCountState}
+          handleHeartClick={handleHeartClick}
+          handleHeartClickByGuest={handleHeartClickByGuest}
+          token={token}
         />
         {/* <ShareButton saykaId={sayka.id} saykaTitle={sayka.title} /> */}
       </div>

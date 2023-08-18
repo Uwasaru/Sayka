@@ -12,14 +12,9 @@ type TProps = {
 const Page = async ({ searchParams }: TProps) => {
   const isOpenModal = searchParams.modal;
   const saykaId = searchParams.sayka_id;
+  const token = getToken() || "";
 
-  const loginUser = await (async () => {
-    const loginUser = await getLoggedInUser(getToken() || "");
-    if (loginUser.type === "error") return undefined;
-    return loginUser.value.data;
-  })();
-
-  const saykasRes = await readSaykaTimeline();
+  const saykasRes = await readSaykaTimeline(undefined, token);
   if (saykasRes.type === "error") {
     throw new Error("データが取得できませんでした。");
   }
@@ -30,7 +25,6 @@ const Page = async ({ searchParams }: TProps) => {
   }
 
   let targetSayka;
-  let targetSaykaUser;
 
   if (saykaId) {
     const saykaRes = await readSayka(saykaId);
@@ -42,9 +36,9 @@ const Page = async ({ searchParams }: TProps) => {
 
   return (
     <div className="mt-5 md:mx-16">
-      <SaykaTimelineList loginUser={loginUser} saykas={saykas} />
-      {isOpenModal && targetSayka && targetSaykaUser && (
-        <CommentModal sayka={targetSayka} loginUser={loginUser} />
+      <SaykaTimelineList saykas={saykas} token={token} />
+      {isOpenModal && targetSayka && (
+        <CommentModal sayka={targetSayka} token={token} />
       )}
     </div>
   );

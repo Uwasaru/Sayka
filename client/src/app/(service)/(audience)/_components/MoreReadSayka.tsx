@@ -1,14 +1,15 @@
+import React from "react";
+
 import { readSaykaTimeline } from "@/api/sayka";
 import { TUser } from "@/types/User";
-import React from "react";
+
 import { SaykaTimelineList } from "./SaykaTimelineList";
 
 type TProps = {
   lastSaykaId: string;
-  loginUser?: TUser;
 };
 
-export const MoreReadSayka = async ({ lastSaykaId, loginUser }: TProps) => {
+export const MoreReadSayka = async ({ lastSaykaId }: TProps) => {
   const saykasRes = await readSaykaTimeline(lastSaykaId);
 
   if (saykasRes.type === "error") return;
@@ -17,5 +18,5 @@ export const MoreReadSayka = async ({ lastSaykaId, loginUser }: TProps) => {
 
   if (!saykas) return;
 
-  return <SaykaTimelineList loginUser={loginUser} saykas={saykas} />;
+  return <SaykaTimelineList saykas={saykas} />;
 };

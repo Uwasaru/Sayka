@@ -1,5 +1,6 @@
-import { TSayka } from "@/types/Sayka";
 import { JTDDataType } from "ajv/dist/core";
+
+import { TSayka } from "@/types/Sayka";
 
 const saykaResponseBaseSchema = {
   type: "object",
@@ -13,10 +14,11 @@ const saykaResponseBaseSchema = {
     figma_url: { type: "string" },
     description: { type: "string" },
     article_url: { type: "string" },
-    favorites: { type: "int32" },
-    comments: { type: "int32" },
+    favorite_count: { type: "int32" },
+    comment_count: { type: "int32" },
     is_favorite: { type: "boolean" },
     created_at: { type: "string" },
+    is_me: { type: "boolean" },
     tags: {
       elements: {
         type: "string",
@@ -41,8 +43,8 @@ const saykaResponseBaseSchema = {
     "figma_url",
     "description",
     "article_url",
-    "favorites",
-    "comments",
+    "favorite_count",
+    "comment_count",
     "is_favorite",
     "created_at",
     "user",
@@ -74,5 +76,11 @@ export type SaykaBase = TSayka;
 
 export type SaykaCreate = Omit<
   SaykaBase,
-  "id" | "created_at" | "favorites" | "comments" | "is_favorite" | "user"
+  | "id"
+  | "created_at"
+  | "favorite_count"
+  | "comment_count"
+  | "is_favorite"
+  | "user"
+  | "is_me"
 >;

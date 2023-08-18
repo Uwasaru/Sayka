@@ -9,17 +9,18 @@ import { BsSend } from "react-icons/bs";
 import { GrClose } from "react-icons/gr";
 import ReactMarkdown from "react-markdown";
 
+import { createComment } from "@/api/comment";
 import { modalState } from "@/store/atoms/modalAtom";
+import { TSayka } from "@/types/Sayka";
 import { TUser } from "@/types/User";
 import { CodeBlock } from "@/ui/Text/components/CodeBlock";
-import { TSayka } from "@/types/Sayka";
 
 type TProps = {
   sayka: TSayka;
-  loginUser?: TUser;
+  token?: string;
 };
 
-export const CommentModal: FC<TProps> = ({ sayka, loginUser }) => {
+export const CommentModal: FC<TProps> = ({ sayka, token }) => {
   const [_, setIsOpen] = useAtom(modalState);
   const [comment, setComment] = useState("");
 
@@ -53,9 +54,16 @@ export const CommentModal: FC<TProps> = ({ sayka, loginUser }) => {
 
   const handleSend = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // TODO: リクエスト
-    console.log(comment);
-    setComment("");
+    if (!token) return;
+    createComment(
+      {
+        sayka_id: sayka.id,
+        content: comment,
+      },
+      token
+    ).then(() => {
+      setComment("");
+    });
   };
 
   // commentを取得
@@ -101,39 +109,47 @@ export const CommentModal: FC<TProps> = ({ sayka, loginUser }) => {
         </div>
 
         <div className="grow flex-col overflow-y-scroll bg-gray-50">
-          {commentList.map((comment) => (
-            <div
-              key={comment.id}
-              className="flex flex-col gap-2 border-t border-gray-300 px-8 py-4">
-              <div className="flex items-center space-x-3">
-                <Image
-                  src={comment.user.img}
-                  alt="user icon"
-                  width={30}
-                  height={30}
-                  className="rounded-full"
-                />
-                <Link
-                  href={`/mypage/${comment.user.id}`}
-                  className="border-b-teal-400 hover:border-b-2">
-                  @{comment.user.name}
-                </Link>
+          <>
+            {!commentList ? (
+              <div className="flex h-full items-center justify-center">
+                <div className="text-gray-500">コメントはありません。</div>
               </div>
-              <div className="flex flex-col space-y-3">
-                <div className="text-gray-700">
-                  <ReactMarkdown className="m-auto" components={CodeBlock}>
-                    {comment.contents}
-                  </ReactMarkdown>
+            ) : (
+              commentList.map((comment) => (
+                <div
+                  key={comment.id}
+                  className="flex flex-col gap-2 border-t border-gray-300 px-8 py-4">
+                  <div className="flex items-center space-x-3">
+                    <Image
+                      src={comment.user.img}
+                      alt="user icon"
+                      width={30}
+                      height={30}
+                      className="rounded-full"
+                    />
+                    <Link
+                      href={`/mypage/${comment.user.id}`}
+                      className="border-b-teal-400 hover:border-b-2">
+                      @{comment.user.name}
+                    </Link>
+                  </div>
+                  <div className="flex flex-col space-y-3">
+                    <div className="text-gray-700">
+                      <ReactMarkdown className="m-auto" components={CodeBlock}>
+                        {comment.contents}
+                      </ReactMarkdown>
+                    </div>
+                    <div className="text-sm font-medium text-gray-500">
+                      {comment.created_at}
+                    </div>
+                  </div>
                 </div>
-                <div className="text-sm font-medium text-gray-500">
-                  {comment.created_at}
-                </div>
-              </div>
-            </div>
-          ))}
+              ))
+            )}
+          </>
         </div>
 
-        {loginUser ? (
+        {token ? (
           <form
             onSubmit={handleSend}
             className="flex items-center gap-5 border-t border-gray-200 bg-white p-5">

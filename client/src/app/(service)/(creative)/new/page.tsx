@@ -1,7 +1,8 @@
+import { redirect } from "next/navigation";
+
 import { getLoggedInUser } from "@/api";
 import { getToken } from "@/features";
 import { ContentTitle } from "@/ui/Text";
-import { redirect } from "next/navigation";
 
 import { SaykaForm } from "../_components/SaykaForm";
 

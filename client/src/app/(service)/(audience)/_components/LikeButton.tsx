@@ -1,59 +1,63 @@
-import { useAtom } from "jotai";
-import React, { FC, useState } from "react";
+"use client";
+
+import React, { FC } from "react";
 import { VscHeartFilled } from "react-icons/vsc";
 import { VscHeart } from "react-icons/vsc";
 
-import { modalState } from "@/store/atoms/modalAtom";
-import { TUser } from "@/types/User";
+import { fixFavorite } from "@/api/favorite";
 
 type TProps = {
   saykaId: string;
+  handleHeartClick: () => void;
+  handleHeartClickByGuest: () => void;
+  liked: boolean;
   likeCount: number;
-  loginUser?: TUser;
+  token?: string;
 };
 
-export const LikeButton: FC<TProps> = ({ saykaId, likeCount, loginUser }) => {
-  const [liked, setLiked] = useState(false);
-  const [likeCountState, setLikeCountState] = useState(likeCount);
-
-  const handleHeartClick = () => {
-    setLiked(!liked);
-    if (liked) {
-      setLikeCountState(likeCountState - 1);
-    } else {
-      setLikeCountState(likeCountState + 1);
-    }
-    // リクエスト
-    // TODO: すぐ送らずに遅延させる
-  };
-
-  const [_, setIsOpen] = useAtom(modalState);
-  const handleHeartClickByGuest = () => {
-    setIsOpen(true);
-  };
-
-  if (!loginUser) {
+export const LikeButton = ({
+  saykaId,
+  handleHeartClick,
+  liked,
+  likeCount,
+  handleHeartClickByGuest,
+  token,
+}: TProps) => {
+  if (!token) {
     return (
       <div className="flex items-center gap-x-1">
         <VscHeart size={24} onClick={handleHeartClickByGuest} />
-        {likeCountState}
+        {likeCount}
       </div>
     );
   }
 
+  const handleClick = () => {
+    handleHeartClick();
+    fixFavorite(
+      {
+        sayka_id: saykaId,
+        is_favorite: liked,
+      },
+      token
+    ).then(() => {
+      console.log("success");
+    });
+  };
+
   if (!liked) {
     return (
       <div className="flex items-center gap-x-1">
-        <VscHeart size={24} onClick={handleHeartClick} />
-        {likeCountState}
+        <VscHeart size={24} onClick={handleClick} />
+        {likeCount}
       </div>
     );
   }
 
   return (
     <div className="flex items-center gap-x-1">
-      <VscHeartFilled size={24} color="#2DD4BF" onClick={handleHeartClick} />
-      {likeCountState}
+      <VscHeartFilled size={24} color="#2DD4BF" onClick={handleClick} />
+      {likeCount}
     </div>
   );
 };

@@ -1,7 +1,8 @@
+import { redirect } from "next/navigation";
+
 import { getLoggedInUser } from "@/api";
 import { getToken } from "@/features";
 import { TopHeader, TopMain } from "@/ui/Layout";
-import { redirect } from "next/navigation";
 
 export default async function Layout({
   children,

@@ -9,8 +9,8 @@ export type TSayka = {
   article_url?: string;
   app_url?: string;
   tags?: string[];
-  favorites: number;
-  comments: number;
+  favorite_count: number;
+  comment_count: number;
   is_favorite: boolean;
   created_at: string;
   user: {
@@ -18,4 +18,5 @@ export type TSayka = {
     name: string;
     img: string;
   };
+  is_me: boolean;
 };

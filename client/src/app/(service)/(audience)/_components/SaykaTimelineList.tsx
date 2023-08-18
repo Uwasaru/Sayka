@@ -2,19 +2,20 @@
 
 import { FC, useState } from "react";
 
-import { TUser } from "@/types/User";
-
-import { SaykaList } from "./SaykaList";
 import { TSayka } from "@/types/Sayka";
-import { MoreReadSayka } from "./MoreReadSayka";
+import { TUser } from "@/types/User";
 import { ColorButton } from "@/ui/Button";
 
+import { MoreReadSayka } from "./MoreReadSayka";
+import { SaykaList } from "./SaykaList";
+
+
 type TProps = {
-  loginUser?: TUser;
   saykas: TSayka[];
+  token?: string;
 };
 
-export const SaykaTimelineList: FC<TProps> = ({ loginUser, saykas }) => {
+export const SaykaTimelineList: FC<TProps> = ({ saykas, token }) => {
   const [showMore, setShowMore] = useState(false);
 
   const lastSaykaId = saykas ? saykas[saykas.length - 1].id : undefined;
@@ -25,15 +26,15 @@ export const SaykaTimelineList: FC<TProps> = ({ loginUser, saykas }) => {
 
   return (
     <div>
-      <SaykaList saykas={saykas} loginUser={loginUser} />
+      <SaykaList saykas={saykas} token={token} />
       {!showMore && lastSaykaId && (
-        <div className="flex justify-center mt-10">
+        <div className="mt-10 flex justify-center">
           <ColorButton onClick={handleClick}>もっと見る</ColorButton>
         </div>
       )}
       {showMore && (
         // @ts-expect-error Server Component
-        <MoreReadSayka lastSaykaId={lastSaykaId} loginUser={loginUser} />
+        <MoreReadSayka lastSaykaId={lastSaykaId} />
       )}
     </div>
   );
