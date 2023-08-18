@@ -30,7 +30,15 @@ const schema = z.object({
     z.literal(""),
     z.string().regex(/^https:\/\//, "URLを正しい形で入力してください。"),
   ]),
+  figma_url: z.union([
+    z.literal(""),
+    z.string().regex(/^https:\/\//, "URLを正しい形で入力してください。"),
+  ]),
   slide_url: z.union([
+    z.literal(""),
+    z.string().regex(/^https:\/\//, "URLを正しい形で入力してください。"),
+  ]),
+  article_url: z.union([
     z.literal(""),
     z.string().regex(/^https:\/\//, "URLを正しい形で入力してください。"),
   ]),

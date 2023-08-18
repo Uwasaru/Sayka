@@ -1,9 +1,5 @@
 "use client";
 
-import { useEffect } from "react";
-
-import { ColorButton } from "@/ui/Button";
-
 export default function Error({
   error,
   reset,

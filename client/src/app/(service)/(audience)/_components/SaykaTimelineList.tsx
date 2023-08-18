@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useState } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 
 import { TSayka } from "@/types/Sayka";
 import { TUser } from "@/types/User";
@@ -8,7 +8,7 @@ import { ColorButton } from "@/ui/Button";
 
 import { MoreReadSayka } from "./MoreReadSayka";
 import { SaykaList } from "./SaykaList";
-
+import { readSaykaTimeline } from "@/api";
 
 type TProps = {
   saykas: TSayka[];
@@ -16,25 +16,32 @@ type TProps = {
 };
 
 export const SaykaTimelineList: FC<TProps> = ({ saykas, token }) => {
-  const [showMore, setShowMore] = useState(false);
+  const [showMore, setShowMore] = useState(true);
+  const [saykaList, setSaykaList] = useState<TSayka[]>(saykas);
 
-  const lastSaykaId = saykas ? saykas[saykas.length - 1].id : undefined;
+  const lastSaykaId = useMemo(() => {
+    return saykaList ? saykaList[saykaList.length - 1].id : undefined;
+  }, [saykaList]);
 
-  const handleClick = () => {
-    setShowMore(true);
+  const handleClick = async () => {
+    const saykasRes = await readSaykaTimeline(lastSaykaId, token);
+    console.log(saykasRes);
+    if (saykasRes.type === "error") {
+      throw new Error("データが取得できませんでした。");
+    }
+    const data = saykasRes.value.data;
+    if (!data) setShowMore(false);
+    console.log(data);
+    setSaykaList([...saykaList, ...data]);
   };
 
   return (
     <div>
-      <SaykaList saykas={saykas} token={token} />
-      {!showMore && lastSaykaId && (
+      <SaykaList saykas={saykaList} token={token} />
+      {showMore && (
         <div className="mt-10 flex justify-center">
           <ColorButton onClick={handleClick}>もっと見る</ColorButton>
         </div>
-      )}
-      {showMore && (
-        // @ts-expect-error Server Component
-        <MoreReadSayka lastSaykaId={lastSaykaId} />
       )}
     </div>
   );
