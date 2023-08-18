@@ -8,6 +8,7 @@ import (
 type Sayka struct {
 	ID          string    `json:"id"`
 	UserID      string    `json:"user_id"`
+	User				*User     `json:"user"`
 	Title       string    `json:"title"`
 	GithubUrl   string    `json:"github_url"`
 	AppUrl      string    `json:"app_url"`

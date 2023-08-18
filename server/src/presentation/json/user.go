@@ -10,8 +10,8 @@ type UserJson struct {
 	Img  string `json:"img"`
 }
 
-func UserEntityToJson(c *entity.User) UserJson {
-	return UserJson{
+func UserEntityToJson(c *entity.User) *UserJson {
+	return &UserJson{
 		ID:   c.ID,
 		Name: c.Name,
 		Img:  c.Img,

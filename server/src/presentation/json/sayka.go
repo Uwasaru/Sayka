@@ -9,6 +9,7 @@ import (
 type SaykaJson struct {
 	ID          string    `json:"id"`
 	UserID      string    `json:"user_id"`
+	User 			*UserJson `json:"user"`
 	Title       string    `json:"title"`
 	GithubUrl   string    `json:"github_url"`
 	AppUrl      string    `json:"app_url"`
@@ -34,6 +35,7 @@ func SaykaJsonToEntity(saykaJson *SaykaJson) *entity.Sayka {
 	return &entity.Sayka{
 		ID:          saykaJson.ID,
 		UserID:      saykaJson.UserID,
+		User:        UserJsonToEntity(saykaJson.User),
 		Title:       saykaJson.Title,
 		GithubUrl:   saykaJson.GithubUrl,
 		AppUrl:      saykaJson.AppUrl,
@@ -59,6 +61,7 @@ func SaykaEntityToJson(sayka *entity.Sayka) *SaykaJson {
 	return &SaykaJson{
 		ID:          sayka.ID,
 		UserID:      sayka.UserID,
+		User:        UserEntityToJson(sayka.User),
 		Title:       sayka.Title,
 		GithubUrl:   sayka.GithubUrl,
 		AppUrl:      sayka.AppUrl,
