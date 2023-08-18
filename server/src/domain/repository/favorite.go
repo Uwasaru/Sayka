@@ -10,8 +10,10 @@ import (
 type FavoriteRepository interface {
 	GetByID(ctx context.Context, id string) (*entity.Favorite, error)
 	GetByUserID(ctx context.Context, userID string) (*entity.Favorites, error)
+	GetCountBySaykaID(ctx context.Context, saykaID string) (int, error)
 	GetBySaykaID(ctx context.Context, saykaID string) (entity.FavoriteUsers, error)
 	GetAll(ctx context.Context) (*entity.Favorites, error)
 	CreateFavorite(ctx context.Context, favorite *entity.Favorite) error
 	DeleteFavorite(ctx context.Context, id string) error
+	DeleteFavoriteBySaykaIDUserID(ctx context.Context, saykaID string, userID string) error
 }

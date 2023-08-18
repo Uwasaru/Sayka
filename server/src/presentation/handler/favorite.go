@@ -12,12 +12,14 @@ import (
 // Handlerはハンドラーを表します
 type FavoriteHandler struct {
 	fu usecase.IFavoriteUsecase
+	ju usecase.IJwtUsecase
 }
 
 // NewFavoriteHandlerは新しいFavoriteHandlerを初期化し構造体のポインタを返します
-func NewFavoriteHandler(fu usecase.IFavoriteUsecase) *FavoriteHandler {
+func NewFavoriteHandler(fu usecase.IFavoriteUsecase, ju usecase.IJwtUsecase) *FavoriteHandler {
 	return &FavoriteHandler{
 		fu: fu,
+		ju: ju,
 	}
 }
 
@@ -62,6 +64,42 @@ func (fh *FavoriteHandler) GetAll(ctx *gin.Context) {
 		return
 	}
 	ctx.JSON(http.StatusOK, favorites)
+}
+
+func (fh *FavoriteHandler) FavoriteAction(ctx *gin.Context) {
+	favorite_json := &json.FavoriteJson{}
+	if err := ctx.BindJSON(favorite_json); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	userId, err := fh.ju.GetUserIdFromJwtToken(ctx)
+	favorite_json.UserID = userId
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	if favorite_json.IsFavorite {
+		if err := fh.fu.DeleteFavoriteBySaykaIDUserID(ctx, favorite_json.SaykaID, favorite_json.UserID); err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+		} else {
+			favorite_json.ID = utils.Ulid()
+			favorite := json.FavoriteJsonToEntity(favorite_json)
+			if err := fh.fu.CreateFavorite(ctx, favorite); err != nil {
+				ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+	}
+	favoriteCount, err := fh.fu.GetCountBySaykaID(ctx, favorite_json.SaykaID)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	res := &json.FavoriterResponseJson{}
+	res.IsFavorite = !favorite_json.IsFavorite
+	res.FavoriteCount = favoriteCount
+	ctx.JSON(http.StatusOK, gin.H{"data": res})
 }
 
 // CreateFavoriteは投稿を作成します

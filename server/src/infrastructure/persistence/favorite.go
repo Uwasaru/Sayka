@@ -87,6 +87,21 @@ func (fr *FavoriteRepository) GetBySaykaID(ctx context.Context, saykaID string) 
 	return favorites, nil
 }
 
+// GetCountBySaykaIDはSaykaIDを指定して投稿を取得します
+func (fr *FavoriteRepository) GetCountBySaykaID(ctx context.Context, saykaID string) (int, error) {
+	query := `
+	SELECT COUNT(*)
+	FROM favorites
+	WHERE sayka_id = ?
+	`
+	var count int
+	err := fr.conn.DB.GetContext(ctx, &count, query, saykaID)
+	if err != nil {
+		return -1, err
+	}
+	return count, nil
+}
+
 // GetAllは全ての投稿を取得します
 func (fr *FavoriteRepository) GetAll(ctx context.Context) (*entity.Favorites, error) {
 	query := `
@@ -139,6 +154,19 @@ func (fr *FavoriteRepository) DeleteFavorite(ctx context.Context, id string) err
 	WHERE id = :id
 	`
 	_, err := fr.conn.DB.NamedExecContext(ctx, query, map[string]interface{}{"id": id})
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// DeleteFavoriteBySaykaIDUserIDは投稿を削除します
+func (fr *FavoriteRepository) DeleteFavoriteBySaykaIDUserID(ctx context.Context, saykaID string, userID string) error {
+	query := `
+	DELETE FROM favorites
+	WHERE sayka_id = :sayka_id AND user_id = :user_id
+	`
+	_, err := fr.conn.DB.NamedExecContext(ctx, query, map[string]interface{}{"sayka_id": saykaID, "user_id": userID})
 	if err != nil {
 		return err
 	}

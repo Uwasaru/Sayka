@@ -19,9 +19,11 @@ type IFavoriteUsecase interface {
 	GetByID(ctx context.Context, id string) (*entity.Favorite, error)
 	GetByUserID(ctx context.Context, userID string) (*entity.Favorites, error)
 	GetBySaykaID(ctx context.Context, saykaID string) (entity.FavoriteUsers, error)
+	GetCountBySaykaID(ctx context.Context, saykaID string) (int, error)
 	GetAll(ctx context.Context) (*entity.Favorites, error)
 	CreateFavorite(ctx context.Context, favorite *entity.Favorite) error
 	DeleteFavorite(ctx context.Context, id string) error
+	DeleteFavoriteBySaykaIDUserID(ctx context.Context, saykaID string, userID string) error
 }
 
 // NewFavoriteUsecaseは新しいFavoriteUsecaseを初期化し構造体のポインタを返します
@@ -46,6 +48,10 @@ func (fu *FavoriteUsecase) GetBySaykaID(ctx context.Context, saykaID string) (en
 	return fu.fr.GetBySaykaID(ctx, saykaID)
 }
 
+func (fu *FavoriteUsecase) GetCountBySaykaID(ctx context.Context, saykaID string) (int, error) {
+	return fu.fr.GetCountBySaykaID(ctx, saykaID)
+}
+
 // GetAllは全ての投稿を取得します
 func (fu *FavoriteUsecase) GetAll(ctx context.Context) (*entity.Favorites, error) {
 	return fu.fr.GetAll(ctx)
@@ -59,4 +65,9 @@ func (fu *FavoriteUsecase) CreateFavorite(ctx context.Context, favorite *entity.
 // DeleteFavoriteは投稿を削除します
 func (fu *FavoriteUsecase) DeleteFavorite(ctx context.Context, id string) error {
 	return fu.fr.DeleteFavorite(ctx, id)
+}
+
+// DeleteFavoriteBySaykaIDUserIDは投稿を削除します
+func (fu *FavoriteUsecase) DeleteFavoriteBySaykaIDUserID(ctx context.Context, saykaID string, userID string) error {
+	return fu.fr.DeleteFavoriteBySaykaIDUserID(ctx, saykaID, userID)
 }
