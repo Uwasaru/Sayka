@@ -9,7 +9,7 @@ import (
 type SaykaJson struct {
 	ID          string    `json:"id"`
 	UserID      string    `json:"user_id"`
-	User 			*UserJson `json:"user"`
+	User        *UserJson `json:"user"`
 	Title       string    `json:"title"`
 	GithubUrl   string    `json:"github_url"`
 	AppUrl      string    `json:"app_url"`
@@ -21,7 +21,7 @@ type SaykaJson struct {
 	Favorites   int       `json:"favorite_count"`
 	Comments    int       `json:"comment_count"`
 	IsFavorite  bool      `json:"is_favorite"`
-	IsMe 				bool      	`json:"is_me"`
+	IsMe        bool      `json:"is_me"`
 	CreatedAt   time.Time `json:"created_at"`
 }
 
@@ -47,7 +47,7 @@ func SaykaJsonToEntity(saykaJson *SaykaJson) *entity.Sayka {
 		Favorites:   saykaJson.Favorites,
 		Comments:    saykaJson.Comments,
 		IsFavorite:  saykaJson.IsFavorite,
-		IsMe: 				saykaJson.IsMe,
+		IsMe:        saykaJson.IsMe,
 		CreatedAt:   saykaJson.CreatedAt,
 	}
 }
@@ -77,7 +77,7 @@ func SaykaEntityToJson(sayka *entity.Sayka) *SaykaJson {
 		Favorites:   sayka.Favorites,
 		Comments:    sayka.Comments,
 		IsFavorite:  sayka.IsFavorite,
-		IsMe: 				sayka.IsMe,
+		IsMe:        sayka.IsMe,
 		CreatedAt:   sayka.CreatedAt,
 	}
 }

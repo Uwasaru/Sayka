@@ -8,7 +8,7 @@ import (
 type Sayka struct {
 	ID          string    `json:"id"`
 	UserID      string    `json:"user_id"`
-	User				*User     `json:"user"`
+	User        *User     `json:"user"`
 	Title       string    `json:"title"`
 	GithubUrl   string    `json:"github_url"`
 	AppUrl      string    `json:"app_url"`
@@ -20,7 +20,7 @@ type Sayka struct {
 	Favorites   int       `json:"favorites"`
 	Comments    int       `json:"comments"`
 	IsFavorite  bool      `json:"is_favorite"`
-	IsMe 				bool      	`json:"is_me"`
+	IsMe        bool      `json:"is_me"`
 	CreatedAt   time.Time `json:"created_at"`
 }
 

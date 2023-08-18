@@ -83,11 +83,11 @@ func (fh *FavoriteHandler) FavoriteAction(ctx *gin.Context) {
 			ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
-		} else {
-			favorite_json.ID = utils.Ulid()
-			favorite := json.FavoriteJsonToEntity(favorite_json)
-			if err := fh.fu.CreateFavorite(ctx, favorite); err != nil {
-				ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	} else {
+		favorite_json.ID = utils.Ulid()
+		favorite := json.FavoriteJsonToEntity(favorite_json)
+		if err := fh.fu.CreateFavorite(ctx, favorite); err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
 	}
