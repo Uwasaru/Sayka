@@ -14,6 +14,8 @@ type CommentJson struct {
 	CreatedAt time.Time `json:"created_at"`
 }
 
+type CommentsJson []CommentJson
+
 func CommentJsonToEntity(commentJson *CommentJson) *entity.Comment {
 	return &entity.Comment{
 		ID:        commentJson.ID,
@@ -32,4 +34,13 @@ func CommentEntityToJson(comment *entity.Comment) *CommentJson {
 		Content:   comment.Content,
 		CreatedAt: comment.CreatedAt,
 	}
+}
+
+func CommentsEntityToJson(comments entity.Comments) *CommentsJson {
+	var commentsJson CommentsJson
+	for _, comment := range comments {
+		commentsJson = append(commentsJson, *CommentEntityToJson(comment))
+	}
+
+	return &commentsJson
 }

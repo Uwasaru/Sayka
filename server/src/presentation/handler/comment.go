@@ -29,7 +29,9 @@ func (ch *CommentHandler) GetByID(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	ctx.JSON(http.StatusOK, comment)
+
+	commentJson := json.CommentEntityToJson(comment)
+	ctx.JSON(http.StatusOK, gin.H{"data": commentJson})
 }
 
 // GetByUserIDはUserIDを指定して投稿を取得します
@@ -40,7 +42,9 @@ func (ch *CommentHandler) GetByUserID(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	ctx.JSON(http.StatusOK, comments)
+
+	commentsJson := json.CommentsEntityToJson(*comments)
+	ctx.JSON(http.StatusOK, gin.H{"data": commentsJson})
 }
 
 // GetBySaykaIDはSaykaIDを指定して投稿を取得します
@@ -51,7 +55,9 @@ func (ch *CommentHandler) GetBySaykaID(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	ctx.JSON(http.StatusOK, comments)
+
+	commentsJson := json.CommentsEntityToJson(*comments)
+	ctx.JSON(http.StatusOK, gin.H{"data": commentsJson})
 }
 
 // GetAllは全ての投稿を取得します
@@ -61,7 +67,9 @@ func (ch *CommentHandler) GetAll(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	ctx.JSON(http.StatusOK, comments)
+
+	commentsJson := json.CommentsEntityToJson(*comments)
+	ctx.JSON(http.StatusOK, gin.H{"data": commentsJson})
 }
 
 // CreateCommentは投稿を作成します
@@ -78,7 +86,9 @@ func (ch *CommentHandler) CreateComment(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	ctx.JSON(http.StatusOK, comment)
+
+	commentJson := json.CommentEntityToJson(comment)
+	ctx.JSON(http.StatusOK, gin.H{"data": commentJson})
 }
 
 // DeleteCommentは投稿を削除します
