@@ -1,4 +1,5 @@
 import { readSayka } from "@/api";
+
 import { Sayka } from "../../_components/Sayka";
 
 type TProps = {

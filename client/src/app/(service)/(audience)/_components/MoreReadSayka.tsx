@@ -1,5 +1,6 @@
-import { readSaykaTimeline } from "@/api";
 import React from "react";
+
+import { readSaykaTimeline } from "@/api";
 
 import { SaykaTimelineList } from "./SaykaTimelineList";
 

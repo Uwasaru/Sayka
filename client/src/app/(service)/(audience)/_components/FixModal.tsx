@@ -1,11 +1,12 @@
 "use client";
 
-import { deleteSayka } from "@/api";
+import { useToast } from "@chakra-ui/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { FC, useRef, useEffect, useState } from "react";
 import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
-import { useToast } from "@chakra-ui/react";
+
+import { deleteSayka } from "@/api";
 
 type TProps = {
   isVisible: boolean;
@@ -51,7 +52,7 @@ export const FixModal: FC<TProps> = ({
     toast({
       position: "bottom-left",
       render: () => (
-        <div className="p-3 text-white bg-gray-800">Saykaを削除しました。</div>
+        <div className="bg-gray-800 p-3 text-white">Saykaを削除しました。</div>
       ),
     });
   };

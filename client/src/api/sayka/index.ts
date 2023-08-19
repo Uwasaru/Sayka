@@ -30,6 +30,17 @@ export const readSaykaTimeline = async (
 export const readSayka = async (sayka_id: string) =>
   await apiClient.get<SaykaResponse>(`${serverURL}/sayka/${sayka_id}`);
 
+export const updateSayka = async (
+  sayka_id: string,
+  sayka: SaykaCreate,
+  token: string
+) =>
+  await apiClient.put<SaykaResponse>(
+    `${serverURL}/sayka/${sayka_id}`,
+    sayka,
+    token
+  );
+
 export const deleteSayka = async (sayka_id: string, token: string) =>
   await apiClient.delete<DeleteSaykaResponse>(
     `${serverURL}/sayka/${sayka_id}`,

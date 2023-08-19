@@ -9,11 +9,11 @@ import { BsSend } from "react-icons/bs";
 import { GrClose } from "react-icons/gr";
 import ReactMarkdown from "react-markdown";
 
+import { createComment, readCommentBySayka } from "@/api";
 import { modalState } from "@/store/atoms/modalAtom";
+import { TComment } from "@/types/Comment";
 import { TSayka } from "@/types/Sayka";
 import { CodeBlock } from "@/ui/Text/components/CodeBlock";
-import { TComment } from "@/types/Comment";
-import { createComment, readCommentBySayka } from "@/api";
 import { formatDateToJapanese } from "@/utils/formatDateToJapanese";
 
 type TProps = {

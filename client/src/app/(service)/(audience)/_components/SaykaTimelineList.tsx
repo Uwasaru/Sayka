@@ -2,13 +2,13 @@
 
 import { FC, useEffect, useMemo, useState } from "react";
 
+import { readSaykaTimeline } from "@/api";
 import { TSayka } from "@/types/Sayka";
 import { TUser } from "@/types/User";
 import { ColorButton } from "@/ui/Button";
 
 import { MoreReadSayka } from "./MoreReadSayka";
 import { SaykaList } from "./SaykaList";
-import { readSaykaTimeline } from "@/api";
 
 type TProps = {
   saykas: TSayka[];

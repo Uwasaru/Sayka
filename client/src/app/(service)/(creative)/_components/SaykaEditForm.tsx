@@ -1,7 +1,9 @@
 "use client";
 
+import { Button, useToast } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FC, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { FC, useState } from "react";
 import { useForm, SubmitHandler, FormProvider } from "react-hook-form";
 import { AiFillGithub } from "react-icons/ai";
 import { GrClose } from "react-icons/gr";
@@ -9,66 +11,59 @@ import { MdOutlineArticle } from "react-icons/md";
 import { PiFigmaLogoDuotone } from "react-icons/pi";
 import { TfiLayoutSlider } from "react-icons/tfi";
 import { TfiWorld } from "react-icons/tfi";
-import { z } from "zod";
 
+import { updateSayka } from "@/api";
 import { TSayka } from "@/types/Sayka";
 import { Tag } from "@/ui/Tag";
 import { ContentSubTitle, Explanation } from "@/ui/Text";
 
 import { InputBlock } from "./InputBlock";
-
-const schema = z.object({
-  title: z
-    .string()
-    .nonempty({ message: "必須項目です。" })
-    .max(20, "20字以内で入力してください。"),
-  description: z
-    .string()
-    .nonempty({ message: "必須項目です。" })
-    .max(100, "100字以内で入力してください。"),
-  github_url: z.union([
-    z.literal(""),
-    z.string().regex(/^https:\/\//, "URLを正しい形で入力してください。"),
-  ]),
-  figma_url: z.union([
-    z.literal(""),
-    z.string().regex(/^https:\/\//, "URLを正しい形で入力してください。"),
-  ]),
-  slide_url: z.union([
-    z.literal(""),
-    z.string().regex(/^https:\/\//, "URLを正しい形で入力してください。"),
-  ]),
-  article_url: z.union([
-    z.literal(""),
-    z.string().regex(/^https:\/\//, "URLを正しい形で入力してください。"),
-  ]),
-  app_url: z.union([
-    z.literal(""),
-    z.string().regex(/^https:\/\//, "URLを正しい形で入力してください。"),
-  ]),
-});
-
-type FormData = {
-  title: string;
-};
+import { SaykaFormData, saykaSchema } from "@/features/form/saykaForm";
 
 type TProps = {
   sayka: TSayka;
+  token: string;
 };
 
-export const SaykaEditForm: FC<TProps> = ({ sayka }) => {
-  const [tags, setTags] = useState<string[]>(sayka.tags || []);
+export const SaykaEditForm: FC<TProps> = ({ sayka, token }) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [tags, setTags] = useState<string[]>([]);
   const [tagError, setTagError] = useState<string | null>(null);
-  const methods = useForm<FormData>({
-    resolver: zodResolver(schema),
+  const methods = useForm<SaykaFormData>({
+    resolver: zodResolver(saykaSchema),
   });
+  const router = useRouter();
+  const toast = useToast();
 
-  const onSubmit: SubmitHandler<FormData> = (data) => {
+  const onSubmit: SubmitHandler<SaykaFormData> = async (data) => {
+    setIsLoading(true);
     const submitData = {
       ...data,
       tags,
     };
-    console.log(submitData);
+
+    const res = await updateSayka(
+      sayka.id,
+      {
+        user_id: sayka.user_id,
+        ...submitData,
+      },
+      token
+    );
+
+    setIsLoading(false);
+    if (res.type === "error") {
+      toast({
+        position: "bottom-left",
+        render: () => (
+          <div className="bg-red-500 p-3 text-white">
+            成果物の編集に失敗しました。
+          </div>
+        ),
+      });
+      return;
+    }
+    router.push(`/postCompletion/${res.value.data.id}/edit`);
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -93,10 +88,15 @@ export const SaykaEditForm: FC<TProps> = ({ sayka }) => {
     newTags.splice(index, 1);
     setTags(newTags);
   };
+  const preventFormSubmitOnEnter = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" && e.currentTarget === e.target) {
+      e.preventDefault();
+    }
+  };
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(onSubmit)}>
+      <form onKeyDown={preventFormSubmitOnEnter}>
         <InputBlock
           text="成果物のタイトル"
           subText="20字以内で入力してください。"
@@ -177,17 +177,19 @@ export const SaykaEditForm: FC<TProps> = ({ sayka }) => {
         />
         <InputBlock
           text="作成したアプリケーションのURL"
-          name="application_url"
+          name="app_url"
           defaultValue={sayka?.app_url}
           placeholder="https://sayka.vercel.app"
           icon={<TfiWorld size={18} />}
         />
         <div className="flex justify-center pt-5">
-          <button
-            type="submit"
+          <Button
+            isLoading={isLoading}
+            type="button"
+            onClick={methods.handleSubmit(onSubmit)}
             className="w-36 rounded bg-sc px-4 py-2 font-semibold text-white transition duration-300 hover:bg-hover-sc">
             編集する
-          </button>
+          </Button>
         </div>
       </form>
     </FormProvider>

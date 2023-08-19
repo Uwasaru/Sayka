@@ -1,7 +1,7 @@
 "use client";
 
+import { Button, useToast } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { redirect } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { FC, useState } from "react";
 import { useForm, SubmitHandler, FormProvider } from "react-hook-form";
@@ -11,57 +11,14 @@ import { MdOutlineArticle } from "react-icons/md";
 import { PiFigmaLogoDuotone } from "react-icons/pi";
 import { TfiLayoutSlider } from "react-icons/tfi";
 import { TfiWorld } from "react-icons/tfi";
-import { z } from "zod";
 
-import { TSayka } from "@/types/Sayka";
+import { createSayka } from "@/api";
 import { TUser } from "@/types/User";
 import { Tag } from "@/ui/Tag";
 import { ContentSubTitle, Explanation } from "@/ui/Text";
 
 import { InputBlock } from "./InputBlock";
-import { createSayka } from "@/api";
-import { Button, useToast } from "@chakra-ui/react";
-
-const schema = z.object({
-  title: z
-    .string()
-    .nonempty({ message: "必須項目です。" })
-    .max(20, "20字以内で入力してください。"),
-  description: z
-    .string()
-    .nonempty({ message: "必須項目です。" })
-    .max(100, "100字以内で入力してください。"),
-  github_url: z.union([
-    z.literal(""),
-    z.string().regex(/^https:\/\//, "URLを正しい形で入力してください。"),
-  ]),
-  figma_url: z.union([
-    z.literal(""),
-    z.string().regex(/^https:\/\//, "URLを正しい形で入力してください。"),
-  ]),
-  slide_url: z.union([
-    z.literal(""),
-    z.string().regex(/^https:\/\//, "URLを正しい形で入力してください。"),
-  ]),
-  article_url: z.union([
-    z.literal(""),
-    z.string().regex(/^https:\/\//, "URLを正しい形で入力してください。"),
-  ]),
-  app_url: z.union([
-    z.literal(""),
-    z.string().regex(/^https:\/\//, "URLを正しい形で入力してください。"),
-  ]),
-});
-
-type FormData = {
-  title: TSayka["title"];
-  description: TSayka["description"];
-  github_url?: TSayka["github_url"];
-  figma_url?: TSayka["figma_url"];
-  slide_url?: TSayka["slide_url"];
-  article_url?: TSayka["article_url"];
-  app_url?: TSayka["app_url"];
-};
+import { SaykaFormData, saykaSchema } from "@/features/form/saykaForm";
 
 type TProps = {
   user: TUser;
@@ -72,13 +29,13 @@ export const SaykaForm: FC<TProps> = ({ user, token }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [tags, setTags] = useState<string[]>([]);
   const [tagError, setTagError] = useState<string | null>(null);
-  const methods = useForm<FormData>({
-    resolver: zodResolver(schema),
+  const methods = useForm<SaykaFormData>({
+    resolver: zodResolver(saykaSchema),
   });
   const router = useRouter();
   const toast = useToast();
 
-  const onSubmit: SubmitHandler<FormData> = async (data) => {
+  const onSubmit: SubmitHandler<SaykaFormData> = async (data) => {
     setIsLoading(true);
     const submitData = {
       ...data,
@@ -98,14 +55,14 @@ export const SaykaForm: FC<TProps> = ({ user, token }) => {
       toast({
         position: "bottom-left",
         render: () => (
-          <div className="p-3 text-white bg-red-500">
+          <div className="bg-red-500 p-3 text-white">
             成果物の投稿に失敗しました。
           </div>
         ),
       });
       return;
     }
-    router.push(`/postCompletion/${res.value.data.id}`);
+    router.push(`/postCompletion/${res.value.data.id}/new`);
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {

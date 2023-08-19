@@ -30,7 +30,7 @@ export const ShareLongButton: FC<ShareButtonProps> = ({
   const title = `${saykaTitle}を作成しました！\n#Sayka`;
   return (
     <TwitterShareButton url={url} title={title}>
-      <div className="text-lg text-white bg-sky-300 font-bold p-3 rounded-md">
+      <div className="rounded-md bg-sky-300 p-3 text-lg font-bold text-white">
         Twitterでシェアする
       </div>
     </TwitterShareButton>

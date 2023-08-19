@@ -189,7 +189,8 @@ func (ph *SaykaHandler) UpdateSayka(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	ctx.JSON(http.StatusOK, sayka)
+	saykaJson := json.SaykaEntityToJson(sayka)
+	ctx.JSON(http.StatusOK, gin.H{"data": saykaJson})
 }
 
 // DeleteSaykaは投稿を削除します
