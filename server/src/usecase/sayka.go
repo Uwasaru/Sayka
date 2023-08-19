@@ -31,10 +31,10 @@ type ISaykaUsecase interface {
 	GetAll(ctx context.Context, mysId string) (*entity.Saykas, error)
 	// GetTimeLineはタイムラインを取得します
 	GetTimeLine(ctx context.Context, id string, tag string, myId string) (*entity.Saykas, error)
-	// GetAllFavoritedSaykaはいいねした全ての投稿を取得します
-	GetAllFavoritedSayka(ctx context.Context, myId string) (*entity.Saykas, error)
-	// GetAllCommentedSaykaはコメントした全ての投稿を取得します
-	GetAllCommentedSayka(ctx context.Context, myId string) (*entity.Saykas, error)
+	// GetAllFavoriteSaykaはいいねした全ての投稿を取得します
+	GetAllFavoriteSayka(ctx context.Context, myId string) (*entity.Saykas, error)
+	// GetAllCommentSaykaはコメントした全ての投稿を取得します
+	GetAllCommentSayka(ctx context.Context, myId string) (*entity.Saykas, error)
 	// Createは投稿を作成します
 	CreateSayka(ctx *gin.Context, sayka *entity.Sayka) error
 	// UpdateSaykaは投稿を更新します
@@ -128,10 +128,10 @@ func (pu *SaykaUsecase) GetMe(ctx context.Context, userID string) (*entity.Me, e
 		return nil, err
 	}
 	return &entity.Me{
-		User:         user,
-		SaykaCount:   len(*saykas),
+		User:           user,
+		SaykaCount:     len(*saykas),
 		FavoritedCount: favorited_count,
-		CommentCount: comment_count,
+		CommentCount:   comment_count,
 	}, nil
 }
 
@@ -193,9 +193,9 @@ func (pu *SaykaUsecase) GetTimeLine(ctx context.Context, id string, tag string, 
 	return saykas, err
 }
 
-// GetAllFavoritedSaykaはいいねした全ての投稿を取得します
-func (pu *SaykaUsecase) GetAllFavoritedSayka(ctx context.Context, myId string) (*entity.Saykas, error) {
-	saykas, err := pu.pr.GetAllFavoritedSayka(ctx, myId)
+// GetAllFavoriteSaykaはいいねした全ての投稿を取得します
+func (pu *SaykaUsecase) GetAllFavoriteSayka(ctx context.Context, myId string) (*entity.Saykas, error) {
+	saykas, err := pu.pr.GetAllFavoriteSayka(ctx, myId)
 	if err != nil {
 		return nil, err
 	}
@@ -221,9 +221,9 @@ func (pu *SaykaUsecase) GetAllFavoritedSayka(ctx context.Context, myId string) (
 	return saykas, err
 }
 
-// GetAllCommentedSaykaはコメントした全ての投稿を取得します
-func (pu *SaykaUsecase) GetAllCommentedSayka(ctx context.Context, myId string) (*entity.Saykas, error) {
-	saykas, err := pu.pr.GetAllCommentedSayka(ctx, myId)
+// GetAllCommentSaykaはコメントした全ての投稿を取得します
+func (pu *SaykaUsecase) GetAllCommentSayka(ctx context.Context, myId string) (*entity.Saykas, error) {
+	saykas, err := pu.pr.GetAllCommentSayka(ctx, myId)
 	if err != nil {
 		return nil, err
 	}

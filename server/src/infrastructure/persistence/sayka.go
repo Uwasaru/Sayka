@@ -215,8 +215,8 @@ func (pr *SaykaRepository) GetTimeLine(ctx context.Context, id string, tag strin
 	return &saykas, nil
 }
 
-// GetAllFavoritedSaykaはいいねした全ての投稿を取得します
-func (pr *SaykaRepository) GetAllFavoritedSayka(ctx context.Context, myId string) (*entity.Saykas, error) {
+// GetAllFavoriteSaykaはいいねした全ての投稿を取得します
+func (pr *SaykaRepository) GetAllFavoriteSayka(ctx context.Context, myId string) (*entity.Saykas, error) {
 	limit := 10
 	query := `
 	SELECT s.*
@@ -230,7 +230,6 @@ func (pr *SaykaRepository) GetAllFavoritedSayka(ctx context.Context, myId string
 	if err != nil {
 		return nil, err
 	}
-
 
 	var saykas = entity.Saykas{}
 	for rows.Next() {
@@ -264,8 +263,8 @@ func (pr *SaykaRepository) GetAllFavoritedSayka(ctx context.Context, myId string
 	return &saykas, nil
 }
 
-// GetAllCommentedSaykaはコメントした全ての投稿を取得します
-func (pr *SaykaRepository) GetAllCommentedSayka(ctx context.Context, myId string) (*entity.Saykas, error) {
+// GetAllCommentSaykaはコメントした全ての投稿を取得します
+func (pr *SaykaRepository) GetAllCommentSayka(ctx context.Context, myId string) (*entity.Saykas, error) {
 	limit := 10
 	query := `
 	SELECT s.*

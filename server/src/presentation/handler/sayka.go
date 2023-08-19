@@ -110,12 +110,12 @@ func (ph *SaykaHandler) GetTimeLine(ctx *gin.Context) {
 	)
 }
 
-func (sh *SaykaHandler) GetAllFavoritedSayka(ctx *gin.Context) {
+func (sh *SaykaHandler) GetAllFavoriteSayka(ctx *gin.Context) {
 	myId, err := sh.ju.GetUserIdFromJwtToken(ctx)
 	if err != nil {
 		myId = ""
 	}
-	saykas, err := sh.pu.GetAllFavoritedSayka(ctx, myId)
+	saykas, err := sh.pu.GetAllFavoriteSayka(ctx, myId)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -125,12 +125,12 @@ func (sh *SaykaHandler) GetAllFavoritedSayka(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"data": saykasJson})
 }
 
-func (sh *SaykaHandler) GetAllCommentedSayka(ctx *gin.Context) {
+func (sh *SaykaHandler) GetAllCommentSayka(ctx *gin.Context) {
 	myId, err := sh.ju.GetUserIdFromJwtToken(ctx)
 	if err != nil {
 		myId = ""
 	}
-	saykas, err := sh.pu.GetAllCommentedSayka(ctx, myId)
+	saykas, err := sh.pu.GetAllCommentSayka(ctx, myId)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
