@@ -2,11 +2,14 @@ import { redirect } from "next/navigation";
 
 import { getToken } from "@/features";
 
-import { MypageSaykaList } from "./_components/MypageSaykaList";
 import { Profile } from "./_components/Profile";
 import { MypageNavigation } from "./_components/MypageNavigation";
 import { readProfile } from "@/api";
 import { MyselfSaykaList } from "./_components/MyselfSaykaList";
+import { ErrorBoundary } from "react-error-boundary";
+import { Suspense } from "react";
+import { ErrorFallback } from "./_components/ErrorFallback";
+import { LoadingFallback } from "./_components/LoadingFallback";
 
 type TProps = {
   params: { user_id: string };
@@ -26,8 +29,12 @@ const Page = async ({ params }: TProps) => {
       </div>
       <div className="col-span-5 md:col-span-3">
         <MypageNavigation userId={profile.user.id} feature="myself" />
-        {/* @ts-expect-error Server Component */}
-        <MyselfSaykaList userId={profile.user.id} />
+        <ErrorBoundary FallbackComponent={ErrorFallback}>
+          <Suspense fallback={<LoadingFallback />}>
+            {/* @ts-expect-error Server Component */}
+            <MyselfSaykaList userId={profile.user.id} />
+          </Suspense>
+        </ErrorBoundary>
       </div>
     </div>
   );

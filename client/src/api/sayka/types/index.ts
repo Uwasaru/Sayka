@@ -99,6 +99,7 @@ const saykaUserSchema = {
         },
         sayka_count: { type: "int32" },
         favorited_count: { type: "int32" },
+        comment_count: { type: "int32" },
         is_me: { type: "boolean" },
       },
     },

@@ -2,8 +2,6 @@ import Image from "next/image";
 import React, { FC } from "react";
 import { AiFillGithub } from "react-icons/ai";
 
-import { TUser } from "@/types/User";
-import { ColorButton } from "@/ui/Button";
 import { TooltipUI } from "@/ui/Tooltip";
 import { TProfile } from "@/types/Profile";
 
@@ -31,8 +29,9 @@ export const Profile: FC<TProps> = ({ profile }) => {
           </TooltipUI>
         </div>
         <div>
+          <div className="mb-5 px-5">{profile.comment_count} contributions</div>
           <div className="mb-5 border-b px-5">
-            {profile.favorited_count} contributions
+            {profile.favorited_count} likes
           </div>
           <div className="flex items-center justify-center">
             <div className="flex flex-col items-center text-sm">

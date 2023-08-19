@@ -31,8 +31,11 @@ export const readSaykaTimeline = async (
 export const readSayka = async (sayka_id: string) =>
   await apiClient.get<SaykaResponse>(`${serverURL}/sayka/${sayka_id}`);
 
-export const readSaykaByUser = async (user_id: string) =>
-  await apiClient.get<SaykasResponse>(`${serverURL}/sayka/user/${user_id}`);
+export const readSaykasByUser = async (user_id: string, token?: string) =>
+  await apiClient.get<SaykasResponse>(
+    `${serverURL}/sayka/user/${user_id}`,
+    token
+  );
 
 export const readProfile = async (user_id: string, token?: string) =>
   await apiClient.get<SaykaUserResponse>(
@@ -40,13 +43,13 @@ export const readProfile = async (user_id: string, token?: string) =>
     token
   );
 
-export const readFavoriteSayka = async (user_id: string, token?: string) =>
+export const readFavoriteSaykas = async (user_id: string, token?: string) =>
   await apiClient.get<SaykasResponse>(
     `${serverURL}/sayka/favorite/${user_id}`,
     token
   );
 
-export const readCommentSayka = async (user_id: string, token?: string) =>
+export const readCommentSaykas = async (user_id: string, token?: string) =>
   await apiClient.get<SaykasResponse>(
     `${serverURL}/sayka/comment/${user_id}`,
     token

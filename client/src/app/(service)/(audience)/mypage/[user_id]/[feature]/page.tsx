@@ -7,6 +7,10 @@ import { Profile } from "../_components/Profile";
 import { MypageNavigation } from "../_components/MypageNavigation";
 import { FavoriteSaykaList } from "../_components/FavoriteSaykaList";
 import { CommentSaykaList } from "../_components/CommentSaykaList";
+import { ErrorBoundary } from "react-error-boundary";
+import { ErrorFallback } from "../_components/ErrorFallback";
+import { Suspense } from "react";
+import { LoadingFallback } from "../_components/LoadingFallback";
 
 type TProps = {
   params: { user_id: string; feature: "favorite" | "comment" };
@@ -25,14 +29,18 @@ const Page = async ({ params }: TProps) => {
         <Profile profile={profile} />
       </div>
       <div className="col-span-5 md:col-span-3">
-        <MypageNavigation userId={profile.user.id} feature={params.feature} />
-        {params.feature === "favorite" ? (
-          // @ts-expect-error Server Component
-          <FavoriteSaykaList userId={profile.user.id} />
-        ) : (
-          // @ts-expect-error Server Component
-          <CommentSaykaList userId={profile.user.id} />
-        )}
+        <MypageNavigation userId={params.user_id} feature={params.feature} />
+        <ErrorBoundary FallbackComponent={ErrorFallback}>
+          <Suspense fallback={<LoadingFallback />}>
+            {params.feature === "favorite" ? (
+              // @ts-expect-error Server Component
+              <FavoriteSaykaList userId={params.user_id} />
+            ) : (
+              //   @ts-expect-error Server Component
+              <CommentSaykaList userId={params.user_id} />
+            )}
+          </Suspense>
+        </ErrorBoundary>
       </div>
     </div>
   );
