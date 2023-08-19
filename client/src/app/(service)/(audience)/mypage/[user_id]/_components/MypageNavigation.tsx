@@ -35,8 +35,8 @@ type TProps = {
 };
 export const MypageNavigation: FC<TProps> = ({ userId, feature }) => {
   return (
-    <div className="mx-5 flex justify-center border-b border-b-stone-900 font-semibold">
-      <div className="flex items-center justify-center space-x-5 text-center text-sm font-semibold text-gray-600">
+    <div className="mx-0 md:mx-5 flex justify-center border-b border-b-stone-900 font-semibold">
+      <div className="flex items-center justify-center space-x-2 md:space-x-5 text-center text-sm font-semibold text-gray-600">
         {LISTS.map((list) => {
           const isActive = feature === list.name;
 

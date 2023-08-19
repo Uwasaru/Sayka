@@ -38,8 +38,8 @@ const Page = async ({ params, searchParams }: TProps) => {
   }
   return (
     <>
-      <div className="grid grid-cols-5 space-y-5 md:p-5">
-        <div className="col-span-5 mb-5 md:col-span-2 md:mb-0 md:mr-10">
+      <div className="grid grid-cols-5 space-y-5 p-5">
+        <div className="col-span-5 my-5 md:col-span-2 md:mb-0 md:mr-10">
           <Profile profile={profile} />
         </div>
         <div className="col-span-5 md:col-span-3">
