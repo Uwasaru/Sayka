@@ -5,7 +5,7 @@ After=network.target
 [Service]
 EnvironmentFile=/etc/params
 WorkingDirectory=/opt/Sayka
-ExecStart=/opt/Sayka/Sayka
+ExecStart=/opt/Sayka/server/src/Sayka
 ExecStop=/bin/kill -s QUIT $MAINPID
 Restart=on-failure
 

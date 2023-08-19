@@ -16,12 +16,12 @@ ZONE=$(curl -H "X-aws-ec2-metadata-token: $TOKEN" -v http://169.254.169.254/late
 VPC_ID=$(aws ec2 describe-instances --region ${REGION} --instance-ids ${INSTANCE_ID} --query "Reservations[0].Instances[0].NetworkInterfaces[0].VpcId" --output text)
 VPC_NAME=$(aws ec2 describe-vpcs --region ${REGION} --vpc-ids ${VPC_ID} --query "Vpcs[0].Tags[?Key=='Name'].Value" --output text)
 VPC_PROJECT=$(aws ec2 describe-vpcs --region ${REGION} --vpc-ids ${VPC_ID} --query "Vpcs[0].Tags[?Key=='Project'].Value" --output text)
-VPC_ENV=$(aws ec2 describe-vpcs --region ${REGION} --vpc-ids ${VPC_ID} --query "Vpcs[0].Tags[?Key=='Environment'].Value" --output text)
+VPC_ENV=$(aws ec2 describe-vpcs --region ${REGION} --vpc-ids ${VPC_ID} --query "Vpcs[0].Tags[?Key=='Env'].Value" --output text)
 
 EC2_NAME=$(aws ec2 describe-instances --region ${REGION} --instance-ids ${INSTANCE_ID} --query "Reservations[0].Instances[0].Tags[?Key=='Name'].Value" --output text)
 EC2_TYPE=$(aws ec2 describe-instances --region ${REGION} --instance-ids ${INSTANCE_ID} --query "Reservations[0].Instances[0].Tags[?Key=='Type'].Value" --output text)
 
-SSM_PARAMETER_STORE=$(aws ssm get-parameters-by-path --path "/${VPC_PROJECT}/${VPC_ENV}/${EC2_TYPE}" --with-decryption)
+SSM_PARAMETER_STORE=$(aws ssm get-parameters-by-path --region ${REGION} --path "/${VPC_PROJECT}/dev/${EC2_TYPE}" --with-decryption)
 
 # Output environment initialize scripts.
 cat > "${SETENV_SHELL}" <<EOF
@@ -37,10 +37,9 @@ export VPC_PROJECT="${VPC_PROJECT}"
 export VPC_ENV="${VPC_ENV}"
 export EC2_NAME="${EC2_NAME}"
 export EC2_TYPE="${EC2_TYPE}"
-export ENVIRONMENT="${VPC_ENV}"
 EOF
 
-for PARAMS in $(echo ${SSM_PARAMETER_STORE} | jq -r '.Parameters[] | .Name + "=" + .Value'); do
+for PARAMS in $(echo ${SSM_PARAMETER_STORE} | /usr/bin/local/jq -r '.Parameters[] | .Name + "=" + .Value'); do
   echo "export ${PARAMS##*/}"
 done >> "${SETENV_SHELL}"
 
