@@ -1,7 +1,8 @@
+import { redirect } from "next/navigation";
+
 import { readSayka } from "@/api";
 import { getToken } from "@/features";
 import { ContentTitle } from "@/ui/Text";
-import { redirect } from "next/navigation";
 
 import { SaykaEditForm } from "../../_components/SaykaEditForm";
 

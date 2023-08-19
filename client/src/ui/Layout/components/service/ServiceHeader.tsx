@@ -8,8 +8,8 @@ import { LoginModal } from "@/app/(service)/(audience)/_components/LoginModal";
 import { modalState } from "@/store/atoms/modalAtom";
 import { TUser } from "@/types/User";
 import { ColorButton } from "@/ui/Button";
-import { SaykaLogo } from "@/ui/svg/SaykaLogo";
 import { TooltipUI } from "@/ui/Tooltip";
+import { SaykaLogo } from "@/ui/svg/SaykaLogo";
 
 type TProps = {
   user?: TUser;

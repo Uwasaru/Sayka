@@ -1,16 +1,16 @@
 import { redirect } from "next/navigation";
-
-import { getToken } from "@/features";
+import { Suspense } from "react";
+import { ErrorBoundary } from "react-error-boundary";
 
 import { readProfile } from "@/api";
-import { Profile } from "../_components/Profile";
-import { MypageNavigation } from "../_components/MypageNavigation";
-import { FavoriteSaykaList } from "../_components/FavoriteSaykaList";
+import { getToken } from "@/features";
+
 import { CommentSaykaList } from "../_components/CommentSaykaList";
-import { ErrorBoundary } from "react-error-boundary";
 import { ErrorFallback } from "../_components/ErrorFallback";
-import { Suspense } from "react";
+import { FavoriteSaykaList } from "../_components/FavoriteSaykaList";
 import { LoadingFallback } from "../_components/LoadingFallback";
+import { MypageNavigation } from "../_components/MypageNavigation";
+import { Profile } from "../_components/Profile";
 
 type TProps = {
   params: { user_id: string; feature: "favorite" | "comment" };

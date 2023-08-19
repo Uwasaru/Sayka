@@ -1,5 +1,6 @@
-import { TSayka } from "@/types/Sayka";
 import { z } from "zod";
+
+import { TSayka } from "@/types/Sayka";
 
 export type SaykaFormData = {
   title: TSayka["title"];

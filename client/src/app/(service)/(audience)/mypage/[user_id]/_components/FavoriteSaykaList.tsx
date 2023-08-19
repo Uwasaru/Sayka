@@ -1,6 +1,7 @@
 import { readFavoriteSaykas } from "@/api";
 import { getToken } from "@/features";
 import { TUser } from "@/types/User";
+
 import { SaykaList } from "../../../_components/SaykaList";
 
 type TProps = {

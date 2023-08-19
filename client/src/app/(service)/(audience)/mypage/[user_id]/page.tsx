@@ -1,15 +1,15 @@
 import { redirect } from "next/navigation";
+import { Suspense } from "react";
+import { ErrorBoundary } from "react-error-boundary";
 
+import { readProfile } from "@/api";
 import { getToken } from "@/features";
 
-import { Profile } from "./_components/Profile";
-import { MypageNavigation } from "./_components/MypageNavigation";
-import { readProfile } from "@/api";
-import { MyselfSaykaList } from "./_components/MyselfSaykaList";
-import { ErrorBoundary } from "react-error-boundary";
-import { Suspense } from "react";
 import { ErrorFallback } from "./_components/ErrorFallback";
 import { LoadingFallback } from "./_components/LoadingFallback";
+import { MypageNavigation } from "./_components/MypageNavigation";
+import { MyselfSaykaList } from "./_components/MyselfSaykaList";
+import { Profile } from "./_components/Profile";
 
 type TProps = {
   params: { user_id: string };

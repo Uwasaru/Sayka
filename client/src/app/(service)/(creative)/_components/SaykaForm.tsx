@@ -13,12 +13,12 @@ import { TfiLayoutSlider } from "react-icons/tfi";
 import { TfiWorld } from "react-icons/tfi";
 
 import { createSayka } from "@/api";
+import { SaykaFormData, saykaSchema } from "@/features/form/saykaForm";
 import { TUser } from "@/types/User";
 import { Tag } from "@/ui/Tag";
 import { ContentSubTitle, Explanation } from "@/ui/Text";
 
 import { InputBlock } from "./InputBlock";
-import { SaykaFormData, saykaSchema } from "@/features/form/saykaForm";
 
 type TProps = {
   user: TUser;
