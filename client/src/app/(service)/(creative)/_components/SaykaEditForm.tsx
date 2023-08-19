@@ -27,7 +27,7 @@ type TProps = {
 
 export const SaykaEditForm: FC<TProps> = ({ sayka, token }) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [tags, setTags] = useState<string[]>([]);
+  const [tags, setTags] = useState<string[]>(sayka.tags || []);
   const [tagError, setTagError] = useState<string | null>(null);
   const methods = useForm<SaykaFormData>({
     resolver: zodResolver(saykaSchema),
