@@ -7,6 +7,7 @@ import {
   SaykaCreate,
   SaykaResponse,
   SaykasResponse,
+  SaykaUserResponse,
 } from "./types";
 
 const { serverURL } = getEnv();
@@ -29,6 +30,27 @@ export const readSaykaTimeline = async (
 
 export const readSayka = async (sayka_id: string) =>
   await apiClient.get<SaykaResponse>(`${serverURL}/sayka/${sayka_id}`);
+
+export const readSaykaByUser = async (user_id: string) =>
+  await apiClient.get<SaykasResponse>(`${serverURL}/sayka/user/${user_id}`);
+
+export const readProfile = async (user_id: string, token?: string) =>
+  await apiClient.get<SaykaUserResponse>(
+    `${serverURL}/sayka/me/${user_id}`,
+    token
+  );
+
+export const readFavoriteSayka = async (user_id: string, token?: string) =>
+  await apiClient.get<SaykasResponse>(
+    `${serverURL}/sayka/favorite/${user_id}`,
+    token
+  );
+
+export const readCommentSayka = async (user_id: string, token?: string) =>
+  await apiClient.get<SaykasResponse>(
+    `${serverURL}/sayka/comment/${user_id}`,
+    token
+  );
 
 export const updateSayka = async (
   sayka_id: string,

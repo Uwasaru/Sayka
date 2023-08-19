@@ -83,6 +83,30 @@ const deleteSaykaResponseSchema = {
 
 export type DeleteSaykaResponse = JTDDataType<typeof deleteSaykaResponseSchema>;
 
+const saykaUserSchema = {
+  type: "object",
+  properties: {
+    data: {
+      type: "object",
+      properties: {
+        user: {
+          type: "object",
+          properties: {
+            id: { type: "string" },
+            name: { type: "string" },
+            img: { type: "string" },
+          },
+        },
+        sayka_count: { type: "int32" },
+        favorited_count: { type: "int32" },
+        is_me: { type: "boolean" },
+      },
+    },
+  },
+} as const;
+
+export type SaykaUserResponse = JTDDataType<typeof saykaUserSchema>;
+
 export type SaykaBase = TSayka;
 
 export type SaykaCreate = Omit<

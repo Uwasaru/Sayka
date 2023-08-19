@@ -9,6 +9,7 @@ import { modalState } from "@/store/atoms/modalAtom";
 import { TUser } from "@/types/User";
 import { ColorButton } from "@/ui/Button";
 import { SaykaLogo } from "@/ui/svg/SaykaLogo";
+import { TooltipUI } from "@/ui/Tooltip";
 
 type TProps = {
   user?: TUser;
@@ -42,15 +43,17 @@ export const ServiceHeader: FC<TProps> = ({ user }) => {
         <SaykaLogo />
       </Link>
       <div className="flex items-center space-x-5">
-        <Link href={`/mypage/${user.id}`}>
-          <Image
-            src={user.img}
-            alt="user icon"
-            width={35}
-            height={35}
-            className="rounded-full"
-          />
-        </Link>
+        <TooltipUI label="マイページへ" placement="bottom">
+          <Link href={`/mypage/${user.id}`}>
+            <Image
+              src={user.img}
+              alt="user icon"
+              width={35}
+              height={35}
+              className="rounded-full"
+            />
+          </Link>
+        </TooltipUI>
         <Link
           href="/new"
           className="rounded bg-sc px-4 py-2 font-semibold text-white transition duration-300 hover:bg-hover-sc">

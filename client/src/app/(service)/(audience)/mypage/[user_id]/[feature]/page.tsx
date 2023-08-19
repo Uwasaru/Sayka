@@ -2,14 +2,14 @@ import { redirect } from "next/navigation";
 
 import { getToken } from "@/features";
 
-import { MypageSaykaList } from "./_components/MypageSaykaList";
-import { Profile } from "./_components/Profile";
-import { MypageNavigation } from "./_components/MypageNavigation";
 import { readProfile } from "@/api";
-import { MyselfSaykaList } from "./_components/MyselfSaykaList";
+import { Profile } from "../_components/Profile";
+import { MypageNavigation } from "../_components/MypageNavigation";
+import { FavoriteSaykaList } from "../_components/FavoriteSaykaList";
+import { CommentSaykaList } from "../_components/CommentSaykaList";
 
 type TProps = {
-  params: { user_id: string };
+  params: { user_id: string; feature: "favorite" | "comment" };
 };
 
 const Page = async ({ params }: TProps) => {
@@ -25,16 +25,17 @@ const Page = async ({ params }: TProps) => {
         <Profile profile={profile} />
       </div>
       <div className="col-span-5 md:col-span-3">
-        <MypageNavigation userId={profile.user.id} feature="myself" />
-        {/* @ts-expect-error Server Component */}
-        <MyselfSaykaList userId={profile.user.id} />
+        <MypageNavigation userId={profile.user.id} feature={params.feature} />
+        {params.feature === "favorite" ? (
+          // @ts-expect-error Server Component
+          <FavoriteSaykaList userId={profile.user.id} />
+        ) : (
+          // @ts-expect-error Server Component
+          <CommentSaykaList userId={profile.user.id} />
+        )}
       </div>
     </div>
   );
 };
 
 export default Page;
-
-const saykaError = () => {
-  return <div>sayka error</div>;
-};
