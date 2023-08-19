@@ -78,27 +78,30 @@ func (pr *SaykaRepository) GetByUserID(ctx context.Context, userID string) (*ent
 		if err != nil {
 			return nil, err
 		}
-		query := `
+		tagQuery := `
 		SELECT name
 		FROM tags
 		WHERE sayka_id = ?
 		`
-		rows1, err := pr.conn.DB.QueryContext(ctx, query, dto.ID)
+		tagRows, err := pr.conn.DB.QueryContext(ctx, tagQuery, dto.ID)
 		if err != nil {
 			return nil, err
 		}
+
 		var tags []string
-		for rows1.Next() {
+		for tagRows.Next() {
 			var tag string
-			err := rows1.Scan(&tag)
+			err := tagRows.Scan(&tag)
 			if err != nil {
 				return nil, err
 			}
 			tags = append(tags, tag)
 		}
+		tagRows.Close()
+
 		sayka := d.SaykaDtoToEntity(&dto)
 		sayka.Tags = tags
-		saykas = append(saykas, d.SaykaDtoToEntity(&dto))
+		saykas = append(saykas, sayka)
 	}
 	return &saykas, nil
 }
