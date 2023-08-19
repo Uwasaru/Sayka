@@ -128,37 +128,57 @@ const SaykaFooter: FC<TProps> = ({ sayka, token }) => {
       <div className="flex items-center justify-end gap-5 pb-5 md:w-[50%] md:pb-0">
         {sayka.github_url && (
           <TooltipUI label="ソースコードへ">
-            <Link href={sayka.github_url} className="flex items-center gap-1">
+            <a
+              href={sayka.github_url}
+              className="flex items-center gap-1"
+              target="_blank"
+              rel="noopener noreferrer">
               <AiFillGithub size={27} />
-            </Link>
+            </a>
           </TooltipUI>
         )}
         {sayka.figma_url && (
           <TooltipUI label="Figmaへ">
-            <Link href={sayka.figma_url} className="flex items-center gap-1">
+            <a
+              href={sayka.figma_url}
+              className="flex items-center gap-1"
+              target="_blank"
+              rel="noopener noreferrer">
               <PiFigmaLogoDuotone size={24} />
-            </Link>
+            </a>
           </TooltipUI>
         )}
         {sayka.slide_url && (
           <TooltipUI label="プレゼンテーションへ">
-            <Link href={sayka.slide_url} className="flex items-center gap-1">
+            <a
+              href={sayka.slide_url}
+              className="flex items-center gap-1"
+              target="_blank"
+              rel="noopener noreferrer">
               <TfiLayoutSlider size={24} />
-            </Link>
+            </a>
           </TooltipUI>
         )}
         {sayka.article_url && (
           <TooltipUI label="記事へ">
-            <Link href={sayka.article_url} className="flex items-center gap-1">
+            <a
+              href={sayka.article_url}
+              className="flex items-center gap-1"
+              target="_blank"
+              rel="noopener noreferrer">
               <MdOutlineArticle size={24} />
-            </Link>
+            </a>
           </TooltipUI>
         )}
         {sayka.app_url && (
           <TooltipUI label="アプリケーションへ">
-            <Link href={sayka.app_url} className="flex items-center gap-1">
+            <a
+              href={sayka.app_url}
+              className="flex items-center gap-1"
+              target="_blank"
+              rel="noopener noreferrer">
               <TfiWorld size={24} />
-            </Link>
+            </a>
           </TooltipUI>
         )}
       </div>
