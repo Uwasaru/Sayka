@@ -47,10 +47,10 @@ const Page = async ({ params, searchParams }: TProps) => {
           <ErrorBoundary FallbackComponent={ErrorFallback}>
             <Suspense fallback={<LoadingFallback />}>
               {params.feature === "favorite" ? (
-                // @ts-expect-error Server Component
+                // {/* @ts-expect-error Server Component */}
                 <FavoriteSaykaList userId={params.user_id} />
               ) : (
-                //   @ts-expect-error Server Component
+                // {/* @ts-expect-error Server Component */}
                 <CommentSaykaList userId={params.user_id} />
               )}
             </Suspense>

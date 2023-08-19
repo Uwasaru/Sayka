@@ -46,7 +46,6 @@ const Page = async ({ params, searchParams }: TProps) => {
           <MypageNavigation userId={profile.user.id} feature="myself" />
           <ErrorBoundary FallbackComponent={ErrorFallback}>
             <Suspense fallback={<LoadingFallback />}>
-              {/* @ts-expect-error Server Component */}
               <MyselfSaykaList userId={profile.user.id} />
             </Suspense>
           </ErrorBoundary>
