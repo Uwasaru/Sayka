@@ -172,7 +172,7 @@ export const SaykaForm: FC<TProps> = ({ user, token }) => {
         <InputBlock
           text="作成したアプリケーションのURL"
           name="app_url"
-          placeholder="https://sayka.vercel.app"
+          placeholder="https://sayka.site"
           icon={<TfiWorld size={18} />}
         />
         <div className="flex justify-center pt-5">

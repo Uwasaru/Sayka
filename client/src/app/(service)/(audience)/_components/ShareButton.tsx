@@ -11,7 +11,7 @@ type ShareButtonProps = {
 };
 
 export const ShareButton: FC<ShareButtonProps> = ({ saykaId, saykaTitle }) => {
-  const url = `https://sayka.vercel.app/shareSaykaInformation/${saykaId}`;
+  const url = `https://sayka.site/shareSaykaInformation/${saykaId}`;
   const title = `${saykaTitle}を作成しました！\n#Sayka`;
   return (
     <TooltipUI label="Xで共有">
@@ -26,7 +26,7 @@ export const ShareLongButton: FC<ShareButtonProps> = ({
   saykaId,
   saykaTitle,
 }) => {
-  const url = `https://sayka.vercel.app/shareSaykaInformation/${saykaId}`;
+  const url = `https://sayka.site/shareSaykaInformation/${saykaId}`;
   const title = `${saykaTitle}を作成しました！\n#Sayka`;
   return (
     <TwitterShareButton url={url} title={title}>

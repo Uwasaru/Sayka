@@ -123,7 +123,7 @@ const SaykaFooter: FC<TProps> = ({ sayka, token }) => {
           handleHeartClickByGuest={handleHeartClickByGuest}
           token={token}
         />
-        {/* <ShareButton saykaId={sayka.id} saykaTitle={sayka.title} /> */}
+        <ShareButton saykaId={sayka.id} saykaTitle={sayka.title} />
       </div>
       <div className="flex items-center justify-end gap-5 pb-5 md:w-[50%] md:pb-0">
         {sayka.github_url && (

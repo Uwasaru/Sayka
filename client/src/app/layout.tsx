@@ -10,15 +10,15 @@ const murecho = Murecho({ weight: "100", subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Sayka",
   description: "成果物を投稿するアプリケーションです",
-  manifest: "https://sayka.vercel.app/manifest.json",
+  manifest: "https://sayka.site/manifest.json",
   openGraph: {
     title: "Sayka",
     description: "成果物を投稿するアプリケーション",
-    url: "https://sayka.vercel.app/",
+    url: "https://sayka.site/",
     siteName: "Sayka",
     images: [
       {
-        url: "https://sayka.vercel.app/ogp.png",
+        url: "https://sayka.site/ogp.png",
       },
     ],
     type: "website",
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
   },
-  icons: "https://sayka.vercel.app/logo_solo.png",
+  icons: "https://sayka.site/logo_solo.png",
 };
 
 export default async function RootLayout({
