@@ -5,12 +5,13 @@ import { ErrorBoundary } from "react-error-boundary";
 import { readProfile, readSayka } from "@/api";
 import { getToken } from "@/features";
 
+import { CommentModal } from "../../_components/CommentModal";
+
 import { ErrorFallback } from "./_components/ErrorFallback";
 import { LoadingFallback } from "./_components/LoadingFallback";
 import { MypageNavigation } from "./_components/MypageNavigation";
 import { MyselfSaykaList } from "./_components/MyselfSaykaList";
 import { Profile } from "./_components/Profile";
-import { CommentModal } from "../../_components/CommentModal";
 
 type TProps = {
   params: { user_id: string };
