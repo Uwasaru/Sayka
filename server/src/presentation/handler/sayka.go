@@ -58,12 +58,14 @@ func (ph *SaykaHandler) GetByUserID(ctx *gin.Context) {
 
 // GetMeは自分の投稿数、いいね数、コメント数を取得します
 func (ph *SaykaHandler) GetMe(ctx *gin.Context) {
-	userID, err := ph.ju.GetUserIdFromJwtToken(ctx)
+	userID := ctx.Param("id")
+	myID, err := ph.ju.GetUserIdFromJwtToken(ctx)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 	me, err := ph.pu.GetMe(ctx, userID)
+	me.IsMe = userID == myID
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return

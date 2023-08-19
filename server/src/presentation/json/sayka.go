@@ -29,6 +29,7 @@ type MeJson struct {
 	User         *UserJson `json:"user"`
 	SaykaCount   int       `json:"sayka_count"`
 	FavoritedCount int       `json:"favorited_count"`
+	IsMe 			bool      `json:"is_me"`
 }
 
 type SaykaRequestJson struct {
@@ -94,5 +95,6 @@ func MeEntityToJson(me *entity.Me) *MeJson {
 		User: UserEntityToJson(me.User),
 		SaykaCount: me.SaykaCount,
 		FavoritedCount: me.FavoritedCount,
+		IsMe: me.IsMe,
 	}
 }

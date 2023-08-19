@@ -30,4 +30,5 @@ type Me struct {
 	User 	 *User     `json:"user"`
 	SaykaCount int       `json:"sayka_count"`
 	FavoritedCount int       `json:"favorited_count"`
+	IsMe 			bool      `json:"is_me"`
 }
