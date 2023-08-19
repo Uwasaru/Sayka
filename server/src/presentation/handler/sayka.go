@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/Uwasaru/Sayka/presentation/json"
@@ -28,7 +29,7 @@ func (ph *SaykaHandler) GetByID(ctx *gin.Context) {
 	id := ctx.Param("id")
 	userId, err := ph.ju.GetUserIdFromJwtToken(ctx)
 	if err != nil {
-		userId = ""
+		fmt.Println(err)
 	}
 	sayka, err := ph.pu.GetByID(ctx, id, userId)
 	if err != nil {
@@ -61,8 +62,7 @@ func (ph *SaykaHandler) GetMe(ctx *gin.Context) {
 	userID := ctx.Param("id")
 	myID, err := ph.ju.GetUserIdFromJwtToken(ctx)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
+		fmt.Println(err)
 	}
 	me, err := ph.pu.GetMe(ctx, userID)
 	me.IsMe = userID == myID
@@ -79,7 +79,7 @@ func (ph *SaykaHandler) GetMe(ctx *gin.Context) {
 func (ph *SaykaHandler) GetAll(ctx *gin.Context) {
 	myId, err := ph.ju.GetUserIdFromJwtToken(ctx)
 	if err != nil {
-		myId = ""
+		fmt.Println(err)
 	}
 	saykas, err := ph.pu.GetAll(ctx, myId)
 	if err != nil {
@@ -95,7 +95,7 @@ func (ph *SaykaHandler) GetTimeLine(ctx *gin.Context) {
 	tag := ctx.Query("tag")
 	myId, err := ph.ju.GetUserIdFromJwtToken(ctx)
 	if err != nil {
-		myId = ""
+		fmt.Println(err)
 	}
 	saykas, err := ph.pu.GetTimeLine(ctx, id, tag, myId)
 	if err != nil {
@@ -151,8 +151,7 @@ func (ph *SaykaHandler) CreateSayka(ctx *gin.Context) {
 	sayka.ID = utils.Ulid()
 	userID, err := ph.ju.GetUserIdFromJwtToken(ctx)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
+		fmt.Println(err)
 	}
 	sayka.UserID = userID
 	if err := ph.pu.CreateSayka(ctx, sayka); err != nil {
@@ -175,8 +174,7 @@ func (ph *SaykaHandler) UpdateSayka(ctx *gin.Context) {
 	sayka.ID = id
 	userID, err := ph.ju.GetUserIdFromJwtToken(ctx)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
+		fmt.Println(err)
 	}
 	sayka.UserID = userID
 	if err := ph.pu.UpdateSayka(ctx, sayka); err != nil {
