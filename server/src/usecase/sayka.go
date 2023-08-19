@@ -32,9 +32,9 @@ type ISaykaUsecase interface {
 	// GetTimeLineはタイムラインを取得します
 	GetTimeLine(ctx context.Context, id string, tag string, myId string) (*entity.Saykas, error)
 	// GetAllFavoriteSaykaはいいねした全ての投稿を取得します
-	GetAllFavoriteSayka(ctx context.Context, myId string) (*entity.Saykas, error)
+	GetAllFavoriteSayka(ctx context.Context, userId string, myId string) (*entity.Saykas, error)
 	// GetAllCommentSaykaはコメントした全ての投稿を取得します
-	GetAllCommentSayka(ctx context.Context, myId string) (*entity.Saykas, error)
+	GetAllCommentSayka(ctx context.Context, userId string, myId string) (*entity.Saykas, error)
 	// Createは投稿を作成します
 	CreateSayka(ctx *gin.Context, sayka *entity.Sayka) error
 	// UpdateSaykaは投稿を更新します
@@ -194,8 +194,8 @@ func (pu *SaykaUsecase) GetTimeLine(ctx context.Context, id string, tag string, 
 }
 
 // GetAllFavoriteSaykaはいいねした全ての投稿を取得します
-func (pu *SaykaUsecase) GetAllFavoriteSayka(ctx context.Context, myId string) (*entity.Saykas, error) {
-	saykas, err := pu.pr.GetAllFavoriteSayka(ctx, myId)
+func (pu *SaykaUsecase) GetAllFavoriteSayka(ctx context.Context, userId string, myId string) (*entity.Saykas, error) {
+	saykas, err := pu.pr.GetAllFavoriteSayka(ctx, userId)
 	if err != nil {
 		return nil, err
 	}
@@ -212,6 +212,7 @@ func (pu *SaykaUsecase) GetAllFavoriteSayka(ctx context.Context, myId string) (*
 		sayka.IsFavorite = s.Contains(sayka.UserID)
 		sayka.Favorites = len(fovorites)
 		sayka.Comments = len(*comments)
+		sayka.IsMe = sayka.UserID == myId
 		user, err := pu.ur.GetUser(ctx, sayka.UserID)
 		if err != nil {
 			return nil, err
@@ -222,7 +223,7 @@ func (pu *SaykaUsecase) GetAllFavoriteSayka(ctx context.Context, myId string) (*
 }
 
 // GetAllCommentSaykaはコメントした全ての投稿を取得します
-func (pu *SaykaUsecase) GetAllCommentSayka(ctx context.Context, myId string) (*entity.Saykas, error) {
+func (pu *SaykaUsecase) GetAllCommentSayka(ctx context.Context, userId string, myId string) (*entity.Saykas, error) {
 	saykas, err := pu.pr.GetAllCommentSayka(ctx, myId)
 	if err != nil {
 		return nil, err
@@ -240,6 +241,7 @@ func (pu *SaykaUsecase) GetAllCommentSayka(ctx context.Context, myId string) (*e
 		sayka.IsFavorite = s.Contains(sayka.UserID)
 		sayka.Favorites = len(fovorites)
 		sayka.Comments = len(*comments)
+		sayka.IsMe = sayka.UserID == myId
 		user, err := pu.ur.GetUser(ctx, sayka.UserID)
 		if err != nil {
 			return nil, err
