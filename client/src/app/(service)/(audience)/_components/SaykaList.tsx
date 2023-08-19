@@ -5,13 +5,14 @@ import { Sayka } from "./Sayka";
 type TProps = {
   saykas: TSayka[];
   token?: string;
+  noFix?: boolean;
 };
 
-export const SaykaList = ({ saykas, token }: TProps) => {
+export const SaykaList = ({ saykas, token, noFix }: TProps) => {
   return (
     <div className="mt-5 space-y-5">
       {saykas.map((sayka) => (
-        <Sayka key={sayka.id} sayka={sayka} token={token} />
+        <Sayka key={sayka.id} sayka={sayka} token={token} noFix={noFix} />
       ))}
     </div>
   );

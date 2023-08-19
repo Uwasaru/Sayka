@@ -66,6 +66,7 @@ export const CommentModal: FC<TProps> = ({ sayka, token }) => {
       token
     ).then(() => {
       setMessage("");
+      console.log("--");
       fetchComments();
     });
   };

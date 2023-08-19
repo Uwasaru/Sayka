@@ -15,7 +15,7 @@ const Page = async ({ searchParams }: TProps) => {
 
   const saykasRes = await readSaykaTimeline(undefined, token);
   if (saykasRes.type === "error") {
-    throw new Error("データが取得できませんでした。");
+    throw new Error("データが取得できませんでした");
   }
   const saykas = saykasRes.value.data;
 
@@ -28,7 +28,7 @@ const Page = async ({ searchParams }: TProps) => {
   if (saykaId) {
     const saykaRes = await readSayka(saykaId);
     if (saykaRes.type === "error") {
-      throw new Error("データが取得できませんでした。");
+      throw new Error("データが取得できませんでした");
     }
     targetSayka = saykaRes.value.data;
   }

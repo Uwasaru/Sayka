@@ -26,19 +26,20 @@ type TProps = {
   sayka: TSayka;
   changeFilterTag?: (tag: string) => void;
   token?: string;
+  noFix?: boolean; // timelineでfixした時に挙動がおかしいので、その対策
 };
 
-export const Sayka: FC<TProps> = ({ sayka, changeFilterTag, token }) => {
+export const Sayka: FC<TProps> = ({ sayka, changeFilterTag, token, noFix }) => {
   return (
     <div className="space-y-5 rounded-md border-4 border-gray-200 p-5 shadow-lg transition-transform hover:-translate-y-1 hover:shadow-xl">
-      <SaykaHeader sayka={sayka} token={token} />
+      <SaykaHeader sayka={sayka} token={token} noFix={noFix} />
       <SaykaBody sayka={sayka} changeFilterTag={changeFilterTag} />
       <SaykaFooter sayka={sayka} token={token} />
     </div>
   );
 };
 
-const SaykaHeader: FC<TProps> = ({ sayka, token }) => {
+const SaykaHeader: FC<TProps> = ({ sayka, token, noFix }) => {
   const [isModalVisible, setModalVisible] = useState(false);
 
   return (
@@ -48,23 +49,26 @@ const SaykaHeader: FC<TProps> = ({ sayka, token }) => {
         onClose={() => setModalVisible(false)}
         id={sayka.id}
         token={token}
-        userId={sayka.user.id}
       />
       <div className="flex items-center">
-        <Image
-          src={sayka.user.img}
-          alt="user icon"
-          width={30}
-          height={30}
-          className="mr-2 rounded-full"
-        />
+        <TooltipUI label="マイページへ">
+          <Link href={`/mypage/${sayka.user.id}`}>
+            <Image
+              src={sayka.user.img}
+              alt="user icon"
+              width={30}
+              height={30}
+              className="mr-2 rounded-full"
+            />
+          </Link>
+        </TooltipUI>
         <Link
           href={`/mypage/${sayka.user.id}`}
           className="border-b-teal-400 hover:border-b-2">
           @{sayka.user.id}
         </Link>
       </div>
-      {sayka.is_me && (
+      {sayka.is_me && !noFix && (
         <BsThreeDotsVertical
           size={24}
           onClick={() => setModalVisible(!isModalVisible)}

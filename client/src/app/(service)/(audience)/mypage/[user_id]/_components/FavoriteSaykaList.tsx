@@ -16,5 +16,5 @@ export const FavoriteSaykaList = async ({ userId }: TProps) => {
   const saykas = saykasRes.value.data;
   if (!saykas) throw new Error("投稿がありません");
 
-  return <SaykaList saykas={saykas} />;
+  return <SaykaList saykas={saykas} token={token} />;
 };

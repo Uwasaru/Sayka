@@ -15,6 +15,7 @@ type TProps = {
   token?: string;
 };
 
+// TODO: 削除した時に、UIから消えるように
 export const SaykaTimelineList: FC<TProps> = ({ saykas, token }) => {
   const [showMore, setShowMore] = useState(true);
   const [saykaList, setSaykaList] = useState<TSayka[]>(saykas);
@@ -37,7 +38,7 @@ export const SaykaTimelineList: FC<TProps> = ({ saykas, token }) => {
 
   return (
     <div>
-      <SaykaList saykas={saykaList} token={token} />
+      <SaykaList saykas={saykaList} token={token} noFix={true} />
       {showMore && (
         <div className="mt-10 flex justify-center">
           <ColorButton onClick={handleClick}>もっと見る</ColorButton>

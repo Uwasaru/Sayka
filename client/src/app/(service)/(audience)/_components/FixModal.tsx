@@ -13,16 +13,9 @@ type TProps = {
   onClose: () => void;
   id: string;
   token?: string;
-  userId: string;
 };
 
-export const FixModal: FC<TProps> = ({
-  isVisible,
-  onClose,
-  id,
-  token,
-  userId,
-}) => {
+export const FixModal: FC<TProps> = ({ isVisible, onClose, id, token }) => {
   const [isConfirmDeleteVisible, setConfirmDeleteVisible] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
   const r = useRouter();
@@ -47,7 +40,6 @@ export const FixModal: FC<TProps> = ({
     await deleteSayka(id, token);
     setConfirmDeleteVisible(false); // 確認モーダルを閉じる
     onClose(); // メインモーダルも閉じる
-    r.push(`mypage/${userId}`);
     r.refresh();
     toast({
       position: "bottom-left",
