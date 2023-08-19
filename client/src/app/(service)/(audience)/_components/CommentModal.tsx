@@ -142,7 +142,9 @@ export const CommentModal: FC<TProps> = ({ sayka, token }) => {
                   </div>
                   <div className="flex flex-col space-y-3">
                     <div className="text-gray-700">
-                      <ReactMarkdown className="m-auto" components={CodeBlock}>
+                      <ReactMarkdown
+                        components={CodeBlock}
+                        className="prose prose-stone mt-5 max-w-4xl m-auto">
                         {c.content}
                       </ReactMarkdown>
                     </div>
