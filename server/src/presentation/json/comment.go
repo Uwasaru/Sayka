@@ -9,7 +9,7 @@ import (
 type CommentJson struct {
 	ID        string    `json:"id"`
 	UserID    string    `json:"user_id"`
-	User        *UserJson `json:"user"`
+	User      *UserJson `json:"user"`
 	SaykaID   string    `json:"sayka_id"`
 	Content   string    `json:"content"`
 	CreatedAt time.Time `json:"created_at"`

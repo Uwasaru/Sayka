@@ -26,11 +26,11 @@ type SaykaJson struct {
 }
 
 type MeJson struct {
-	User         *UserJson `json:"user"`
-	SaykaCount   int       `json:"sayka_count"`
+	User           *UserJson `json:"user"`
+	SaykaCount     int       `json:"sayka_count"`
 	FavoritedCount int       `json:"favorited_count"`
-	CommentCount int       `json:"comment_count"`
-	IsMe 			bool      `json:"is_me"`
+	CommentCount   int       `json:"comment_count"`
+	IsMe           bool      `json:"is_me"`
 }
 
 type SaykaRequestJson struct {
@@ -90,13 +90,12 @@ func SaykaEntityToJson(sayka *entity.Sayka) *SaykaJson {
 	}
 }
 
-
 func MeEntityToJson(me *entity.Me) *MeJson {
 	return &MeJson{
-		User: UserEntityToJson(me.User),
-		SaykaCount: me.SaykaCount,
+		User:           UserEntityToJson(me.User),
+		SaykaCount:     me.SaykaCount,
 		FavoritedCount: me.FavoritedCount,
-		CommentCount: me.CommentCount,
-		IsMe: me.IsMe,
+		CommentCount:   me.CommentCount,
+		IsMe:           me.IsMe,
 	}
 }

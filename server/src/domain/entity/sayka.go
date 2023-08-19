@@ -27,9 +27,9 @@ type Sayka struct {
 type Saykas []*Sayka
 
 type Me struct {
-	User 	 *User     `json:"user"`
-	SaykaCount int       `json:"sayka_count"`
-	FavoritedCount int       `json:"favorited_count"`
-	CommentCount int       `json:"comment_count"`
-	IsMe 			bool      `json:"is_me"`
+	User           *User `json:"user"`
+	SaykaCount     int   `json:"sayka_count"`
+	FavoritedCount int   `json:"favorited_count"`
+	CommentCount   int   `json:"comment_count"`
+	IsMe           bool  `json:"is_me"`
 }
