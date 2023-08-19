@@ -105,7 +105,6 @@ func (pu *SaykaUsecase) GetByUserID(ctx context.Context, userID string, myID str
 			return nil, err
 		}
 		sayka.User = user
-		sayka.IsMe = sayka.UserID == userID
 	}
 	return saykas, err
 }
