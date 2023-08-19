@@ -347,7 +347,7 @@ func (pr *SaykaRepository) CreateSayka(ctx context.Context, sayka *entity.Sayka)
 func (pr *SaykaRepository) UpdateSayka(ctx context.Context, sayka *entity.Sayka) error {
 	query := `
 	UPDATE saykas
-	SET title = :title, github_url = :github_url, app_url = :app_url, slide_url = :slide_url, description = :description
+	SET title = :title, github_url = :github_url, app_url = :app_url, slide_url = :slide_url, article_url = :article_url, figma_url = :figma_url, description = :description
 	WHERE id = :id
 	`
 	dto := d.SaykaEntityToDto(sayka)
@@ -356,6 +356,33 @@ func (pr *SaykaRepository) UpdateSayka(ctx context.Context, sayka *entity.Sayka)
 	if err != nil {
 		return err
 	}
+
+	query = `
+	DELETE FROM tags
+	WHERE sayka_id = :id
+	`
+	_, err = pr.conn.DB.NamedExecContext(ctx, query, &dto)
+	if err != nil {
+		return err
+	}
+
+	tags := sayka.Tags
+	for _, tag := range tags {
+		query := `
+		INSERT INTO tags (sayka_id, name)
+		VALUES (:sayka_id, :name)
+		`
+		dto1 := d.TagEntityToDto(&entity.Tag{
+			SaykaID: dto.ID,
+			Name:    tag,
+		})
+
+		_, err := pr.conn.DB.NamedExecContext(ctx, query, &dto1)
+		if err != nil {
+			return err
+		}
+	}
+
 	return nil
 }
 

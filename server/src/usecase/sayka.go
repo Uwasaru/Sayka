@@ -260,7 +260,16 @@ func (pu *SaykaUsecase) CreateSayka(ctx *gin.Context, sayka *entity.Sayka) error
 
 // UpdateSaykaは投稿を更新します
 func (pu *SaykaUsecase) UpdateSayka(ctx context.Context, sayka *entity.Sayka) error {
-	return pu.pr.UpdateSayka(ctx, sayka)
+	err := pu.pr.UpdateSayka(ctx, sayka)
+	if err != nil {
+		return err
+	}
+	user, err := pu.ur.GetUser(ctx, sayka.UserID)
+	if err != nil {
+		return err
+	}
+	sayka.User = user
+	return nil
 }
 
 // DeleteSaykaは投稿を削除します

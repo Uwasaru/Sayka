@@ -164,27 +164,19 @@ func (ph *SaykaHandler) CreateSayka(ctx *gin.Context) {
 // UpdateSaykaは投稿を更新します
 func (ph *SaykaHandler) UpdateSayka(ctx *gin.Context) {
 	id := ctx.Param("id")
-	userId, err := ph.ju.GetUserIdFromJwtToken(ctx)
-	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-	sayka, err := ph.pu.GetByID(ctx, id, userId)
-	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
 	sayka_json := &json.SaykaJson{}
 	if err := ctx.BindJSON(sayka_json); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	sayka.UserID = sayka_json.UserID
-	sayka.AppUrl = sayka_json.AppUrl
-	sayka.Description = sayka_json.Description
-	sayka.GithubUrl = sayka_json.GithubUrl
-	sayka.SlideUrl = sayka_json.SlideUrl
-	sayka.Title = sayka_json.Title
+	sayka := json.SaykaJsonToEntity(sayka_json)
+	sayka.ID = id
+	userID, err := ph.ju.GetUserIdFromJwtToken(ctx)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	sayka.UserID = userID
 	if err := ph.pu.UpdateSayka(ctx, sayka); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
