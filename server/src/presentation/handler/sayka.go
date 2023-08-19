@@ -44,7 +44,11 @@ func (ph *SaykaHandler) GetByID(ctx *gin.Context) {
 // GetByUserIDはUserIDを指定して投稿を取得します
 func (ph *SaykaHandler) GetByUserID(ctx *gin.Context) {
 	userID := ctx.Param("userID")
-	saykas, err := ph.pu.GetByUserID(ctx, userID)
+	myID, err := ph.ju.GetUserIdFromJwtToken(ctx)
+	if err != nil {
+		fmt.Println(err)
+	}
+	saykas, err := ph.pu.GetByUserID(ctx, userID, myID)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
