@@ -69,6 +69,10 @@ func (ph *SaykaHandler) GetMe(ctx *gin.Context) {
 		fmt.Println(err)
 	}
 	me, err := ph.pu.GetMe(ctx, userID)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
 	me.IsMe = userID == myID
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
