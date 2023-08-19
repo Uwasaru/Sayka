@@ -12,7 +12,7 @@ export const CommentSaykaList = async ({ userId }: TProps) => {
   const token = getToken();
   const saykasRes = await readCommentSaykas(userId, token);
   if (saykasRes.type === "error")
-    throw new Error("データが取得できませんでした。");
+    throw new Error("データが取得できませんでした");
   const saykas = saykasRes.value.data;
   if (!saykas) throw new Error("投稿がありません");
 
