@@ -119,6 +119,10 @@ func (pu *SaykaUsecase) GetMe(ctx context.Context, userID string) (*entity.Me, e
 	if err != nil {
 		return nil, err
 	}
+	comment_count, err := pu.cr.GetCountByUserID(ctx, userID)
+	if err != nil {
+		return nil, err
+	}
 	user, err := pu.ur.GetUser(ctx, userID)
 	if err != nil {
 		return nil, err
@@ -127,6 +131,7 @@ func (pu *SaykaUsecase) GetMe(ctx context.Context, userID string) (*entity.Me, e
 		User:         user,
 		SaykaCount:   len(*saykas),
 		FavoritedCount: favorited_count,
+		CommentCount: comment_count,
 	}, nil
 }
 

@@ -103,6 +103,20 @@ func (cr *CommentRepository) GetAll(ctx context.Context) (*entity.Comments, erro
 	return &comments, nil
 }
 
+func (cr *CommentRepository) GetCountByUserID(ctx context.Context, userID string) (int, error) {
+	query := `
+	SELECT COUNT(*)
+	FROM comments
+	WHERE user_id = ?
+	`
+	var count int
+	err := cr.conn.DB.GetContext(ctx, &count, query, userID)
+	if err != nil {
+		return 0, err
+	}
+	return count, nil
+}
+
 func (cr *CommentRepository) CreateComment(ctx context.Context, comment *entity.Comment) error {
 	query := `
 	INSERT INTO comments (id, user_id, sayka_id, content, type)
