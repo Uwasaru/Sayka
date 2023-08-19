@@ -26,13 +26,11 @@ export const SaykaTimelineList: FC<TProps> = ({ saykas, token }) => {
 
   const handleClick = async () => {
     const saykasRes = await readSaykaTimeline(lastSaykaId, token);
-    console.log(saykasRes);
     if (saykasRes.type === "error") {
       throw new Error("データが取得できませんでした。");
     }
     const data = saykasRes.value.data;
     if (!data) setShowMore(false);
-    console.log(data);
     setSaykaList([...saykaList, ...data]);
   };
 

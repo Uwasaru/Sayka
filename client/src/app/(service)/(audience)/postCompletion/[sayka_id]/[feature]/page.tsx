@@ -16,8 +16,6 @@ const Page = async ({ params }: TProps) => {
   const message =
     params.feature === "edit" ? "編集が完了しました!" : "投稿が完了しました";
 
-  console.log(sayka);
-
   return (
     <div className="mt-32 space-y-5">
       <div className="flex justify-center text-lg font-bold">{message}</div>

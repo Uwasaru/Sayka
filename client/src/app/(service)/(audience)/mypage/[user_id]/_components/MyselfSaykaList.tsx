@@ -15,8 +15,6 @@ export const MyselfSaykaList = async ({ userId }: TProps) => {
     throw new Error("データが取得できませんでした。");
   const saykas = saykasRes.value.data;
   if (!saykas) throw new Error("投稿がありません");
-  console.log("token", token);
-  console.log(saykas);
 
   return <SaykaList saykas={saykas} token={token} />;
 };
