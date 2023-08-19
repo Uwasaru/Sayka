@@ -64,6 +64,7 @@ func (pr *SaykaRepository) GetByUserID(ctx context.Context, userID string) (*ent
 	SELECT *
 	FROM saykas
 	WHERE user_id = ?
+	ORDER BY id DESC
 	`
 	rows, err := pr.conn.DB.QueryContext(ctx, query, userID)
 	if err != nil {
