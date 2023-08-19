@@ -102,6 +102,22 @@ func (fr *FavoriteRepository) GetCountBySaykaID(ctx context.Context, saykaID str
 	return count, nil
 }
 
+// GetAllCountByUserIDはUserIDを指定して投稿を取得します
+func (fr *FavoriteRepository) GetAllCountByUserID(ctx context.Context, userID string) (int, error) {
+	query := `
+	SELECT COUNT(f.id)
+	FROM saykas s
+	LEFT JOIN favorites f ON s.id = f.sayka_id
+	WHERE s.user_id = ?
+	`
+	var count int
+	err := fr.conn.DB.GetContext(ctx, &count, query, userID)
+	if err != nil {
+		return -1, err
+	}
+	return count, nil
+}
+
 // GetAllは全ての投稿を取得します
 func (fr *FavoriteRepository) GetAll(ctx context.Context) (*entity.Favorites, error) {
 	query := `

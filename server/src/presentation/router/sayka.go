@@ -24,6 +24,7 @@ func (r Router) InitSaykaRouter(conn *database.Conn) {
 	g.GET("/timeline", ph.GetTimeLine)
 	g.GET("/favorite", ph.GetAllFavoritedSayka)
 	g.GET("/comment", ph.GetAllCommentedSayka)
+	g.GET("/me", ph.GetMe)
 	g.POST("/", ph.CreateSayka)
 	g.PUT("/:id", ph.UpdateSayka)
 	g.DELETE("/:id", ph.DeleteSayka)

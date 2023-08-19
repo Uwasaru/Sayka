@@ -25,6 +25,12 @@ type SaykaJson struct {
 	CreatedAt   time.Time `json:"created_at"`
 }
 
+type MeJson struct {
+	User         *UserJson `json:"user"`
+	SaykaCount   int       `json:"sayka_count"`
+	FavoritedCount int       `json:"favorited_count"`
+}
+
 type SaykaRequestJson struct {
 	LastSaykaID string `json:"last_sayka_id"`
 	SaykaAmount int    `json:"sayka_amount"`
@@ -79,5 +85,14 @@ func SaykaEntityToJson(sayka *entity.Sayka) *SaykaJson {
 		IsFavorite:  sayka.IsFavorite,
 		IsMe:        sayka.IsMe,
 		CreatedAt:   sayka.CreatedAt,
+	}
+}
+
+
+func MeEntityToJson(me *entity.Me) *MeJson {
+	return &MeJson{
+		User: UserEntityToJson(me.User),
+		SaykaCount: me.SaykaCount,
+		FavoritedCount: me.FavoritedCount,
 	}
 }

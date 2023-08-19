@@ -25,6 +25,8 @@ type ISaykaUsecase interface {
 	GetByID(ctx context.Context, id string, userId string) (*entity.Sayka, error)
 	// GetByUserIDはUserIDを指定して投稿を取得します
 	GetByUserID(ctx context.Context, userID string) (*entity.Saykas, error)
+	// GetMeは自分の投稿数、いいね数、コメント数を取得します
+	GetMe(ctx context.Context, userID string) (*entity.Me, error)
 	// GetAllは全ての投稿を取得します
 	GetAll(ctx context.Context, mysId string) (*entity.Saykas, error)
 	// GetTimeLineはタイムラインを取得します
@@ -105,6 +107,27 @@ func (pu *SaykaUsecase) GetByUserID(ctx context.Context, userID string) (*entity
 		sayka.IsMe = sayka.UserID == userID
 	}
 	return saykas, err
+}
+
+// GetMeは自分の投稿数、いいね数、コメント数を取得します
+func (pu *SaykaUsecase) GetMe(ctx context.Context, userID string) (*entity.Me, error) {
+	saykas, err := pu.pr.GetByUserID(ctx, userID)
+	if err != nil {
+		return nil, err
+	}
+	favorited_count, err := pu.fr.GetAllCountByUserID(ctx, userID)
+	if err != nil {
+		return nil, err
+	}
+	user, err := pu.ur.GetUser(ctx, userID)
+	if err != nil {
+		return nil, err
+	}
+	return &entity.Me{
+		User:         user,
+		SaykaCount:   len(*saykas),
+		FavoritedCount: favorited_count,
+	}, nil
 }
 
 // GetAllは全ての投稿を取得します
