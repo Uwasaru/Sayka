@@ -17,6 +17,7 @@ func (r *Router) cors() {
 		AllowOrigins: []string{
 			"http://localhost:3000",
 			"https://sayka.vercel.app",
+			"https://sayka.jp",
 		},
 		// アクセスを許可したいHTTPメソッド(以下の例だとPUTやDELETEはアクセスできません)
 		AllowMethods: []string{
