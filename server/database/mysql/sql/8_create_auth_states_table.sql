@@ -1,4 +1,4 @@
-CREATE TABLE `auth_states` (
+CREATE TABLE IF NOT EXISTS `auth_states` (
   `state` varchar(255) COLLATE utf8mb4_bin NOT NULL COMMENT 'state',
   `redirect_url` varchar(255) COLLATE utf8mb4_bin NOT NULL COMMENT 'OAuthが成功したときにリダイレクトするURL',
   UNIQUE KEY `state_state_uindex` (`state`)
