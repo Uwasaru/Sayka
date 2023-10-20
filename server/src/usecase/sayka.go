@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"context"
+	"log"
 
 	"github.com/Uwasaru/Sayka/domain/entity"
 	"github.com/Uwasaru/Sayka/domain/repository"
@@ -17,6 +18,7 @@ type SaykaUsecase struct {
 	fr repository.FavoriteRepository
 	cr repository.CommentRepository
 	ur repository.UserRepository
+	tr repository.TagRepository
 }
 
 // ISaykaUsecaseは投稿に関するユースケースを担当します
@@ -44,12 +46,13 @@ type ISaykaUsecase interface {
 }
 
 // NewSaykaUsecaseは新しいSaykaUsecaseを初期化し構造体のポインタを返します
-func NewSaykaUsecase(pr repository.SaykaRepository, fr repository.FavoriteRepository, cr repository.CommentRepository, ur repository.UserRepository) ISaykaUsecase {
+func NewSaykaUsecase(pr repository.SaykaRepository, fr repository.FavoriteRepository, cr repository.CommentRepository, ur repository.UserRepository, tr repository.TagRepository) ISaykaUsecase {
 	return &SaykaUsecase{
 		pr: pr,
 		fr: fr,
 		cr: cr,
 		ur: ur,
+		tr: tr,
 	}
 }
 
@@ -59,6 +62,15 @@ func (pu *SaykaUsecase) GetByID(ctx context.Context, id string, userId string) (
 	if err != nil {
 		return nil, err
 	}
+	tags, err := pu.tr.GetBySaykaID(ctx, sayka.ID)
+	if err != nil {
+		return nil, err
+	}
+	tagNames := make([]string, 0, len(*tags))
+	for _, tag := range *tags {
+		tagNames = append(tagNames, tag.Name)
+	}
+	sayka.Tags = tagNames
 	fovorites, err := pu.fr.GetBySaykaID(ctx, sayka.ID)
 	if err != nil {
 		return nil, err
@@ -95,6 +107,15 @@ func (pu *SaykaUsecase) GetByUserID(ctx context.Context, userID string, myID str
 		if err != nil {
 			return nil, err
 		}
+		tags, err := pu.tr.GetBySaykaID(ctx, sayka.ID)
+		if err != nil {
+			return nil, err
+		}
+		tagNames := make([]string, 0, len(*tags))
+		for _, tag := range *tags {
+			tagNames = append(tagNames, tag.Name)
+		}
+		sayka.Tags = tagNames
 		s := set.NewSet(fovorites...)
 		sayka.IsFavorite = s.Contains(sayka.UserID)
 		sayka.Favorites = len(fovorites)
@@ -150,6 +171,15 @@ func (pu *SaykaUsecase) GetAll(ctx context.Context, myId string) (*entity.Saykas
 		if err != nil {
 			return nil, err
 		}
+		tags, err := pu.tr.GetBySaykaID(ctx, sayka.ID)
+		if err != nil {
+			return nil, err
+		}
+		tagNames := make([]string, 0, len(*tags))
+		for _, tag := range *tags {
+			tagNames = append(tagNames, tag.Name)
+		}
+		sayka.Tags = tagNames
 		s := set.NewSet(fovorites...)
 		sayka.IsFavorite = s.Contains(sayka.UserID)
 		sayka.Favorites = len(fovorites)
@@ -179,6 +209,15 @@ func (pu *SaykaUsecase) GetTimeLine(ctx context.Context, id string, tag string, 
 		if err != nil {
 			return nil, err
 		}
+		tags, err := pu.tr.GetBySaykaID(ctx, sayka.ID)
+		if err != nil {
+			return nil, err
+		}
+		tagNames := make([]string, 0, len(*tags))
+		for _, tag := range *tags {
+			tagNames = append(tagNames, tag.Name)
+		}
+		sayka.Tags = tagNames
 		s := set.NewSet(fovorites...)
 		sayka.IsFavorite = s.Contains(sayka.UserID)
 		sayka.Favorites = len(fovorites)
@@ -208,6 +247,15 @@ func (pu *SaykaUsecase) GetAllFavoriteSayka(ctx context.Context, userId string, 
 		if err != nil {
 			return nil, err
 		}
+		tags, err := pu.tr.GetBySaykaID(ctx, sayka.ID)
+		if err != nil {
+			return nil, err
+		}
+		tagNames := make([]string, 0, len(*tags))
+		for _, tag := range *tags {
+			tagNames = append(tagNames, tag.Name)
+		}
+		sayka.Tags = tagNames
 		s := set.NewSet(fovorites...)
 		sayka.IsFavorite = s.Contains(sayka.UserID)
 		sayka.Favorites = len(fovorites)
@@ -237,6 +285,15 @@ func (pu *SaykaUsecase) GetAllCommentSayka(ctx context.Context, userId string, m
 		if err != nil {
 			return nil, err
 		}
+		tags, err := pu.tr.GetBySaykaID(ctx, sayka.ID)
+		if err != nil {
+			return nil, err
+		}
+		tagNames := make([]string, 0, len(*tags))
+		for _, tag := range *tags {
+			tagNames = append(tagNames, tag.Name)
+		}
+		sayka.Tags = tagNames
 		s := set.NewSet(fovorites...)
 		sayka.IsFavorite = s.Contains(sayka.UserID)
 		sayka.Favorites = len(fovorites)
@@ -257,6 +314,18 @@ func (pu *SaykaUsecase) CreateSayka(ctx *gin.Context, sayka *entity.Sayka) error
 	if err != nil {
 		return err
 	}
+	log.Println(sayka.ID)
+	tags := sayka.Tags
+	for _, tagName := range tags {
+		tag := &entity.Tag{
+			SaykaID: sayka.ID,
+			Name:    tagName,
+		}
+		err := pu.tr.CreateTag(ctx, tag)
+		if err != nil {
+			return err
+		}
+	}
 	user, err := pu.ur.GetUser(ctx, sayka.UserID)
 	if err != nil {
 		return err
@@ -270,6 +339,21 @@ func (pu *SaykaUsecase) UpdateSayka(ctx context.Context, sayka *entity.Sayka) er
 	err := pu.pr.UpdateSayka(ctx, sayka)
 	if err != nil {
 		return err
+	}
+	err = pu.tr.DeleteBySaykaID(ctx, sayka.ID)
+	if err != nil {
+		return err
+	}
+	tags := sayka.Tags
+	for _, tagName := range tags {
+		tag := &entity.Tag{
+			SaykaID: sayka.ID,
+			Name:    tagName,
+		}
+		err := pu.tr.CreateTag(ctx, tag)
+		if err != nil {
+			return err
+		}
 	}
 	user, err := pu.ur.GetUser(ctx, sayka.UserID)
 	if err != nil {

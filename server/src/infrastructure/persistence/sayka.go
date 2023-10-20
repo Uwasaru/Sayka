@@ -35,26 +35,7 @@ func (pr *SaykaRepository) GetByID(ctx context.Context, id string) (*entity.Sayk
 	if err != nil {
 		return nil, err
 	}
-	query = `
-	SELECT name
-	FROM tags
-	WHERE sayka_id = ?
-	`
-	rows, err := pr.conn.DB.QueryContext(ctx, query, dto.ID)
-	if err != nil {
-		return nil, err
-	}
-	var tags []string
-	for rows.Next() {
-		var tag string
-		err := rows.Scan(&tag)
-		if err != nil {
-			return nil, err
-		}
-		tags = append(tags, tag)
-	}
 	sayka := d.SaykaDtoToEntity(&dto)
-	sayka.Tags = tags
 	return sayka, nil
 }
 
@@ -125,26 +106,7 @@ func (pr *SaykaRepository) GetAll(ctx context.Context) (*entity.Saykas, error) {
 		if err != nil {
 			return nil, err
 		}
-		query := `
-		SELECT name
-		FROM tags
-		WHERE sayka_id = ?
-		`
-		rows, err := pr.conn.DB.QueryContext(ctx, query, dto.ID)
-		if err != nil {
-			return nil, err
-		}
-		var tags []string
-		for rows.Next() {
-			var tag string
-			err := rows.Scan(&tag)
-			if err != nil {
-				return nil, err
-			}
-			tags = append(tags, tag)
-		}
 		sayka := d.SaykaDtoToEntity(&dto)
-		sayka.Tags = tags
 		saykas = append(saykas, sayka)
 	}
 	return &saykas, nil
@@ -189,29 +151,7 @@ func (pr *SaykaRepository) GetTimeLine(ctx context.Context, id string, tag strin
 		if err != nil {
 			return nil, err
 		}
-		tagQuery := `
-        SELECT name
-        FROM tags
-        WHERE sayka_id = ?
-        `
-		tagRows, err := pr.conn.DB.QueryContext(ctx, tagQuery, dto.ID)
-		if err != nil {
-			return nil, err
-		}
-
-		var tags []string
-		for tagRows.Next() {
-			var tag string
-			err := tagRows.Scan(&tag)
-			if err != nil {
-				return nil, err
-			}
-			tags = append(tags, tag)
-		}
-		tagRows.Close()
-
 		sayka := d.SaykaDtoToEntity(&dto)
-		sayka.Tags = tags
 		saykas = append(saykas, sayka)
 	}
 	rows.Close()
@@ -242,26 +182,7 @@ func (pr *SaykaRepository) GetAllFavoriteSayka(ctx context.Context, myId string)
 		if err != nil {
 			return nil, err
 		}
-		query := `
-		SELECT name
-		FROM tags
-		WHERE sayka_id = ?
-		`
-		rows, err := pr.conn.DB.QueryContext(ctx, query, dto.ID)
-		if err != nil {
-			return nil, err
-		}
-		var tags []string
-		for rows.Next() {
-			var tag string
-			err := rows.Scan(&tag)
-			if err != nil {
-				return nil, err
-			}
-			tags = append(tags, tag)
-		}
 		sayka := d.SaykaDtoToEntity(&dto)
-		sayka.Tags = tags
 		saykas = append(saykas, sayka)
 	}
 	return &saykas, nil
@@ -290,26 +211,7 @@ func (pr *SaykaRepository) GetAllCommentSayka(ctx context.Context, myId string) 
 		if err != nil {
 			return nil, err
 		}
-		query := `
-		SELECT name
-		FROM tags
-		WHERE sayka_id = ?
-		`
-		rows, err := pr.conn.DB.QueryContext(ctx, query, dto.ID)
-		if err != nil {
-			return nil, err
-		}
-		var tags []string
-		for rows.Next() {
-			var tag string
-			err := rows.Scan(&tag)
-			if err != nil {
-				return nil, err
-			}
-			tags = append(tags, tag)
-		}
 		sayka := d.SaykaDtoToEntity(&dto)
-		sayka.Tags = tags
 		saykas = append(saykas, sayka)
 	}
 	return &saykas, nil
@@ -327,22 +229,7 @@ func (pr *SaykaRepository) CreateSayka(ctx context.Context, sayka *entity.Sayka)
 	if err != nil {
 		return err
 	}
-
-	tags := sayka.Tags
-	for _, tag := range tags {
-		query := `
-		INSERT INTO tags (sayka_id, name)
-		VALUES (:sayka_id, :name)
-		`
-		dto1 := d.TagEntityToDto(&entity.Tag{
-			SaykaID: dto.ID,
-			Name:    tag,
-		})
-		_, err := pr.conn.DB.NamedExecContext(ctx, query, &dto1)
-		if err != nil {
-			return err
-		}
-	}
+	sayka.ID = dto.ID
 	return nil
 }
 
@@ -358,32 +245,6 @@ func (pr *SaykaRepository) UpdateSayka(ctx context.Context, sayka *entity.Sayka)
 	_, err := pr.conn.DB.NamedExecContext(ctx, query, &dto)
 	if err != nil {
 		return err
-	}
-
-	query = `
-	DELETE FROM tags
-	WHERE sayka_id = :id
-	`
-	_, err = pr.conn.DB.NamedExecContext(ctx, query, &dto)
-	if err != nil {
-		return err
-	}
-
-	tags := sayka.Tags
-	for _, tag := range tags {
-		query := `
-		INSERT INTO tags (sayka_id, name)
-		VALUES (:sayka_id, :name)
-		`
-		dto1 := d.TagEntityToDto(&entity.Tag{
-			SaykaID: dto.ID,
-			Name:    tag,
-		})
-
-		_, err := pr.conn.DB.NamedExecContext(ctx, query, &dto1)
-		if err != nil {
-			return err
-		}
 	}
 
 	return nil

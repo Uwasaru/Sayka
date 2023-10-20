@@ -106,10 +106,10 @@ func (tr *TagRepository) GetBySaykaID(ctx context.Context, saykaID string) (*ent
 func (tr *TagRepository) CreateTag(ctx context.Context, tag *entity.Tag) error {
 	query := `
 	INSERT INTO tags
-	(id, name)
+	(sayka_id, name)
 	VALUES (?, ?)
 	`
-	_, err := tr.conn.DB.Exec(query, tag.ID, tag.Name)
+	_, err := tr.conn.DB.Exec(query, tag.SaykaID, tag.Name)
 	if err != nil {
 		return err
 	}
@@ -123,6 +123,18 @@ func (tr *TagRepository) DeleteTag(ctx context.Context, id string) error {
 	WHERE id = ?
 	`
 	_, err := tr.conn.DB.Exec(query, id)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (tr *TagRepository) DeleteBySaykaID(ctx context.Context, saykaID string) error {
+	query := `
+	DELETE FROM tags
+	WHERE sayka_id = ?
+	`
+	_, err := tr.conn.DB.Exec(query, saykaID)
 	if err != nil {
 		return err
 	}

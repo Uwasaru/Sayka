@@ -15,4 +15,5 @@ type TagRepository interface {
 	GetBySaykaID(ctx context.Context, saykaID string) (*entity.Tags, error)
 	CreateTag(ctx context.Context, tag *entity.Tag) error
 	DeleteTag(ctx context.Context, id string) error
+	DeleteBySaykaID(ctx context.Context, saykaID string) error
 }

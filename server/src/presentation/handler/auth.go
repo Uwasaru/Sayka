@@ -91,7 +91,7 @@ func (u *AuthHandler) Callback(ctx *gin.Context) {
 	accessToken, _ := token.SignedString([]byte(os.Getenv("rawPrivKey")))
 	ctx.SetSameSite(http.SameSiteLaxMode)
 	if os.Getenv("ENVIRONMENT") == "dev" {
-		ctx.SetCookie("token", accessToken, oneWeek, "", "sayka.site", true, true)
+		ctx.SetCookie("token", accessToken, oneWeek, "", "", true, true)
 	} else {
 		// フロントデプロイ次第、domainを登録
 		ctx.SetCookie("token", accessToken, oneWeek, "", "sayka.site", true, true)

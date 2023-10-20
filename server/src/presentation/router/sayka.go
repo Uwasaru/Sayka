@@ -13,7 +13,8 @@ func (r Router) InitSaykaRouter(conn *database.Conn) {
 	cr := persistence.NewCommentRepository(conn)
 	ar := persistence.NewAuthRepository(conn)
 	ur := persistence.NewUserRepository(conn)
-	pu := usecase.NewSaykaUsecase(pr, fr, cr, ur)
+	tr := persistence.NewTagRepository(conn)
+	pu := usecase.NewSaykaUsecase(pr, fr, cr, ur, tr)
 	ju := usecase.NewJwtUsecase(ar)
 	ph := handler.NewSaykaHandler(pu, ju)
 
