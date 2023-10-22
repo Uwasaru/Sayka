@@ -93,39 +93,13 @@ func (pu *SaykaUsecase) GetByID(ctx context.Context, id string, userId string) (
 }
 
 // GetByUserIDはUserIDを指定して投稿を取得します
-func (pu *SaykaUsecase) GetByUserID(ctx context.Context, userID string, myID string) (*entity.Saykas, error) {
+func (pu *SaykaUsecase) GetByUserID(ctx context.Context, userID string, myId string) (*entity.Saykas, error) {
 	saykas, err := pu.pr.GetByUserID(ctx, userID)
 	if err != nil {
 		return nil, err
 	}
 	for _, sayka := range *saykas {
-		fovorites, err := pu.fr.GetBySaykaID(ctx, sayka.ID)
-		if err != nil {
-			return nil, err
-		}
-		comments, err := pu.cr.GetBySaykaID(ctx, sayka.ID)
-		if err != nil {
-			return nil, err
-		}
-		tags, err := pu.tr.GetBySaykaID(ctx, sayka.ID)
-		if err != nil {
-			return nil, err
-		}
-		tagNames := make([]string, 0, len(*tags))
-		for _, tag := range *tags {
-			tagNames = append(tagNames, tag.Name)
-		}
-		sayka.Tags = tagNames
-		s := set.NewSet(fovorites...)
-		sayka.IsFavorite = s.Contains(sayka.UserID)
-		sayka.Favorites = len(fovorites)
-		sayka.Comments = len(*comments)
-		sayka.IsMe = sayka.UserID == myID
-		user, err := pu.ur.GetUser(ctx, sayka.UserID)
-		if err != nil {
-			return nil, err
-		}
-		sayka.User = user
+		pu.CompleteSayka(ctx, sayka, myId)
 	}
 	return saykas, err
 }
@@ -163,33 +137,7 @@ func (pu *SaykaUsecase) GetAll(ctx context.Context, myId string) (*entity.Saykas
 		return nil, err
 	}
 	for _, sayka := range *saykas {
-		fovorites, err := pu.fr.GetBySaykaID(ctx, sayka.ID)
-		if err != nil {
-			return nil, err
-		}
-		comments, err := pu.cr.GetBySaykaID(ctx, sayka.ID)
-		if err != nil {
-			return nil, err
-		}
-		tags, err := pu.tr.GetBySaykaID(ctx, sayka.ID)
-		if err != nil {
-			return nil, err
-		}
-		tagNames := make([]string, 0, len(*tags))
-		for _, tag := range *tags {
-			tagNames = append(tagNames, tag.Name)
-		}
-		sayka.Tags = tagNames
-		s := set.NewSet(fovorites...)
-		sayka.IsFavorite = s.Contains(sayka.UserID)
-		sayka.Favorites = len(fovorites)
-		sayka.Comments = len(*comments)
-		user, err := pu.ur.GetUser(ctx, sayka.UserID)
-		if err != nil {
-			return nil, err
-		}
-		sayka.User = user
-		sayka.IsMe = sayka.UserID == myId
+		pu.CompleteSayka(ctx, sayka, myId)
 	}
 	return saykas, err
 }
@@ -201,33 +149,7 @@ func (pu *SaykaUsecase) GetTimeLine(ctx context.Context, id string, tag string, 
 		return nil, err
 	}
 	for _, sayka := range *saykas {
-		fovorites, err := pu.fr.GetBySaykaID(ctx, sayka.ID)
-		if err != nil {
-			return nil, err
-		}
-		comments, err := pu.cr.GetBySaykaID(ctx, sayka.ID)
-		if err != nil {
-			return nil, err
-		}
-		tags, err := pu.tr.GetBySaykaID(ctx, sayka.ID)
-		if err != nil {
-			return nil, err
-		}
-		tagNames := make([]string, 0, len(*tags))
-		for _, tag := range *tags {
-			tagNames = append(tagNames, tag.Name)
-		}
-		sayka.Tags = tagNames
-		s := set.NewSet(fovorites...)
-		sayka.IsFavorite = s.Contains(sayka.UserID)
-		sayka.Favorites = len(fovorites)
-		sayka.Comments = len(*comments)
-		user, err := pu.ur.GetUser(ctx, sayka.UserID)
-		if err != nil {
-			return nil, err
-		}
-		sayka.User = user
-		sayka.IsMe = sayka.UserID == myId
+		pu.CompleteSayka(ctx, sayka, myId)
 	}
 	return saykas, err
 }
@@ -239,33 +161,7 @@ func (pu *SaykaUsecase) GetAllFavoriteSayka(ctx context.Context, userId string, 
 		return nil, err
 	}
 	for _, sayka := range *saykas {
-		fovorites, err := pu.fr.GetBySaykaID(ctx, sayka.ID)
-		if err != nil {
-			return nil, err
-		}
-		comments, err := pu.cr.GetBySaykaID(ctx, sayka.ID)
-		if err != nil {
-			return nil, err
-		}
-		tags, err := pu.tr.GetBySaykaID(ctx, sayka.ID)
-		if err != nil {
-			return nil, err
-		}
-		tagNames := make([]string, 0, len(*tags))
-		for _, tag := range *tags {
-			tagNames = append(tagNames, tag.Name)
-		}
-		sayka.Tags = tagNames
-		s := set.NewSet(fovorites...)
-		sayka.IsFavorite = s.Contains(sayka.UserID)
-		sayka.Favorites = len(fovorites)
-		sayka.Comments = len(*comments)
-		sayka.IsMe = sayka.UserID == myId
-		user, err := pu.ur.GetUser(ctx, sayka.UserID)
-		if err != nil {
-			return nil, err
-		}
-		sayka.User = user
+		pu.CompleteSayka(ctx, sayka, myId)
 	}
 	return saykas, err
 }
@@ -276,34 +172,9 @@ func (pu *SaykaUsecase) GetAllCommentSayka(ctx context.Context, userId string, m
 	if err != nil {
 		return nil, err
 	}
+	//重複する投稿を削除
 	for _, sayka := range *saykas {
-		fovorites, err := pu.fr.GetBySaykaID(ctx, sayka.ID)
-		if err != nil {
-			return nil, err
-		}
-		comments, err := pu.cr.GetBySaykaID(ctx, sayka.ID)
-		if err != nil {
-			return nil, err
-		}
-		tags, err := pu.tr.GetBySaykaID(ctx, sayka.ID)
-		if err != nil {
-			return nil, err
-		}
-		tagNames := make([]string, 0, len(*tags))
-		for _, tag := range *tags {
-			tagNames = append(tagNames, tag.Name)
-		}
-		sayka.Tags = tagNames
-		s := set.NewSet(fovorites...)
-		sayka.IsFavorite = s.Contains(sayka.UserID)
-		sayka.Favorites = len(fovorites)
-		sayka.Comments = len(*comments)
-		sayka.IsMe = sayka.UserID == myId
-		user, err := pu.ur.GetUser(ctx, sayka.UserID)
-		if err != nil {
-			return nil, err
-		}
-		sayka.User = user
+		pu.CompleteSayka(ctx, sayka, myId)
 	}
 	return saykas, err
 }
@@ -366,4 +237,35 @@ func (pu *SaykaUsecase) UpdateSayka(ctx context.Context, sayka *entity.Sayka) er
 // DeleteSaykaは投稿を削除します
 func (pu *SaykaUsecase) DeleteSayka(ctx context.Context, id string) error {
 	return pu.pr.DeleteSayka(ctx, id)
+}
+
+func (pu *SaykaUsecase) CompleteSayka(ctx context.Context, sayka *entity.Sayka, myId string) error {
+	fovorites, err := pu.fr.GetBySaykaID(ctx, sayka.ID)
+	if err != nil {
+		return err
+	}
+	comments, err := pu.cr.GetBySaykaID(ctx, sayka.ID)
+	if err != nil {
+		return err
+	}
+	tags, err := pu.tr.GetBySaykaID(ctx, sayka.ID)
+	if err != nil {
+		return err
+	}
+	tagNames := make([]string, 0, len(*tags))
+	for _, tag := range *tags {
+		tagNames = append(tagNames, tag.Name)
+	}
+	sayka.Tags = tagNames
+	s := set.NewSet(fovorites...)
+	sayka.IsFavorite = s.Contains(myId)
+	sayka.Favorites = len(fovorites)
+	sayka.Comments = len(*comments)
+	sayka.IsMe = sayka.UserID == myId
+	user, err := pu.ur.GetUser(ctx, sayka.UserID)
+	if err != nil {
+		return err
+	}
+	sayka.User = user
+	return nil
 }

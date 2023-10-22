@@ -196,6 +196,7 @@ func (pr *SaykaRepository) GetAllCommentSayka(ctx context.Context, myId string) 
 	FROM saykas s
 	JOIN comments c ON s.id = c.sayka_id
 	WHERE c.user_id = ?
+	GROUP BY s.id
 	ORDER BY s.id DESC
 	LIMIT ?
 	`
