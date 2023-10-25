@@ -19,7 +19,7 @@ export async function GET(request: Request) {
         style={{
           fontSize: 80,
           backgroundImage: `url(${`data:image/svg+xml,${encodeURIComponent(
-            '<svg id="visual" viewBox="0 0 900 600" width="900" height="600" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"><defs><filter id="blur1" x="-10%" y="-10%" width="120%" height="120%"><feFlood flood-opacity="0" result="BackgroundImageFix"></feFlood><feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"></feBlend><feGaussianBlur stdDeviation="161" result="effect1_foregroundBlur"></feGaussianBlur></filter></defs><rect width="900" height="600" fill="#ffbcbc"></rect><g filter="url(#blur1)"><circle cx="716" cy="520" fill="#00c795" r="357"></circle><circle cx="54" cy="232" fill="#ffbcbc" r="357"></circle><circle cx="5" cy="4" fill="#00c795" r="357"></circle><circle cx="388" cy="97" fill="#00c795" r="357"></circle><circle cx="466" cy="502" fill="#ffbcbc" r="357"></circle><circle cx="646" cy="331" fill="#00c795" r="357"></circle></g></svg>'
+            '<svg id="visual" viewBox="0 0 900 600" width="900" height="600" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"><defs><filter id="blur1" x="-10%" y="-10%" width="120%" height="120%"><feFlood flood-opacity="0" result="BackgroundImageFix"></feFlood><feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"></feBlend><feGaussianBlur stdDeviation="161" result="effect1_foregroundBlur"></feGaussianBlur></filter></defs><rect width="900" height="600" fill="#bcdaff"></rect><g filter="url(#blur1)"><circle cx="140" cy="72" fill="#46ffd2" r="357"></circle><circle cx="424" cy="163" fill="#bcdaff" r="357"></circle><circle cx="18" cy="468" fill="#46ffd2" r="357"></circle><circle cx="597" cy="68" fill="#46ffd2" r="357"></circle><circle cx="782" cy="590" fill="#bcdaff" r="357"></circle><circle cx="420" cy="487" fill="#46ffd2" r="357"></circle></g></svg>'
           )}`})`,
           backgroundRepeat: "no-repeat",
           backgroundPosition: "center",
@@ -56,7 +56,7 @@ export async function GET(request: Request) {
               position: "absolute",
               width: "100%",
               bottom: 40,
-              padding: "0px 50px",
+              padding: "0px 40px 0px 50px",
               justifyContent: "space-between",
             }}>
             <div
@@ -84,11 +84,11 @@ export async function GET(request: Request) {
             <div
               style={{
                 display: "flex",
-                alignItems: "center",
+                alignItems: "flex-end",
               }}>
               <svg
-                width="255"
-                height="68"
+                width="300"
+                height="80"
                 viewBox="0 0 480 129"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg">
