@@ -11,7 +11,6 @@ type TProps = {
 const { clientURL } = getEnv();
 
 export async function generateMetadata({ params }: TProps): Promise<Metadata> {
-  console.log("generateMetadataなう");
   const saykaRes = await readSayka(params.sayka_id);
   if (saykaRes.type === "error")
     throw new Error("データが取得できませんでした。");
@@ -26,7 +25,7 @@ export async function generateMetadata({ params }: TProps): Promise<Metadata> {
       siteName: "Sayka",
       images: [
         {
-          url: `${clientURL}/og?title=${sayka.title}&userName=${sayka.user.name}`,
+          url: `${clientURL}/og?title=${sayka.title}&userName=${sayka.user.id}`,
         },
       ],
       type: "website",

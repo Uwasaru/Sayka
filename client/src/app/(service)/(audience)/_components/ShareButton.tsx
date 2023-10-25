@@ -14,7 +14,7 @@ type ShareButtonProps = {
 const { clientURL } = getEnv();
 
 export const ShareButton: FC<ShareButtonProps> = ({ saykaId, saykaTitle }) => {
-  const url = `https://sayka.site/shareSaykaInformation/${saykaId}`;
+  const url = `${clientURL}//shareSaykaInformation/${saykaId}`;
   const title = `${saykaTitle}を作成しました！\n#Sayka`;
   return (
     <TooltipUI label="Xで共有">
