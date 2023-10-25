@@ -64,19 +64,19 @@ export async function GET(request: Request) {
                 display: "flex",
                 alignItems: "center",
               }}>
-              <img
+              {/* <img
                 src={`https://github.com/${userName}.png`}
                 alt=""
                 width="60"
                 height="60"
                 style={{ borderRadius: 60, marginRight: 20 }}
-              />
+              /> */}
               <span
                 style={{
                   color: "black",
                   fontSize: 60,
                 }}>
-                {userName}
+                @{userName}
               </span>
             </div>
 
