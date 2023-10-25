@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     siteName: "Sayka",
     images: [
       {
-        url: "https://sayka.site/ogp.png",
+        url: "",
       },
     ],
     type: "website",

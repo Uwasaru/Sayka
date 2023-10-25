@@ -4,11 +4,14 @@ import { FC } from "react";
 import { TwitterShareButton, TwitterIcon } from "react-share";
 
 import { TooltipUI } from "@/ui/Tooltip";
+import { getEnv } from "@/utils/env";
 
 type ShareButtonProps = {
   saykaId: string;
   saykaTitle: string;
 };
+
+const { clientURL } = getEnv();
 
 export const ShareButton: FC<ShareButtonProps> = ({ saykaId, saykaTitle }) => {
   const url = `https://sayka.site/shareSaykaInformation/${saykaId}`;
@@ -26,7 +29,7 @@ export const ShareLongButton: FC<ShareButtonProps> = ({
   saykaId,
   saykaTitle,
 }) => {
-  const url = `https://sayka.site/shareSaykaInformation/${saykaId}`;
+  const url = `${clientURL}/shareSaykaInformation/${saykaId}`;
   const title = `${saykaTitle}を作成しました！\n#Sayka`;
   return (
     <TwitterShareButton url={url} title={title}>
