@@ -43,9 +43,9 @@ export async function GET(request: Request) {
             style={{
               width: "100%",
               color: "black",
-              fontSize: 60,
+              fontSize: 80,
               display: "flex",
-              fontWeight: "bold",
+              fontWeight: "800",
               padding: "40px 50px 0px",
             }}>
             {title}

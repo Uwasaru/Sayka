@@ -99,7 +99,7 @@ export const SaykaForm: FC<TProps> = ({ user, token }) => {
       <form onKeyDown={preventFormSubmitOnEnter}>
         <InputBlock
           text="成果物のタイトル"
-          subText="20字以内で入力してください。"
+          subText="50字以内で入力してください。"
           isRequired
           name="title"
           placeholder="成果物共有アプリケーション『Sayka』"

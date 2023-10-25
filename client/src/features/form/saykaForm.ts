@@ -16,7 +16,7 @@ export const saykaSchema = z.object({
   title: z
     .string()
     .nonempty({ message: "必須項目です。" })
-    .max(20, "20字以内で入力してください。"),
+    .max(50, "50字以内で入力してください。"),
   description: z
     .string()
     .nonempty({ message: "必須項目です。" })
