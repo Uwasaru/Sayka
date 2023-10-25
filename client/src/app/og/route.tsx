@@ -39,22 +39,24 @@ export async function GET(request: Request) {
             margin: "auto",
             boxShadow: "10px 10px 10px rgba(0, 0, 0, 0.25)",
           }}>
-          <h2
+          <div
             style={{
               width: "100%",
               color: "black",
               fontSize: 60,
-              padding: "0px 40px",
+              display: "flex",
+              fontWeight: "bold",
+              padding: "40px 50px 0px",
             }}>
             {title}
-          </h2>
+          </div>
           <div
             style={{
               display: "flex",
               position: "absolute",
               width: "100%",
-              bottom: -30,
-              padding: "0px 40px",
+              bottom: 40,
+              padding: "0px 50px",
               justifyContent: "space-between",
             }}>
             <div
@@ -69,13 +71,15 @@ export async function GET(request: Request) {
                 height="60"
                 style={{ borderRadius: 60, marginRight: 20 }}
               />
-              <h2
+              <div
                 style={{
                   color: "black",
                   fontSize: 60,
+                  fontWeight: "bold",
+                  display: "flex",
                 }}>
                 {userName}
-              </h2>
+              </div>
             </div>
             <div
               style={{
