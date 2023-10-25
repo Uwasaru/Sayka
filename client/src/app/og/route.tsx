@@ -1,8 +1,8 @@
 import { ImageResponse } from "next/server";
 
-const font = fetch(
-  new URL("../../assets/NotoSansJP-Bold.otf", import.meta.url)
-).then((res) => res.arrayBuffer());
+// const font = fetch(
+//   new URL("../../assets/NotoSansJP-Bold.otf", import.meta.url)
+// ).then((res) => res.arrayBuffer());
 
 export const runtime = "edge";
 
