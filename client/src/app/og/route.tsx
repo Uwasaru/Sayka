@@ -19,9 +19,9 @@ export async function GET(request: Request) {
       <div
         style={{
           fontSize: 80,
-          backgroundImage: `url(${`data:image/svg+xml,${encodeURIComponent(
-            '<svg id="visual" viewBox="0 0 900 600" width="900" height="600" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"><defs><filter id="blur1" x="-10%" y="-10%" width="120%" height="120%"><feFlood flood-opacity="0" result="BackgroundImageFix"></feFlood><feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"></feBlend><feGaussianBlur stdDeviation="161" result="effect1_foregroundBlur"></feGaussianBlur></filter></defs><rect width="900" height="600" fill="#bcdaff"></rect><g filter="url(#blur1)"><circle cx="140" cy="72" fill="#46ffd2" r="357"></circle><circle cx="424" cy="163" fill="#bcdaff" r="357"></circle><circle cx="18" cy="468" fill="#46ffd2" r="357"></circle><circle cx="597" cy="68" fill="#46ffd2" r="357"></circle><circle cx="782" cy="590" fill="#bcdaff" r="357"></circle><circle cx="420" cy="487" fill="#46ffd2" r="357"></circle></g></svg>'
-          )}`})`,
+          // backgroundImage: `url(${`data:image/svg+xml,${encodeURIComponent(
+          //   '<svg id="visual" viewBox="0 0 900 600" width="900" height="600" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"><defs><filter id="blur1" x="-10%" y="-10%" width="120%" height="120%"><feFlood flood-opacity="0" result="BackgroundImageFix"></feFlood><feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"></feBlend><feGaussianBlur stdDeviation="161" result="effect1_foregroundBlur"></feGaussianBlur></filter></defs><rect width="900" height="600" fill="#bcdaff"></rect><g filter="url(#blur1)"><circle cx="140" cy="72" fill="#46ffd2" r="357"></circle><circle cx="424" cy="163" fill="#bcdaff" r="357"></circle><circle cx="18" cy="468" fill="#46ffd2" r="357"></circle><circle cx="597" cy="68" fill="#46ffd2" r="357"></circle><circle cx="782" cy="590" fill="#bcdaff" r="357"></circle><circle cx="420" cy="487" fill="#46ffd2" r="357"></circle></g></svg>'
+          // )}`})`,
           backgroundRepeat: "no-repeat",
           backgroundPosition: "center",
           backgroundSize: "100% 100%",
@@ -64,19 +64,19 @@ export async function GET(request: Request) {
                 display: "flex",
                 alignItems: "center",
               }}>
-              {/* <img
+              <img
                 src={`https://github.com/${userName}.png`}
                 alt=""
                 width="60"
                 height="60"
                 style={{ borderRadius: 60, marginRight: 20 }}
-              /> */}
+              />
               <span
                 style={{
                   color: "black",
                   fontSize: 60,
                 }}>
-                @{userName}
+                {userName}
               </span>
             </div>
 
