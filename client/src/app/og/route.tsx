@@ -1,10 +1,7 @@
-import Image from "next/image";
 import { ImageResponse } from "next/server";
-// App router includes @vercel/og.
-// No need to install it.
 
 const font = fetch(
-  new URL("../../assets/NotoSansJP-Bold-Updated.ttf", import.meta.url)
+  new URL("../../assets/NotoSansJP-Bold.otf", import.meta.url)
 ).then((res) => res.arrayBuffer());
 
 export const runtime = "edge";
@@ -12,9 +9,7 @@ export const runtime = "edge";
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const hasTitle = searchParams.has("title");
-  const title = hasTitle
-    ? searchParams.get("title")?.slice(0, 100)
-    : "成果物を投稿するアプリケーション";
+  const title = hasTitle ? searchParams.get("title")?.slice(0, 100) : "Sayka";
   const hasUserName = searchParams.has("userName");
   const userName = hasUserName ? searchParams.get("userName") : "unknown";
 
