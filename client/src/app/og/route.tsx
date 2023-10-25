@@ -1,8 +1,5 @@
+import { font } from "@/assets/font";
 import { ImageResponse } from "next/server";
-
-// const font = fetch(
-//   new URL("../../assets/NotoSansJP-Bold.otf", import.meta.url)
-// ).then((res) => res.arrayBuffer());
 
 export const runtime = "edge";
 
@@ -13,7 +10,7 @@ export async function GET(request: Request) {
   const hasUserName = searchParams.has("userName");
   const userName = hasUserName ? searchParams.get("userName") : "unknown";
 
-  // const fontData = await font;
+  const fontData = await font;
   return new ImageResponse(
     (
       <div
@@ -106,13 +103,13 @@ export async function GET(request: Request) {
     {
       width: 1200,
       height: 630,
-      // fonts: [
-      //   {
-      //     name: "NotoSansJP",
-      //     data: fontData,
-      //     style: "normal",
-      //   },
-      // ],
+      fonts: [
+        {
+          name: "NotoSansJP",
+          data: fontData,
+          style: "normal",
+        },
+      ],
     }
   );
 }
