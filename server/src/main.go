@@ -15,7 +15,7 @@ func main() {
 	r := router.NewRouter()
 	// health check
 	r.Engine.GET("/health", func(c *gin.Context) {
-		c.JSON(200, "ok!")
+		c.JSON(200, "ok")
 	})
 	r.InitUserRouter(conn)
 	r.InitSaykaRouter(conn)
