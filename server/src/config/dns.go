@@ -14,14 +14,9 @@ func DSN() (string, error) {
 	if err != nil {
 		log.Println(err)
 	}
-	log.Println(os.Getenv("ENVIRONMENT"))
+	env := os.Getenv("ENVIRONMENT")
 
-	if os.Getenv("ENVIRONMENT") == "prd" {
-		dbDSN := os.Getenv("DSN")
-		return dbDSN, nil
-	}
-
-	if os.Getenv("ENVIRONMENT") == "dev" {
+	if env == "dev" || env == "prd" {
 		dbUser := os.Getenv("MYSQL_USERNAME")
 		dbPassword := os.Getenv("MYSQL_PASSWORD")
 		dbHost := os.Getenv("MYSQL_HOST")
