@@ -20,7 +20,7 @@ FROM alpine:latest
 COPY --from=build /go/src/github.com/Uwasaru/Sayka/main /app/main
 
 # .envファイルをコピー
-COPY .env /app/.env
+# COPY .env /app/.env
 
 # コンテナ内の作業ディレクトリを設定
 WORKDIR /app
